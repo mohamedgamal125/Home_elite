@@ -27,7 +27,6 @@ class GoogleSignUpCubit extends Cubit<GoogleSignUpState> {
 
       final response = await _dio.post(
         'https://backend-coding-yousseftarek80s-projects.vercel.app/auth/google',
-        data: {'token': idToken},
       );
 
       if (response.statusCode == 200) {

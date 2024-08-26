@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:home_elite/pages/signUp_page/signupPage.dart';
+import 'package:home_elite/pages/signUp_page/signup_cubit/signupPage.dart';
 import 'package:home_elite/pages/wellcome_page/welcome_cubit.dart';
 import 'package:home_elite/pages/wellcome_page/welcome_state.dart';
 
@@ -13,8 +13,9 @@ class WellComePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    final _navigation = NavigationService();
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (context) => GoogleSignUpCubit(Dio()),
         child: SafeArea(
@@ -27,56 +28,62 @@ class WellComePage extends StatelessWidget {
                 width: deviceWidth,
               ),
               Padding(
-                padding: EdgeInsets.all(32),
+                padding: EdgeInsets.only(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset("assets/images/logo.png",
-                        width: 275, height: 275),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text(
-                        "Get your Home in \n  just few clicks.",
-                        style: GoogleFonts.alegreyaSansSc(
-                          textStyle: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                    ),
+                        width: 230, height: 230),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 30),
-                          width: 15,
-                          height: 15,
-                          decoration: BoxDecoration(
-                              color: Color(0xff9D7D43),
-                              borderRadius: BorderRadius.circular(100)),
+                          height: 81,
+                          width: 5,
+                          decoration: BoxDecoration(color: Color(0xff9D7D43)),
                         ),
-                        Expanded(
-                          child: Divider(
-                            thickness: 2,
-                            height: 2,
-                            indent: 0,
-                            endIndent: 30,
-                            color: Color(0xff9D7D43),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 14.0),
+                          child:  Text(
+                            "Get your Home in \n  just few clicks.",
+                            style: GoogleFonts.alegreyaSansSc(
+                              textStyle: TextStyle(fontSize: 20),
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(bottom: 12),
+                    //   child: Text(
+                    //     "Get your Home in \n  just few clicks.",
+                    //     style: GoogleFonts.alegreyaSansSc(
+                    //       textStyle: TextStyle(fontSize: 20),
+                    //     ),
+                    //   ),
+                    // ),
+
                     BlocConsumer<GoogleSignUpCubit, GoogleSignUpState>(
                       listener: (context, state) {
-                        // TODO: implement listener
                         if (state is GoogleSignUpSuccess) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Sign-Up Successful! Token: ${state.token}')),
+                            SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('Sign-Up Successful!')
+
+                            ),
                           );
                           print("========================Sign Up with google done ======================");
                           print(state.token);
+
+                          Navigator.pushReplacementNamed(context, "/home");
                         } else if (state is GoogleSignUpFailure) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Sign-Up Failed: ${state.errorMessage}')),
+                            SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text(state.errorMessage)),
                           );
                           print(state.errorMessage);
                         }
@@ -112,16 +119,14 @@ class WellComePage extends StatelessWidget {
                                     style: GoogleFonts.alegreyaSansSc(
                                         textStyle: TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.w100,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.black)),
                                   )
                                 ],
                               ),
                               onPressed: () {
-                                print("before signup ");
                                 cubit.signUpWithGoogle();
 
-                                print("after signup");
                               },
                             ),
                           ),
@@ -170,33 +175,33 @@ class WellComePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 22, left: 6),
-                          child: Text(
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             "Already have account? ",
                             style: TextStyle(
                               color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, '/login');
-                              },
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Color(0xff9D7D43), fontSize: 12),
-                              )),
-                        )
-                      ],
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushReplacementNamed(
+                                  context, '/login');
+                            },
+                            child: Text(
+                              "Login",
+                              style: TextStyle(
+                                  color: Color(0xff9D7D43), fontSize: 13),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

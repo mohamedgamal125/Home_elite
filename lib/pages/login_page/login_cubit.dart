@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/login_response.dart';
 import 'login_state.dart';
@@ -23,6 +24,19 @@ class LoginCubit extends Cubit<LoginState> {
         },
       );
       final loginResponse = LoginResponse.fromJson(response.data);
+      //===========================Store Token and user id in Shared Preference==========
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', loginResponse.token);
+      await prefs.setString('userIdLogin', loginResponse.userIdLogin);
+      await prefs.setString('message', loginResponse.message);
+
+      print("===========================================");
+      print("===================Shared Data from login========================");
+      print(prefs.get("token"));
+      print(prefs.get("userIdLogin"));
+      print(prefs.get("message"));
+
       emit(LoginSuccess(loginResponse));
     } catch (e) {
       emit(LoginFailure(e.toString()));
