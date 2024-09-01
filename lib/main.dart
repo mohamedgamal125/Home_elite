@@ -9,18 +9,35 @@ import 'package:home_elite/pages/signUp_page/signup_cubit/signup_cubit.dart';
 import 'package:home_elite/pages/signUp_page/signup_page2.dart';
 import 'package:home_elite/pages/signUp_page/signup_verification.dart';
 import 'package:home_elite/pages/wellcome_page/wellcome_page.dart';
+import 'package:home_elite/splash_screen/splash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   Bloc.observer=MyBlocObserver();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WellComePage(),
+      home: SplashScreen(),
       theme: MythemeData.lightMode,
       routes: {
         '/login': (context) => LoginPage(),

@@ -14,8 +14,25 @@ class SignupCubit extends Cubit<RegisterState> {
   var AddressController = TextEditingController();
   var userNameController = TextEditingController();
   var phoneController = TextEditingController();
+  var Address;
   static SignupCubit get(context) => BlocProvider.of(context);
 
+  final List<String> egyptianCities = [
+    'Cairo',
+    'Alexandria',
+    'Giza',
+    'Sharm El Sheikh',
+    'Luxor',
+    'Aswan',
+    'Port Said',
+    'Suez',
+    'Ismailia',
+    'Tanta',
+    'Mansoura',
+    'Zagazig',
+    'Minya',
+    'Assiut',
+  ];
   Future<void> register() async {
     emit(RegisterLoading());
 
@@ -27,7 +44,7 @@ class SignupCubit extends Cubit<RegisterState> {
           'password': passwordController.text,
           'confpassword': passwordController.text,
           'phone': phoneController.text,
-          'address': AddressController.text,
+          'address': Address,
           'username': userNameController.text,
         },
       );
@@ -54,7 +71,7 @@ class SignupCubit extends Cubit<RegisterState> {
     print(emailController.text);
     print(passwordController.text);
     print(phoneController.text);
-    print(AddressController.text);
+    print(Address);
     print("======================================");
   }
 }

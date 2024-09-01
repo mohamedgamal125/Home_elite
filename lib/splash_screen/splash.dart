@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:home_elite/pages/wellcome_page/wellcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../pages/home_page/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -6,19 +10,36 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
+
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _positionAnimation;
   late Animation<double> _initialFlipAnimation;
   late Animation<double> _zoomFlipAnimation;
+  late Animation<Offset> _finalPositionAnimation;
+  Widget ?startPage;
+  Future<void> _checkToken()async{
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final String? token= pref.getString('token');
 
+    print("==========Token=========");
+    print(token);
+    setState(() {
+      if(token !=null && token.isNotEmpty)
+      {
+        startPage=HomePage();
+      }
+      else
+        startPage=WellComePage();
+    });
+  }
   @override
   void initState() {
     super.initState();
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5), // Total duration of the splash screen
+      duration: Duration(seconds: 4), // Total duration of the splash screen
     );
 
     // Position animation from bottom center to center
@@ -48,11 +69,19 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Interval(0.7, 0.8, curve: Curves.easeInOut), // 10% of the total duration
     ));
 
+    _finalPositionAnimation = Tween<Offset>(
+      begin: Offset(0, 0),
+      end: Offset(0, -0.2), // Move the logo upwards slightly
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(0.8, 1.0, curve: Curves.easeInOut), // Last 20% of the duration
+    ));
     _controller.forward().then((_) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => LoginPage2(),
+        builder: (context) => startPage!,
       ));
     });
+    _checkToken();
   }
 
   @override
@@ -64,6 +93,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -73,11 +103,11 @@ class _SplashScreenState extends State<SplashScreen>
             double scale = 1.0;
             if (_zoomFlipAnimation.value > 0) {
               rotation += _zoomFlipAnimation.value * 3.1416;
-              scale += 2 * _zoomFlipAnimation.value;
+              scale +=  _zoomFlipAnimation.value;
             }
 
             return Transform.translate(
-              offset: _positionAnimation.value,
+              offset: _finalPositionAnimation.value+_positionAnimation.value,
               child: Transform(
                 alignment: Alignment.center,
                 transform: Matrix4.identity()
@@ -97,20 +127,11 @@ class LogoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/images/logo.png', // Replace with your logo asset path
+      'assets/images/black_logo.png', // Replace with your logo asset path
       width: 200,
       height: 200,
     );
   }
 }
 
-class LoginPage2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: LogoWidget(), // Center the logo on the login screen
-      ),
-    );
-  }
-}
+

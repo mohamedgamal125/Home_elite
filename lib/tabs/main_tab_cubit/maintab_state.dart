@@ -12,7 +12,6 @@ class MaintabSuccess extends MaintabState{
  MaintabSuccess(this.response);
 }
 
-
 class MaintabLoading extends MaintabState{}
 class MaintabError extends MaintabState{
 
@@ -20,5 +19,9 @@ class MaintabError extends MaintabState{
 
   MaintabError(this.error);
 }
+
+
+
+
 
 

@@ -128,18 +128,49 @@ class SignupPage extends StatelessWidget {
                               return null;
                             },
                           ),
-                          CustomTextField(
-                            label: "Address",
-                            onChanged: (value) {
-                              cubit.AddressController.text = value;
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Password is required';
-                              }
-                              return null;
-                            },
+                         
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Adderss"),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 25.0),
+                                  child: DropdownButtonFormField<String>(
+                                    onChanged: (value) {
+
+                                      cubit.Address=value;
+                                    },
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(left: 12),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.brown),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.brown, width: 2.0),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      items: cubit.egyptianCities.map<DropdownMenuItem<String>>((String city) {
+                                        return DropdownMenuItem<String>(
+                                          value: city,
+                                          child: Text(city),
+                                        );
+                                      }).toList(),
+                                     onSaved: (value){
+                                        cubit.Address=value;
+                                     },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+
                           Padding(
                             padding:
                             const EdgeInsets.only(top: 25.0, right: 25),

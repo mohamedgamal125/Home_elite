@@ -1,46 +1,32 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:home_elite/pages/wellcome_page/welcome_state.dart';
 
 
 class GoogleSignUpCubit extends Cubit<GoogleSignUpState> {
-  final Dio _dio;
+  final Dio _dio=Dio();
 
-  GoogleSignUpCubit(this._dio) : super(GoogleSignUpInitial());
+  GoogleSignUpCubit() : super(GoogleSignUpInitial());
   static GoogleSignUpCubit get(context) => BlocProvider.of(context);
-  Future<void> signUpWithGoogle() async {
-    emit(GoogleSignUpLoading());
 
+
+  void signInWithGoogle() async {
     try {
-      final googleSignIn = GoogleSignIn();
-      final googleUser = await googleSignIn.signIn();
-
-      if (googleUser == null) {
-        emit(GoogleSignUpFailure(errorMessage: 'Google Sign-In canceled'));
-        return;
-      }
-
-      final googleAuth = await googleUser.authentication;
-      final idToken = googleAuth.idToken;
-
-      final response = await _dio.post(
-        'https://backend-coding-yousseftarek80s-projects.vercel.app/auth/google',
+      final url = Uri.parse('https://backend-coding-yousseftarek80s-projects.vercel.app/auth/google');
+      final result = await FlutterWebAuth.authenticate(
+        url: url.toString(),
+        callbackUrlScheme: "http",
       );
 
-      if (response.statusCode == 200) {
-        final data = response.data;
-        emit(GoogleSignUpSuccess(
-          token: data['token'],
-          userId: data['UserIdLogin'],
-        ));
-      } else {
-        emit(GoogleSignUpFailure(
-            errorMessage: 'Google Sign-Up failed with status code: ${response.statusCode}'));
-      }
+      final token = Uri.parse(result).queryParameters['token'];
+      print("=======================Response=============");
+      print(token);
     } catch (e) {
-      emit(GoogleSignUpFailure(errorMessage: e.toString()));
+      print('Error during sign in: $e');
     }
   }
 }
+

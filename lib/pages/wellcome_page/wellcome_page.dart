@@ -17,7 +17,7 @@ class WellComePage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlocProvider(
-        create: (context) => GoogleSignUpCubit(Dio()),
+        create: (context) => GoogleSignUpCubit(),
         child: SafeArea(
           child: Stack(
             children: [
@@ -125,7 +125,7 @@ class WellComePage extends StatelessWidget {
                                 ],
                               ),
                               onPressed: () {
-                                cubit.signUpWithGoogle();
+                                cubit.signInWithGoogle();
 
                               },
                             ),
