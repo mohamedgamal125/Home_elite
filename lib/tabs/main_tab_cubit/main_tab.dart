@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/pages/details_page/details_page.dart';
 import 'package:home_elite/shared/components/property_card.dart';
 import 'package:home_elite/tabs/main_tab_cubit/maintab_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,9 +24,7 @@ class _MainTabState extends State<MainTab> {
     // TODO: implement initState
     super.initState();
     context.read<MaintabCubit>().getPropertyTypes();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,10 @@ class _MainTabState extends State<MainTab> {
                             totalSwitches: 2,
                             labels: ['Buy', 'Rent'],
                             fontSize: 12,
-                            activeBgColors: [[Colors.white],[Colors.white]],
+                            activeBgColors: [
+                              [Colors.white],
+                              [Colors.white]
+                            ],
                             onToggle: (index) {
                               print('switched to: $index');
                             },
@@ -85,11 +87,11 @@ class _MainTabState extends State<MainTab> {
                               borderRadius: BorderRadius.circular(18),
                             ),
                             child: TextField(
-
                               cursorColor: Colors.brown,
                               decoration: InputDecoration(
                                 hintText: 'City',
-                                hintStyle: GoogleFonts.akayaTelivigala(color: Colors.grey),
+                                hintStyle: GoogleFonts.akayaTelivigala(
+                                    color: Colors.grey),
                                 border: InputBorder.none,
                                 icon: Icon(Icons.search),
                               ),
@@ -210,23 +212,36 @@ class _MainTabState extends State<MainTab> {
                     FutureBuilder<List<AdModel>>(
                       future: fetchBestAds(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(color: Colors.brown,));
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.brown,
+                          ));
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return Center(child: Text('No best ads available'));
                         } else {
                           final ads = snapshot.data!;
                           return Column(
                             children: ads.map((ad) {
                               return PropertyCard(
+                                name: ad.name,
                                 location: ad.address,
                                 bedrooms: ad.bedrooms,
                                 size: ad.area,
-
                                 price: ad.salary.toString(),
-                                propertyType:ad.propertyType.propertyType,
+                                propertyType: ad.propertyType.propertyType,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailsPage(property: ad)));
+                                },
                               );
                             }).toList(),
                           );
@@ -246,7 +261,8 @@ class _MainTabState extends State<MainTab> {
 
   Future<List<AdModel>> fetchBestAds() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token'); // Replace with the actual key where the token is stored
+    final token = prefs.getString(
+        'token'); // Replace with the actual key where the token is stored
 
     try {
       final response = await Dio().get(

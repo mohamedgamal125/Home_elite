@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_elite/shared/components/filter_bottom_sheets.dart';
 
 import '../models/propertyType_model.dart';
+import '../pages/details_page/details_page.dart';
 import '../shared/components/filtter_button.dart';
 
 class SearchTab extends StatefulWidget {
@@ -27,6 +28,7 @@ class _SearchTabState extends State<SearchTab> {
   String _choice = "";
 
   List<AdModel>? cachedAds;
+  List<AdModel>? Data;
   List<AdModel>? filteredAds;
   TextEditingController searchController = TextEditingController();
 
@@ -45,16 +47,18 @@ class _SearchTabState extends State<SearchTab> {
 
   void _filterAds() {
     final query = searchController.text.toLowerCase();
-    if (cachedAds != null && query.isNotEmpty) {
+
+    if ( query.isNotEmpty) {
       setState(() {
         filteredAds = cachedAds!.where((ad) {
-          return ad.name.toLowerCase().contains(query) ||
-              ad.propertyType.propertyType.toLowerCase().contains(query) ||
-              ad.salary.toString().contains(query);
+           return ad.name.toLowerCase().contains(query); //||
+          //     ad.propertyType.propertyType.toLowerCase().contains(query) ||ad.address.toLowerCase().contains(query);
         }).toList();
       });
+
     } else {
       setState(() {
+        print("======i am in else=====");
         filteredAds = cachedAds;
       });
     }
@@ -109,7 +113,7 @@ class _SearchTabState extends State<SearchTab> {
                                 isPriceFiltered = true;
                                 isFiltered = true;
                               });
-                              fetchFilterdAds();
+
                             }),
                           ),
                           FilterButton(
@@ -154,8 +158,21 @@ class _SearchTabState extends State<SearchTab> {
                                 isBedsFiltered = false;
                                 isBuyRentFiltered = false;
                                 isPriceFiltered = false;
+                                startPrice = "";
+                                endPrice = "";
+                                num_beds = "";
+                                num_bath = "";
+                                _choice = "";
+
+                                // Reset the filtered ads to cached ads
+                                filteredAds = List.from(cachedAds ?? []);
+
                                 searchController.clear();
                               });
+                              setState(() {
+
+                              });
+                              print("=======IsFilterd $isFiltered");
                             },
                             color: Colors.brown,
                           ),
@@ -185,10 +202,22 @@ class _SearchTabState extends State<SearchTab> {
                         return Center(child: Text('No Ads available'));
                       } else {
                         cachedAds = snapshot.data; // Cache the fetched ads
-                        filteredAds = filteredAds ?? cachedAds; // Use filtered ads if available
+                         // Use filtered ads if available
+
+                        filteredAds=filteredAds ?? cachedAds;
+                        print("=============Data=======");
+                        print(Data);
                         return Column(
                           children: filteredAds!.map((ad) {
                             return PropertyCard(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailsPage(property: ad)));
+                              },
+                              name: ad.name,
                               location: ad.address,
                               bedrooms: ad.bedrooms,
                               size: ad.area,
@@ -259,7 +288,9 @@ class _SearchTabState extends State<SearchTab> {
             .map((json) => AdModel.fromJson(json))
             .toList();
 
-        cachedAds = ads; // Cache the fetched ads
+
+
+        filteredAds=ads;// Cache the fetched ads
         return ads;
       } else {
         throw Exception('Failed to load filtered ads');

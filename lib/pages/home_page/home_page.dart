@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_elite/pages/home_page/home_cubit.dart';
+import 'package:home_elite/tabs/add_ads/add_ads_cubit.dart';
 import 'package:home_elite/tabs/main_tab_cubit/maintab_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -16,6 +17,8 @@ class HomePage extends StatelessWidget {
         BlocProvider(
           create: (context) => MaintabCubit(),
         ),
+        BlocProvider(create: (context) => AddAdsCubit()
+        ),
       ],
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
@@ -26,7 +29,6 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             backgroundColor: Colors.white,
             body: cubit.tabs[cubit.current_indx],
-
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.shifting,
               unselectedItemColor: Colors.black,
@@ -41,12 +43,9 @@ class HomePage extends StatelessWidget {
                 print(index);
               },
             ),
-
           );
         },
       ),
     );
   }
-
 }
-

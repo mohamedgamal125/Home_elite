@@ -5,6 +5,13 @@ class FavoriteTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.black,);
+    return Container(color: Colors.black,
+    child: Center(
+        child: Text("To be implemented",style: TextStyle(
+          color: Colors.white
+        ),),
+    ),
+
+    );
   }
 }
