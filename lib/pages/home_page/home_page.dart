@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_elite/pages/home_page/home_cubit.dart';
 import 'package:home_elite/tabs/add_ads/add_ads_cubit.dart';
 import 'package:home_elite/tabs/main_tab_cubit/maintab_cubit.dart';
+import 'package:home_elite/tabs/profile_tab/profile_tab_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,11 +20,11 @@ class HomePage extends StatelessWidget {
         ),
         BlocProvider(create: (context) => AddAdsCubit()
         ),
+        BlocProvider(create: (context) => ProfileTabCubit()
+        ),
       ],
       child: BlocConsumer<HomeCubit, HomeState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           var cubit = HomeCubit.get(context);
           return Scaffold(

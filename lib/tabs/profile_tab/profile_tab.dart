@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/tabs/profile_tab/profile_tab_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
 
+  @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<ProfileTabCubit>().fetchUserData();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,41 +31,59 @@ class ProfileTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
                   children: [
-                    Card(
-                      elevation: 8.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      color: Colors.white,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Image.asset("assets/images/profile.png"),
-                          title: Text(
-                            'Youssef Tarek',
-                            style: GoogleFonts.alegreyaSans(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          subtitle: Text(
-                            "youssef.tarek@gmail.com",
-                            style: GoogleFonts.alegreyaSans(fontSize: 10),
-                            maxLines: 1,
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.brown,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              // Handle edit button press
-                            },
-                          ),
-                        ),
-                      ),
+                    BlocBuilder<ProfileTabCubit, ProfileTabState>(
+
+                      builder: (context, state) {
+
+                        if(state is ProfileTabLoading)
+                          {
+                            return Center(child: CircularProgressIndicator(color: Colors.brown,),);
+                          }
+                        else if(state is ProfileTabSuccess)
+                          {
+                            return Card(
+                              elevation: 8.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              color: Colors.white,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  leading: Image.asset("assets/images/profile.png"),
+                                  title: Text(
+                                    '${state.user.username}',
+                                    maxLines: 1,
+                                    style: GoogleFonts.alegreyaSans(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    "${state.user.email}",
+                                    style: GoogleFonts.alegreyaSans(fontSize: 10),
+                                    maxLines: 1,
+                                  ),
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.brown,
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      // Handle edit button press
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                        return Center(child: Text("Something wrong happen while get data"),);
+                      },
                     ),
+
+
                     Card(
                       elevation: 8.0,
                       shape: RoundedRectangleBorder(
@@ -312,9 +343,9 @@ class ProfileTab extends StatelessWidget {
                                     fontSize: 16)),
                           ),
                         ),
-                        onPressed: () async{
-
-                          final SharedPreferences pref= await SharedPreferences.getInstance();
+                        onPressed: () async {
+                          final SharedPreferences pref = await SharedPreferences
+                              .getInstance();
                           print("=======Token before delete=====");
                           print(pref.get('token'));
                           await pref.remove('token');

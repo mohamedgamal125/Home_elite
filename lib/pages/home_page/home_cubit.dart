@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_elite/tabs/add_ads/ads_tab.dart';
 import 'package:home_elite/tabs/favorite_tab.dart';
 import 'package:home_elite/tabs/main_tab_cubit/main_tab.dart';
-import 'package:home_elite/tabs/profile_tab.dart';
+import 'package:home_elite/tabs/profile_tab/profile_tab.dart';
 import 'package:home_elite/tabs/search_tab.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/cupertino.dart';
