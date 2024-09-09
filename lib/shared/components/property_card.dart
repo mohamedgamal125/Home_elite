@@ -1,34 +1,30 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/models/propertyType_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PropertyCard extends StatelessWidget {
-  // final String imageUrl;
-  final String propertyType;
-  final String price;
-  final String location;
-  final int bedrooms;
-  final String size;
-  final String name;
-  // final VoidCallback onEmailTap;
-  // final VoidCallback onCallTap;
-  // final VoidCallback onWhatsAppTap;
+class PropertyCard extends StatefulWidget {
+
+  final AdModel adModel;
+
 
   final VoidCallback onTap;
-  const PropertyCard({
 
-    required this.propertyType,
-    required this.price,
-    required this.location,
-    required this.bedrooms,
-    required this.size,
-    required this.onTap,
-    required this.name,
+  PropertyCard({
+    required this.adModel,
+    required this.onTap
   });
 
   @override
+  State<PropertyCard> createState() => _PropertyCardState();
+}
+
+class _PropertyCardState extends State<PropertyCard> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
         child: Column(
@@ -47,14 +43,26 @@ class PropertyCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    propertyType,
+                    widget.adModel.adType,
                     style: const TextStyle(color: Colors.grey),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.bookmark_outline,
+                    onPressed: () {
+                      if(widget.adModel.isFavorite)
+                        {
+                          //delete
+                          deleteFromFavorite();
+                        }
+                      else {
+                        addToFavorite();
+                      }
+
+
+                    },
+                    icon:  Icon(
+                      widget.adModel.isFavorite? Icons.bookmark : Icons.bookmark_outline,
                       size: 25,
+                      color: widget.adModel.isFavorite?Colors.red:Colors.black,
                     ),
                   )
                 ],
@@ -63,14 +71,14 @@ class PropertyCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "$price EGP",
+                "${widget.adModel.salary} EGP",
                 style: GoogleFonts.arima(fontSize: 26),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                name,
+                widget.adModel.name,
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
             ),
@@ -80,10 +88,11 @@ class PropertyCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Image(image: AssetImage("assets/icons/bed_icon.png")),
+                      const Image(
+                          image: AssetImage("assets/icons/bed_icon.png")),
                       const SizedBox(width: 4),
                       Text(
-                        "$bedrooms",
+                        "${widget.adModel.bedrooms}",
                         style: GoogleFonts.adventPro(fontSize: 10),
                       ),
                     ],
@@ -102,7 +111,7 @@ class PropertyCard extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: '$size ',
+                              text: '${widget.adModel.area} ',
                               style: GoogleFonts.adventPro(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -115,8 +124,10 @@ class PropertyCard extends StatelessWidget {
                             TextSpan(
                               text: '²',
                               style: GoogleFonts.adventPro(
-                                fontSize: 12, // Smaller font size for superscript
-                                color: Colors.black, // Color for the superscript
+                                fontSize: 12,
+                                // Smaller font size for superscript
+                                color:
+                                    Colors.black, // Color for the superscript
                               ),
                             ),
                           ],
@@ -133,9 +144,7 @@ class PropertyCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () {
-      
-                      },
+                      onTap: () {},
                       child: Container(
                         height: 32,
                         decoration: BoxDecoration(
@@ -147,7 +156,6 @@ class PropertyCard extends StatelessWidget {
                           child: Row(
                             children: [
                               const Icon(Icons.email, color: Colors.brown),
-      
                               Text(
                                 "Email",
                                 style: GoogleFonts.alegreyaSansSc(
@@ -162,9 +170,7 @@ class PropertyCard extends StatelessWidget {
                   const SizedBox(width: 5),
                   Expanded(
                     child: InkWell(
-                      onTap: () {
-      
-                      },
+                      onTap: () {},
                       child: Container(
                         height: 32,
                         decoration: BoxDecoration(
@@ -176,7 +182,6 @@ class PropertyCard extends StatelessWidget {
                           child: Row(
                             children: [
                               const Icon(Icons.call, color: Colors.brown),
-      
                               Text(
                                 "Call",
                                 style: GoogleFonts.alegreyaSansSc(
@@ -191,9 +196,7 @@ class PropertyCard extends StatelessWidget {
                   const SizedBox(width: 5),
                   Expanded(
                     child: InkWell(
-                      onTap: () {
-      
-                      },
+                      onTap: () {},
                       child: Container(
                         height: 32,
                         decoration: BoxDecoration(
@@ -216,5 +219,61 @@ class PropertyCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void>deleteFromFavorite()async{
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final Token = prefs.get("token");
+
+      print("Token   $Token");
+      print(widget.adModel.id);
+      final response = await Dio().post(
+          "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/DeleteFavorite/${widget.adModel.id}",
+          options: Options(
+              headers: {'Authorization': 'Bearer $Token'}
+          )
+      );
+
+      if(response.statusCode==200)
+      {
+
+        setState(() {
+          widget.adModel.isFavorite=false;
+        });
+        print("================add to favorite response ========================");
+        print(response);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+  Future<void> addToFavorite() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final Token = prefs.get("token");
+
+      print("Token   $Token");
+      print(widget.adModel.id);
+      final response = await Dio().post(
+          "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/AddFavorite/${widget.adModel.id}",
+        options: Options(
+            headers: {'Authorization': 'Bearer $Token'}
+        )
+      );
+
+      if(response.statusCode==200)
+        {
+
+          setState(() {
+            widget.adModel.isFavorite=true;
+          });
+          print("================add to favorite response ========================");
+          print(response);
+        }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 
-part 'add_ads_state.dart';
+part 'add_rent_ads_state.dart';
 
-class AddAdsCubit extends Cubit<AddAdsState> {
-  AddAdsCubit() : super(AddAdsInitial());
+class AddRentAdsCubit extends Cubit<AddRentAdsState> {
+  AddRentAdsCubit() : super(AddRentAdsInitial());
 
   var propertyType;
   var area=TextEditingController();
@@ -21,13 +20,11 @@ class AddAdsCubit extends Cubit<AddAdsState> {
   var description=TextEditingController();
 
   List<File> selectedImages = [];
-  static AddAdsCubit get(context) => BlocProvider.of(context);
+  static AddRentAdsCubit get(context) => BlocProvider.of(context);
 
   final List<String> propertyTypes = [
-    'Apartments for Sale',
-    'Apartments for Rent',
-    'Villas for Sale ',
-    'Villas for Rent',
+    'Apartments',
+    'Villa',
   ];
 
   void PrintData()
@@ -50,12 +47,11 @@ class AddAdsCubit extends Cubit<AddAdsState> {
 
     if (pickedFiles != null) {
       selectedImages = pickedFiles.map((file) => File(file.path)).toList();
-      emit(AddAdsImagesSelected());
+      emit(AddRentImageSelected());
     }
   }
   void clearSelectedImages() {
     selectedImages.clear();
-    emit(AddAdsImagesCleared());
+    emit(AddRentImageClear());
   }
-  // ToDo // Add the function that call api to add new ads
 }

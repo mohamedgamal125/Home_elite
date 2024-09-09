@@ -1,3 +1,5 @@
+import 'package:home_elite/models/propertyType_model.dart';
+
 class UserModel {
   final String id;
   final String email;
@@ -8,8 +10,8 @@ class UserModel {
   final List<dynamic> cart;
   final List<dynamic> messages;
   final bool isPhoneVerified;
-  final List<dynamic> ads;
-  final List<dynamic> favorite;
+  final List<AdModel> ads;
+  final List<AdModel> favorite;
   final int v;
 
   UserModel({
@@ -38,8 +40,13 @@ class UserModel {
       cart: json['cart'] ?? [],
       messages: json['messages'] ?? [],
       isPhoneVerified: json['isPhoneVerified'],
-      ads: json['ads'] ?? [],
-      favorite: json['favorite'] ?? [],
+      // Map each ad and favorite from JSON to AdModel
+      ads: (json['ads'] as List<dynamic>)
+          .map((ad) => AdModel.fromJson(ad))
+          .toList(),
+      favorite: (json['favorite'] as List<dynamic>)
+          .map((ad) => AdModel.fromJson(ad))
+          .toList(),
       v: json['__v'],
     );
   }

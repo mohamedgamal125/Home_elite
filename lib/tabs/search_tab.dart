@@ -1,11 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:home_elite/models/signup_model.dart';
+import 'package:home_elite/models/user.dart';
 import 'package:home_elite/shared/components/property_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_elite/shared/components/filter_bottom_sheets.dart';
 
 import '../models/propertyType_model.dart';
+import '../models/user_model.dart';
 import '../pages/details_page/details_page.dart';
+import '../models/user.dart';
 import '../shared/components/filtter_button.dart';
 
 class SearchTab extends StatefulWidget {
@@ -146,6 +150,8 @@ class _SearchTabState extends State<SearchTab> {
                                 _choice = choice;
                                 isBuyRentFiltered = true;
                                 isFiltered = true;
+
+                                print(_choice);
                               });
                             }),
                           ),
@@ -168,6 +174,9 @@ class _SearchTabState extends State<SearchTab> {
                                 filteredAds = List.from(cachedAds ?? []);
 
                                 searchController.clear();
+                              });
+                              setState(() {
+
                               });
                               setState(() {
 
@@ -205,8 +214,7 @@ class _SearchTabState extends State<SearchTab> {
                          // Use filtered ads if available
 
                         filteredAds=filteredAds ?? cachedAds;
-                        print("=============Data=======");
-                        print(Data);
+
                         return Column(
                           children: filteredAds!.map((ad) {
                             return PropertyCard(
@@ -217,12 +225,7 @@ class _SearchTabState extends State<SearchTab> {
                                         builder: (context) =>
                                             DetailsPage(property: ad)));
                               },
-                              name: ad.name,
-                              location: ad.address,
-                              bedrooms: ad.bedrooms,
-                              size: ad.area,
-                              price: ad.salary.toString(),
-                              propertyType: ad.propertyType.propertyType,
+                             adModel: ad,
                             );
                           }).toList(),
                         );
@@ -250,17 +253,44 @@ class _SearchTabState extends State<SearchTab> {
         ),
       );
 
+      print(token);
+
       if (response.statusCode == 200) {
         List<AdModel> ads = (response.data as List)
             .map((json) => AdModel.fromJson(json))
             .toList();
-        cachedAds = ads; // Cache the fetched ads
+        cachedAds = ads;
+        // Cache the fetched ads
+        print(cachedAds);
+
+        final UserResponse = await Dio().get(
+          'https://backend-coding-yousseftarek80s-projects.vercel.app/auth/user',
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+            },
+          ),
+        );
+
+        print(UserResponse.data);
+        //
+
+         User2 user=User2.fromJson(UserResponse.data);
+
+        final favoriteAdIds = user.favorite?.map((fav) => fav.ad).toSet() ?? {};
+
+        for(var ad in cachedAds!)
+          {
+            ad.isFavorite = favoriteAdIds.contains(ad.id);
+          }
+
         return ads;
       } else {
-        throw Exception('Failed to load best ads');
+        throw Exception('Failed to load  ads');
       }
     } catch (e) {
-      throw Exception('Error fetching best ads: $e');
+      print(e.toString());
+      throw Exception('Error fetching ads: $e');
     }
   }
 
@@ -279,10 +309,12 @@ class _SearchTabState extends State<SearchTab> {
           "maxSalary": endPrice.isEmpty ? '' : int.parse(endPrice),
           "bedrooms": num_beds.isEmpty ? '' : int.parse(num_beds),
           "bathrooms": num_bath.isEmpty ? '' : int.parse(num_bath),
-          // TODO add data for (buy or rent) in the API
+          "propertyType":_choice.isEmpty?'':_choice,
         },
       );
 
+      print("response data ");
+      print(response.data);
       if (response.statusCode == 200) {
         List<AdModel> ads = (response.data as List)
             .map((json) => AdModel.fromJson(json))
@@ -296,6 +328,7 @@ class _SearchTabState extends State<SearchTab> {
         throw Exception('Failed to load filtered ads');
       }
     } catch (e) {
+      print(e.toString());
       throw Exception('Error fetching filtered ads: $e');
     }
   }

@@ -14,10 +14,10 @@ class ProfileTab extends StatefulWidget {
 class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
+
     super.initState();
 
-    context.read<ProfileTabCubit>().fetchUserData();
-  }
+    context.read<ProfileTabCubit>().fetchUserData();  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(

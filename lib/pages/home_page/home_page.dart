@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_elite/pages/home_page/home_cubit.dart';
-import 'package:home_elite/tabs/add_ads/add_ads_cubit.dart';
+import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
+
 import 'package:home_elite/tabs/main_tab_cubit/maintab_cubit.dart';
 import 'package:home_elite/tabs/profile_tab/profile_tab_cubit.dart';
 
@@ -17,8 +18,6 @@ class HomePage extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => MaintabCubit(),
-        ),
-        BlocProvider(create: (context) => AddAdsCubit()
         ),
         BlocProvider(create: (context) => ProfileTabCubit()
         ),
@@ -40,7 +39,7 @@ class HomePage extends StatelessWidget {
               ),
               items: cubit.bottomItems,
               onTap: (index) {
-                cubit.changeNavBarState(index);
+                cubit.changeNavBarState(index,context);
                 print(index);
               },
             ),

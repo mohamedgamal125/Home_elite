@@ -11,7 +11,8 @@ import 'package:home_elite/pages/signUp_page/signup_verification.dart';
 import 'package:home_elite/pages/wellcome_page/wellcome_page.dart';
 import 'package:home_elite/splash_screen/splash.dart';
 import 'package:home_elite/tabs/add_ads/add_ads2.dart';
-import 'package:home_elite/tabs/add_ads/ads_tab.dart';
+import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads.dart';
+import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -49,6 +50,8 @@ class _MyAppState extends State<MyApp> {
         '/addAds2': (context) => AddAds2(),
         // '/signup2': (context) => SignupPage2(),
         '/signupVerification': (context) => SignupVerification(),
+        '/AddBuyAds':(context)=>AddBuyAds(),
+        '/AddRentAds':(context)=>AddRentAds(),
       },
     );
   }

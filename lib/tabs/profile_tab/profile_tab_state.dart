@@ -6,7 +6,7 @@ sealed class ProfileTabState {}
 final class ProfileTabInitial extends ProfileTabState {}
 class ProfileTabLoading extends ProfileTabState{}
 class ProfileTabSuccess extends ProfileTabState{
-  final UserModel user;
+  final User2 user;
 
   ProfileTabSuccess({required this.user});
 }

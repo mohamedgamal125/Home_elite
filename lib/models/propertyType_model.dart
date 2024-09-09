@@ -29,7 +29,9 @@ class AdModel {
   final String adType;
   final String createdAt;
   final String updatedAt;
-  final String imageUrl;
+
+
+  bool  isFavorite;
 
   AdModel({
     required this.id,
@@ -51,7 +53,9 @@ class AdModel {
     required this.adType,
     required this.createdAt,
     required this.updatedAt,
-    required this.imageUrl,
+
+    this.isFavorite=false
+
   });
 
   factory AdModel.fromJson(Map<String, dynamic> json) {
@@ -75,7 +79,7 @@ class AdModel {
       adType: json['adType'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
-      imageUrl: json['img']['data'],
+
     );
   }
 }

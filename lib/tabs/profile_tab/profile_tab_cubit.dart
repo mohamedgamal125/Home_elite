@@ -5,6 +5,8 @@ import 'package:home_elite/models/user_model.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user.dart';
+
 part 'profile_tab_state.dart';
 
 class ProfileTabCubit extends Cubit<ProfileTabState> {
@@ -27,12 +29,12 @@ class ProfileTabCubit extends Cubit<ProfileTabState> {
           },
         ),
       );
-      final user = UserModel.fromJson(response.data);
+      final user = User2.fromJson(response.data);
       print("===========email=========");
       print(user.email);
-      print(token);
       emit(ProfileTabSuccess(user: user));
     } catch (error) {
+      print(error.toString());
       emit(ProfileTabError(error:error.toString()));
     }
   }

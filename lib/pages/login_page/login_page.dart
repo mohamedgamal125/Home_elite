@@ -47,6 +47,7 @@ class LoginPage extends StatelessWidget {
 
                         print(state.error);
                       }
+
                     },
                     builder: (context, state) {
                       var cubit = LoginCubit.get(context);

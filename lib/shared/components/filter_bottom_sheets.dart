@@ -285,7 +285,7 @@ void showBathsBottomSheet(BuildContext context, Function(String) onApply) {
 void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
   bool isBuySelected = false; // Initial state for the "Buy" button
 
-  String selectedChoice="";
+  String selectedChoice="rent";
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,

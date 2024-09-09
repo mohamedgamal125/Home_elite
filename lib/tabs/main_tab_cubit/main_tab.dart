@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,9 +23,11 @@ class _MainTabState extends State<MainTab> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    bestAdsFuture = fetchBestAds();
     super.initState();
     context.read<MaintabCubit>().getPropertyTypes();
+
+
   }
 
   @override
@@ -210,7 +214,7 @@ class _MainTabState extends State<MainTab> {
                     SizedBox(height: 20), // Add some space
 
                     FutureBuilder<List<AdModel>>(
-                      future: fetchBestAds(),
+                      future: bestAdsFuture,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -220,7 +224,9 @@ class _MainTabState extends State<MainTab> {
                           ));
                         } else if (snapshot.hasError) {
                           return Center(
-                              child: Text('Error: ${snapshot.error}'));
+                              child: CircularProgressIndicator(
+                                color: Colors.brown,
+                              ));
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
                           return Center(child: Text('No best ads available'));
@@ -229,12 +235,7 @@ class _MainTabState extends State<MainTab> {
                           return Column(
                             children: ads.map((ad) {
                               return PropertyCard(
-                                name: ad.name,
-                                location: ad.address,
-                                bedrooms: ad.bedrooms,
-                                size: ad.area,
-                                price: ad.salary.toString(),
-                                propertyType: ad.propertyType.propertyType,
+                               adModel: ad,
                                 onTap: () {
                                   Navigator.push(
                                       context,
@@ -261,20 +262,32 @@ class _MainTabState extends State<MainTab> {
 
   Future<List<AdModel>> fetchBestAds() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString(
-        'token'); // Replace with the actual key where the token is stored
+    final cachedData = prefs.getString('bestAds');
+    final lastFetchTime = prefs.getInt('lastFetchTime') ?? 0;
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    final cacheDuration = 60 * 60 * 1000; // 1 hour cache duration
 
+    if (cachedData != null && (currentTime - lastFetchTime) < cacheDuration) {
+      final List<dynamic> data = jsonDecode(cachedData);
+      return data.map((json) => AdModel.fromJson(json)).toList();
+    }
+
+    // Otherwise, fetch from the API
+    final token = prefs.getString('token');
     try {
       final response = await Dio().get(
         'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/bestADS',
         options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
+          headers: {'Authorization': 'Bearer $token'},
         ),
       );
 
+
       final List<dynamic> data = response.data;
+      await prefs.setString('bestAds', jsonEncode(data));
+      await prefs.setInt('lastFetchTime', currentTime);
+
+
       return data.map((json) => AdModel.fromJson(json)).toList();
     } catch (e) {
       throw Exception('Failed to load best ads');
