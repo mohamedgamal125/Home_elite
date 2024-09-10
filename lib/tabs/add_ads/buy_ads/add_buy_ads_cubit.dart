@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 part 'add_buy_ads_state.dart';
 
 class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
@@ -20,7 +22,9 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
   var description=TextEditingController();
   var location=TextEditingController();
   var price=TextEditingController();
-  var paymentOption;
+  var phone=TextEditingController();
+  var name=TextEditingController();
+  String ?paymentOption;
 
   List<File> selectedImages = [];
   static AddBuyAdsCubit get(context) => BlocProvider.of(context);
@@ -34,6 +38,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
   {
 
     print("===========================================");
+    print("name:${name.text}");
     print("Property type:$propertyType");
     print("Area: ${area.text}");
     print("bedRooms: ${bedRooms.text}");
@@ -44,6 +49,8 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     print("location: ${location.text}");
     print("price: ${price.text}");
     print("PaymentOption: ${paymentOption}");
+
+    print("Phone: ${phone.text}");
     print("===========================================");
   }
 
@@ -61,7 +68,68 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     emit(AddBuyImageClear());
   }
 
+  void selectPaymentOption(String option) {
+    paymentOption = option;
+    emit(AddBuyPaymentOptionChanged(option));
+  }
+
+  bool areFieldsValid() {
+    return propertyType != null &&
+        area.text.isNotEmpty &&
+        bedRooms.text.isNotEmpty &&
+        bathRooms.text.isNotEmpty &&
+        levels.text.isNotEmpty &&
+        adTitle.text.isNotEmpty &&
+        description.text.isNotEmpty &&
+        location.text.isNotEmpty &&
+        price.text.isNotEmpty &&
+        paymentOption != null ;
+
+  }
+
+  Future<void> addAd() async {
 
 
-// ToDo // Add the function that call api to add new ads
+    emit(AddBuyAdsLoading());
+    try{
+      final SharedPreferences pref=await SharedPreferences.getInstance();
+      String ?email=await pref.getString('email');
+      final token = pref.getString('token');
+      print("==========email $email");
+      final Dio dio = Dio();
+      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/AddAds';
+      final formData = FormData.fromMap({
+        'name':"${name.text}",
+        'salary':"${price.text}",
+        'propertyType':"66da68ebb3dc9ecda5fedfe6",
+        'phone':"${'0'+phone.text}",
+        'email': email,
+        'Area':"${area.text}",
+        'Bedrooms':"${bedRooms.text}",
+        'Bathrooms':"${bathRooms.text}",
+        'title':"${adTitle.text}",
+        'Description':"${description.text}",
+        'Address':"${location.text}",
+        'Payment_option':"${paymentOption}",
+        'available':"true",
+
+      });
+      final response = await dio.post(url, data: formData, options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),);
+      final data = response.data;
+
+      print("=======respose $response");
+      if (data['message'] != null) {
+        emit(AddBuyAdSuccess(message: data['message']));
+      }
+    }catch(e)
+    {
+      print(e.toString());
+      emit(AddBuyAdFailure(error: e.toString()));
+    }
+
+
+
+  }
 }

@@ -43,7 +43,7 @@ class _PropertyCardState extends State<PropertyCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.adModel.adType,
+                    widget.adModel.propertyType.propertyType,
                     style: const TextStyle(color: Colors.grey),
                   ),
                   IconButton(
