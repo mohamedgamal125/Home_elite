@@ -4,12 +4,14 @@ class FilterButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   Color color ;
+  Color color2 ;
 
    FilterButton({
     Key? key,
     required this.label,
     required this.onPressed,
-    required this.color
+    required this.color,
+    required this.color2
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class FilterButton extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: 12,color: Colors.black),
+              style: TextStyle(fontSize: 12,color: color2),
             ),
             SizedBox(width: 8),
             Image.asset("assets/icons/down+arrow.png"),

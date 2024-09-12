@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:home_elite/pages/login_page/login_page.dart';
 import 'package:home_elite/pages/wellcome_page/wellcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
         startPage=HomePage();
       }
       else
-        startPage=WellComePage();
+        startPage=LoginPage();
     });
   }
   @override

@@ -6,6 +6,7 @@ import 'package:home_elite/pages/login_page/login_cubit.dart';
 import 'package:home_elite/pages/login_page/login_state.dart';
 
 import '../../shared/components/custom_input_fields.dart';
+import '../reset_password/reset_password.dart';
 
 class LoginPage extends StatelessWidget {
   var _formKey = GlobalKey<FormState>();
@@ -157,7 +158,9 @@ class LoginPage extends StatelessWidget {
                                           color: Colors.grey, fontSize: 12),
                                     ),
                                     GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ResetPassword()));
+                                        },
                                         child: Text(
                                           "Reset Password",
                                           style: TextStyle(

@@ -110,6 +110,7 @@ class _SearchTabState extends State<SearchTab> {
                           FilterButton(
                             label: "Price",
                             color: isPriceFiltered ? Colors.brown : Colors.white,
+                            color2: isPriceFiltered ? Colors.white : Colors.black,
                             onPressed: () => showPriceBottomSheet(context, (start, end) {
                               setState(() {
                                 startPrice = start;
@@ -123,6 +124,7 @@ class _SearchTabState extends State<SearchTab> {
                           FilterButton(
                             label: "Beds",
                             color: isBedsFiltered ? Colors.brown : Colors.white,
+                            color2: isBedsFiltered ? Colors.white : Colors.black,
                             onPressed: () => showBedsBottomSheet(context, (numBeds) {
                               setState(() {
                                 num_beds = numBeds;
@@ -134,6 +136,7 @@ class _SearchTabState extends State<SearchTab> {
                           FilterButton(
                             label: "Baths",
                             color: isBathsFiltered ? Colors.brown : Colors.white,
+                            color2: isBathsFiltered ? Colors.white : Colors.black,
                             onPressed: () => showBathsBottomSheet(context, (numBath) {
                               setState(() {
                                 num_bath = numBath;
@@ -145,6 +148,7 @@ class _SearchTabState extends State<SearchTab> {
                           FilterButton(
                             label: "Buy & Rent",
                             color: isBuyRentFiltered ? Colors.brown : Colors.white,
+                            color2: isBuyRentFiltered ? Colors.white : Colors.black,
                             onPressed: () => showBuyRentBottomSheet(context, (choice) {
                               setState(() {
                                 _choice = choice;
@@ -184,6 +188,7 @@ class _SearchTabState extends State<SearchTab> {
                               print("=======IsFilterd $isFiltered");
                             },
                             color: Colors.brown,
+                            color2: Colors.white
                           ),
                         ],
                       ),
