@@ -272,23 +272,29 @@ class _ProfileTabState extends State<ProfileTab> {
                         padding: EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                Image.asset("assets/icons/ads_icon.png"),
-                                SizedBox(
-                                  width: 18,
-                                ),
-                                Text(
-                                  "My Ads",
-                                  style: GoogleFonts.alegreyaSans(),
-                                ),
-                                Spacer(),
-                                Image.asset(
-                                  "assets/icons/editIcon.png",
-                                  width: 30,
-                                  height: 30,
-                                ),
-                              ],
+                            InkWell(
+                              onTap: () {
+
+                                Navigator.pushNamed(context, "/myAdsPage");
+                              },
+                              child: Row(
+                                children: [
+                                  Image.asset("assets/icons/ads_icon.png"),
+                                  SizedBox(
+                                    width: 18,
+                                  ),
+                                  Text(
+                                    "My Ads",
+                                    style: GoogleFonts.alegreyaSans(),
+                                  ),
+                                  Spacer(),
+                                  Image.asset(
+                                    "assets/icons/editIcon.png",
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
@@ -296,24 +302,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               endIndent: 25,
                               indent: 25,
                             ),
-                            Row(
-                              children: [
-                                Image.asset("assets/icons/ads_icon.png"),
-                                SizedBox(
-                                  width: 18,
-                                ),
-                                Text(
-                                  "My Activity",
-                                  style: GoogleFonts.alegreyaSans(),
-                                ),
-                                Spacer(),
-                                Image.asset(
-                                  "assets/icons/editIcon.png",
-                                  width: 30,
-                                  height: 30,
-                                ),
-                              ],
-                            ),
+
                           ],
                         ),
                       ),

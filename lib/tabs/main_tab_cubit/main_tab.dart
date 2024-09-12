@@ -265,7 +265,7 @@ class _MainTabState extends State<MainTab> {
     final cachedData = prefs.getString('bestAds');
     final lastFetchTime = prefs.getInt('lastFetchTime') ?? 0;
     final currentTime = DateTime.now().millisecondsSinceEpoch;
-    final cacheDuration = 60 * 60 * 1000; // 1 hour cache duration
+    final cacheDuration = 60 * 1000; // 1 hour cache duration
 
     if (cachedData != null && (currentTime - lastFetchTime) < cacheDuration) {
       final List<dynamic> data = jsonDecode(cachedData);

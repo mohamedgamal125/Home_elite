@@ -4,6 +4,7 @@ import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/bloc_observer.dart';
 import 'package:home_elite/pages/home_page/home_page.dart';
 import 'package:home_elite/pages/login_page/login_page.dart';
+import 'package:home_elite/pages/myAds_page/my_ads_page.dart';
 import 'package:home_elite/pages/signUp_page/signup_cubit/signupPage.dart';
 import 'package:home_elite/pages/signUp_page/signup_cubit/signup_cubit.dart';
 import 'package:home_elite/pages/signUp_page/signup_page2.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         '/signupVerification': (context) => SignupVerification(),
         '/AddBuyAds': (context) => AddBuyAds(),
         '/AddRentAds': (context) => AddRentAds(),
+        '/myAdsPage': (context) => MyAdsPage(),
       },
     );
   }

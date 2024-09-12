@@ -7,6 +7,7 @@ class EditProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
 
+
     );
   }
 }
