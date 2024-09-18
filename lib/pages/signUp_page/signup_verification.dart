@@ -79,7 +79,7 @@ class _SignupVerificationState extends State<SignupVerification> {
                           Padding(
                             padding: const EdgeInsets.only(top: 39),
                             child: Text(
-                              "Check your SMS , because we sent verification code to confirm your account",
+                              "Check your email , because we sent verification code to confirm your account",
                               style: TextStyle(
                                 fontWeight: FontWeight.w100,
                               ),
@@ -88,7 +88,7 @@ class _SignupVerificationState extends State<SignupVerification> {
                           Padding(
                             padding: const EdgeInsets.only(top: 39, right: 100),
                             child: Text(
-                              "Verification code}",
+                              "Verification code",
                               style: GoogleFonts.alegreyaSansSc(
                                   textStyle: TextStyle(fontSize: 22)),
                             ),

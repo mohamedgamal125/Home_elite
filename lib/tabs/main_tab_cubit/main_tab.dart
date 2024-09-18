@@ -20,16 +20,16 @@ class MainTab extends StatefulWidget {
 class _MainTabState extends State<MainTab> {
   bool isSwitched = false;
   late Future<List<AdModel>> bestAdsFuture;
+  int selectedIndex  = 0;// 0 for buy and 1 for rent
 
+  TextEditingController searchController=TextEditingController();
+  String  searchQuery='';
   @override
   void initState() {
     bestAdsFuture = fetchBestAds();
     super.initState();
     context.read<MaintabCubit>().getPropertyTypes();
-
-
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +63,7 @@ class _MainTabState extends State<MainTab> {
                           width: 120,
                           child: ToggleSwitch(
                             minWidth: 90.0,
-                            initialLabelIndex: 1,
+                            initialLabelIndex: selectedIndex ,
                             cornerRadius: 20.0,
                             activeFgColor: Colors.black,
                             inactiveBgColor: Color(0xffB9AD97),
@@ -77,6 +77,10 @@ class _MainTabState extends State<MainTab> {
                             ],
                             onToggle: (index) {
                               print('switched to: $index');
+
+                              setState(() {
+                                selectedIndex=index!;
+                              });
                             },
                           ),
                         ),
@@ -91,7 +95,13 @@ class _MainTabState extends State<MainTab> {
                               borderRadius: BorderRadius.circular(18),
                             ),
                             child: TextField(
+                              controller: searchController,
                               cursorColor: Colors.brown,
+                              onChanged: (value) {
+                                setState(() {
+                                  searchQuery = value.toLowerCase();
+                                });
+                              },
                               decoration: InputDecoration(
                                 hintText: 'City',
                                 hintStyle: GoogleFonts.akayaTelivigala(
@@ -211,7 +221,7 @@ class _MainTabState extends State<MainTab> {
                       ],
                     ),
 
-                    SizedBox(height: 20), // Add some space
+                    SizedBox(height: 20),
 
                     FutureBuilder<List<AdModel>>(
                       future: bestAdsFuture,
@@ -232,11 +242,31 @@ class _MainTabState extends State<MainTab> {
                           return Center(child: Text('No best ads available'));
                         } else {
                           final ads = snapshot.data!;
+                          final filteredAds = ads.where((ad) {
+                            // Filter by buy/rent
+                            final matchesAdType = selectedIndex == 0
+                                ? ad.adType == 'buy'
+                                : ad.adType == 'rent';
+
+                            // Filter by search query
+                            final matchesSearchQuery = searchQuery.isEmpty ||
+                                ad.name.toLowerCase().contains(searchQuery) ||
+                                ad.area.toLowerCase().contains(searchQuery) ||
+                                ad.propertyType
+                                    .propertyType
+                                    .toLowerCase()
+                                    .contains(searchQuery);
+
+                            return matchesAdType && matchesSearchQuery;
+                          }).toList();
+
                           return Column(
-                            children: ads.map((ad) {
+                            children: filteredAds.map((ad) {
                               return PropertyCard(
                                adModel: ad,
                                 onTap: () {
+                                 print("=======================Ads type======");
+                                 print(ad.adType);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

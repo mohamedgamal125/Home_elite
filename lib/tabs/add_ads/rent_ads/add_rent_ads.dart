@@ -707,6 +707,130 @@ class AddRentAds extends StatelessWidget {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 9.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Insurance * ",
+                                  style: GoogleFonts.alegreyaSansSc(),
+                                ),
+                                Container(
+                                  height: 32,
+                                  child: TextFormField(
+                                    cursorColor: Colors.brown,
+                                    onChanged: (value) {
+                                      cubit.insurance.text = value;
+                                    },
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 12),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      hintText: "0000000",
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 2.0),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 9.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Available Option * ",
+                                  style: GoogleFonts.alegreyaSansSc(),
+                                ),
+                                Container(
+                                  height: 32,
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          cubit.selectAvailableOption('true');
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0),
+                                          decoration: BoxDecoration(
+                                            color: cubit.availableOption == 'true'
+                                                ? Colors.brown
+                                                : Colors.transparent,
+                                            borderRadius:
+                                            BorderRadius.circular(12),
+                                            border: Border.all(
+                                                color: Colors.grey, width: 1.5),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "true",
+                                              style: GoogleFonts.alegreyaSansSc(
+                                                color: cubit.availableOption ==
+                                                    'true'
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w100,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          cubit.selectAvailableOption(
+                                              'false');
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.0),
+                                          decoration: BoxDecoration(
+                                            color: cubit.availableOption ==
+                                                'false'
+                                                ? Colors.brown
+                                                : Colors.transparent,
+                                            borderRadius:
+                                            BorderRadius.circular(12),
+                                            border: Border.all(
+                                                color: Colors.grey, width: 1.5),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "false",
+                                              style: GoogleFonts.alegreyaSansSc(
+                                                color: cubit.availableOption ==
+                                                    'false'
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w100,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
                           BlocConsumer<AddRentAdsCubit, AddRentAdsState>(
                             listener: (context, state) {
                               if (state is AddRentAdSuccess) {

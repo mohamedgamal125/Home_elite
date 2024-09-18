@@ -136,7 +136,7 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                     Image.asset("assets/icons/bed_icon2.png"),
                     SizedBox(width: 8),
                     Text(
-                      'Bathrooms',
+                      'Bedrooms',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),

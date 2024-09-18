@@ -20,6 +20,11 @@ class AddRentPaymentOption extends AddRentAdsState{
   AddRentPaymentOption(this.selectOption);
 }
 
+class AvailableOption extends AddRentAdsState{
+  final String availableOption;
+
+  AvailableOption( this.availableOption);
+}
 class AddRentAdSuccess extends AddRentAdsState{
   final String message;
   AddRentAdSuccess({required this.message});

@@ -55,8 +55,8 @@ class _SearchTabState extends State<SearchTab> {
     if ( query.isNotEmpty) {
       setState(() {
         filteredAds = cachedAds!.where((ad) {
-           return ad.name.toLowerCase().contains(query); //||
-          //     ad.propertyType.propertyType.toLowerCase().contains(query) ||ad.address.toLowerCase().contains(query);
+           return ad.name.toLowerCase().contains(query) ||
+              ad.propertyType.propertyType.toLowerCase().contains(query) ||ad.address.toLowerCase().contains(query);
         }).toList();
       });
 
@@ -179,13 +179,6 @@ class _SearchTabState extends State<SearchTab> {
 
                                 searchController.clear();
                               });
-                              setState(() {
-
-                              });
-                              setState(() {
-
-                              });
-                              print("=======IsFilterd $isFiltered");
                             },
                             color: Colors.brown,
                             color2: Colors.white
@@ -211,7 +204,8 @@ class _SearchTabState extends State<SearchTab> {
                           ),
                         );
                       } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
+
+                        return Center(child: CircularProgressIndicator(color: Colors.brown,));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return Center(child: Text('No Ads available'));
                       } else {

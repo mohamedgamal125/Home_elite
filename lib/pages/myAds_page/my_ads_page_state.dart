@@ -17,3 +17,19 @@ class MyAdsPageError extends MyAdsPageState{
 
   MyAdsPageError(this.error);
 }
+
+
+class DeleteMyAdsPageLoading extends MyAdsPageState{}
+class DeleteMyAdsPageSuccess extends MyAdsPageState{
+  final String message;
+
+  DeleteMyAdsPageSuccess(this.message);
+
+
+}
+class DeleteMyAdsPageError extends MyAdsPageState{
+
+  final String error;
+
+  DeleteMyAdsPageError(this.error);
+}

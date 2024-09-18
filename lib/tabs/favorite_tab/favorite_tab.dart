@@ -53,7 +53,7 @@ class FavoriteTab extends StatelessWidget {
                   ));
             } else if (snapshot.hasError) {
               return Center(
-                  child: Text('Error: ${snapshot.error}'));
+                  child: CircularProgressIndicator(color: Colors.brown,));
             } else if (!snapshot.hasData ||
                 snapshot.data!.isEmpty) {
               return Center(child: Text('No favorite ads available'));

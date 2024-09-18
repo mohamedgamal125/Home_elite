@@ -24,18 +24,25 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
   var price=TextEditingController();
   var phone=TextEditingController();
   var name=TextEditingController();
+  var finalTotal=TextEditingController();
   String ?paymentOption;
+  String ?availableOption;
 
   List<File> selectedImages = [];
   static AddBuyAdsCubit get(context) => BlocProvider.of(context);
 
+
+  // todo this list from get properties api
   final List<String> propertyTypes = [
-    'Apartments ',
+    'Apartments',
     'Villa',
   ];
 
-  void PrintData()
-  {
+  final Map<String,String> type={
+    "Apartments":"66da68ebb3dc9ecda5fedfe6",
+    "villa":"",
+  } ;
+  void PrintData() {
 
     print("===========================================");
     print("name:${name.text}");
@@ -51,6 +58,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     print("PaymentOption: ${paymentOption}");
 
     print("Phone: ${phone.text}");
+    print("Available Option: $availableOption");
     print("===========================================");
   }
 
@@ -73,6 +81,11 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     emit(AddBuyPaymentOptionChanged(option));
   }
 
+  void selectAvailableOption(String option) {
+    availableOption=option;
+    emit(AvailableOptionChanged(option));
+  }
+
   bool areFieldsValid() {
     return propertyType != null &&
         area.text.isNotEmpty &&
@@ -92,6 +105,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
 
     emit(AddBuyAdsLoading());
     try{
+      print('========image=====${selectedImages}');
       final SharedPreferences pref=await SharedPreferences.getInstance();
       String ?email=await pref.getString('email');
       final token = pref.getString('token');
@@ -111,7 +125,9 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
         'Description':"${description.text}",
         'Address':"${location.text}",
         'Payment_option':"${paymentOption}",
-        'available':"true",
+        'available':availableOption,
+        'FinalTotal':1000,
+        'img':selectedImages
 
       });
       final response = await dio.post(url, data: formData, options: Options(

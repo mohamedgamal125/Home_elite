@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/pages/myAds_page/my_ads_page_cubit.dart';
+import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads.dart';
 
+import '../../models/propertyType_model.dart';
+import '../../models/userAd.dart';
 import '../../shared/components/property_card2.dart';
+import '../../tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 
 class MyAdsPage extends StatelessWidget {
   const MyAdsPage({super.key});
@@ -11,22 +15,19 @@ class MyAdsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: BlocProvider(
         create: (context) => MyAdsPageCubit()..fetchUserAds(),
         child: SafeArea(
-
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 50),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
                 child: Row(
                   children: [
                     Container(
                       height: 40,
                       width: 6,
-                      decoration:
-                      BoxDecoration(color: Color(0xff9D7D43)),
+                      decoration: BoxDecoration(color: Color(0xff9D7D43)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 14.0),
@@ -42,12 +43,11 @@ class MyAdsPage extends StatelessWidget {
                   ],
                 ),
               ),
-
               Expanded(
                 child: BlocBuilder<MyAdsPageCubit, MyAdsPageState>(
                   builder: (context, state) {
                     if (state is MyAdsPageLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator(color: Colors.brown,));
                     } else if (state is MyAdsPageSuccess) {
                       final ads = state.userAdsResponse.userAds;
                       return ListView.builder(
@@ -57,25 +57,66 @@ class MyAdsPage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: PropertyCard2(
                               userAd: ads[index],
-                              onTap: (){},
+                              onDelete: () {
+                                print(
+                                    "==================${ads[index].id}======================");
+                                final cubit = context.read<MyAdsPageCubit>();
+                                cubit.deleteAds(ads[index]);
+                              },
+                              onEdit: () {
+                                print(
+                                    "==================${ads[index].adType}======================");
+                                AdModel adModel =
+                                    mapUserAdToAdModel(ads[index]);
+
+
+                                print(adModel.title);
+                                print(adModel.email);
+                              },
                             ),
                           );
                         },
                       );
                     } else if (state is MyAdsPageError) {
-                      return Center(child: Text("Error: ${state.error}"));
+
+                      return Center(child: CircularProgressIndicator(color: Colors.brown,));
                     }
                     return const Center(child: Text("No Ads Found"));
                   },
                 ),
               ),
-
-
             ],
           ),
         ),
       ),
+    );
+  }
 
+  AdModel mapUserAdToAdModel(UserAd userAd) {
+    return AdModel(
+      id: userAd.id,
+      name: userAd.name,
+      salary: userAd.salary,
+      available: userAd.available,
+      user: userAd.user,
+      propertyType: PropertytypeModel(
+        id: userAd.propertyType.id,
+        propertyType: userAd.propertyType.propertyType,
+      ),
+      phone: userAd.phone,
+      email: userAd.email,
+      area: userAd.area,
+      bedrooms: userAd.bedrooms,
+      bathrooms: userAd.bathrooms,
+      title: userAd.title,
+      description: userAd.description,
+      address: userAd.address,
+      paymentOption: userAd.paymentOption,
+      views: userAd.views,
+      adType: userAd.adType,
+      createdAt: userAd.createdAt,
+      updatedAt: userAd.createdAt,
+      isFavorite: false,
     );
   }
 }

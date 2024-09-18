@@ -79,7 +79,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             );
                           }
 
-                        return Center(child: Text("Something wrong happen while get data"),);
+                        return Center(child: CircularProgressIndicator(color: Colors.brown,),);
                       },
                     ),
 

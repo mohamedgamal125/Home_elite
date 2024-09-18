@@ -18,21 +18,61 @@ class MyAdsPageCubit extends Cubit<MyAdsPageState> {
 
       final response = await Dio().get(
           "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/UserAds",
-        options: Options(
-          headers: {
+          options: Options(headers: {
             'Authorization': 'Bearer $token',
-          }
-        )
-      );
+          }));
 
-      if(response.statusCode==200)
-        {
-          UserAdsResponse userAds = UserAdsResponse.fromJson(response.data);
-          emit(MyAdsPageSuccess(userAdsResponse: userAds));
-        }
-
+      if (response.statusCode == 200) {
+        UserAdsResponse userAds = UserAdsResponse.fromJson(response.data);
+        emit(MyAdsPageSuccess(userAdsResponse: userAds));
+      }
     } catch (e) {
       emit(MyAdsPageError(e.toString()));
+    }
+  }
+  Future<void> deleteAds(UserAd ad) async {
+
+    try{
+      emit(DeleteMyAdsPageLoading());
+
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      final token = pref.getString("token");
+
+      if(ad.adType=="buy"){
+        final response = await Dio().post(
+          "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/deleteSpecificAds/${ad.id}",
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+            },
+          ),
+        );
+
+        if (response.statusCode == 200) {
+          emit(DeleteMyAdsPageSuccess(response.data['message']));
+          fetchUserAds();
+        }
+      }
+      else
+        {
+          final response = await Dio().post(
+            "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/rent/deleteSpecificAds/${ad.id}",
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+              },
+            ),
+          );
+
+          if (response.statusCode == 200) {
+            emit(DeleteMyAdsPageSuccess(response.data['message']));
+            fetchUserAds();
+          }
+        }
+
+    }catch(e){
+
+      emit(DeleteMyAdsPageError(e.toString()));
     }
   }
 }

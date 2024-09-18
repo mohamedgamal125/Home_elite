@@ -26,8 +26,12 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
   var phone=TextEditingController();
   var name=TextEditingController();
   var downPayment=TextEditingController();
+  var insurance= TextEditingController();
+
+
 
   String ?paymentOption;
+  String ?availableOption;
 
   List<File> selectedImages = [];
   static AddRentAdsCubit get(context) => BlocProvider.of(context);
@@ -61,6 +65,8 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
     print("Phone: ${phone.text}");
     print("rental freq: ${rentalfreq}");
     print("down payment: ${downPayment.text}");
+    print("AvailableOption: $availableOption");
+    print("Insurance: ${insurance.text}");
     print("===========================================");
   }
 
@@ -82,6 +88,12 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
     paymentOption = option;
     emit(AddRentPaymentOption(option));
   }
+
+  void selectAvailableOption(String option)
+  {
+    availableOption = option;
+    emit(AvailableOption(option));
+  }
   bool areFieldsValid() {
     return propertyType != null &&
         area.text.isNotEmpty &&
@@ -97,48 +109,63 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
 
   Future<void> addRentAds() async {
 
-
+    print(selectedImages[0]);
     emit(AddRentAdLoading());
-    try{
-      final SharedPreferences pref=await SharedPreferences.getInstance();
-      String ?email=await pref.getString('email');
+    try {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      String? email = await pref.getString('email');
       final token = pref.getString('token');
       print("==========email $email");
-      final Dio dio = Dio();
-      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/AddAds';
-      final formData = FormData.fromMap({
-        'name':"${name.text}",
-        'salary':"${price.text}",
-        'propertyType':"66da68ebb3dc9ecda5fedfe6",
-        'phone':"${'0'+phone.text}",
-        'email': email,
-        'Area':"${area.text}",
-        'Bedrooms':"${bedRooms.text}",
-        'Bathrooms':"${bathRooms.text}",
-        'title':"${adTitle.text}",
-        'Description':"${description.text}",
-        'Address':"${location.text}",
-        'Payment_option':"${paymentOption}",
-        'available':"true",
 
+      final Dio dio = Dio();
+      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/rent/rent/add_ADS';
+
+      // Create FormData
+      final formData = FormData.fromMap({
+        'name': name.text,
+        'salary': price.text,
+        'propertyType': "66da68ebb3dc9ecda5fedfe6",
+        'phone': '0' + phone.text,
+        'email': email,
+        'Area': area.text,
+        'Bedrooms': bedRooms.text,
+        'Bathrooms': bathRooms.text,
+        'title': adTitle.text,
+        'Description': description.text,
+        'Address': location.text,
+        'Payment_option': paymentOption,
+        'available': availableOption,
+        'rentDuration': rentalfreq,
+        'DownPayment': int.parse(downPayment.text),
+        'Insurance': int.parse(insurance.text),
       });
-      final response = await dio.post(url, data: formData, options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),);
+
+      // Add images to FormData
+      if (selectedImages.isNotEmpty) {
+        formData.files.add(MapEntry(
+          'img', // Key for the image file
+          MultipartFile.fromFileSync(selectedImages[0].path, filename: 'image.jpg'),
+        ));
+      }
+
+      final response = await dio.post(
+        url,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
       final data = response.data;
 
-      print("=======respose $response");
+      print("=======response $response");
       if (data['message'] != null) {
         emit(AddRentAdSuccess(message: data['message']));
       }
-    }catch(e)
-    {
+    } catch (e) {
       print(e.toString());
       emit(AddRentAdFailure(error: e.toString()));
     }
-
-
-
   }
 
 }

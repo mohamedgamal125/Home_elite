@@ -35,21 +35,17 @@ class SignupPage extends StatelessWidget {
               );
               // Handle navigation or other actions if needed
               Navigator.pushReplacementNamed(context, "/signupVerification",arguments: {
-                'verificationCode':state.response.user.verificationCode,
-                'email': state.response.user.email
+
+                'email':context.read<SignupCubit>().emailController.text
               });
             } else if (state is RegisterFailure) {
+              print(state.error);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     backgroundColor: Colors.red,
                     content: Text("Something Wrong Happen")),
               );
 
-              print(
-                  "==============================ERRor Signup========================");
-              print(state.error);
-              print(
-                  "==============================ERRor Signup========================");
             }
           },
           builder: (context, state) {
@@ -199,8 +195,7 @@ class SignupPage extends StatelessWidget {
                               : InkWell(
                             onTap: () {
                               if (_formKey.currentState?.validate() ?? false) {
-                                // Navigate to next screen
-                                context.read<SignupCubit>().printData();
+                                // Navigate to next screencontext.read<SignupCubit>().printData();
                                 context.read<SignupCubit>().register();
                               }
                             },

@@ -21,6 +21,13 @@ class AddBuyPaymentOptionChanged extends AddBuyAdsState{
   AddBuyPaymentOptionChanged(this.selectedOption);
 }
 
+class AvailableOptionChanged extends AddBuyAdsState{
+
+  final String selectedOption;
+
+  AvailableOptionChanged(this.selectedOption);
+}
+
 class AddBuyAdSuccess extends AddBuyAdsState {
   final String message;
 

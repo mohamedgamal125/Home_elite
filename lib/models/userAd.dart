@@ -32,6 +32,8 @@ class UserAd {
   final String adType;
   final String createdAt;
 
+
+
   UserAd({
     required this.id,
     required this.name,

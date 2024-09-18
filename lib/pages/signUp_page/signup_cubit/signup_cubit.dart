@@ -37,6 +37,7 @@ class SignupCubit extends Cubit<RegisterState> {
     emit(RegisterLoading());
 
     try {
+      printData();
       final response = await _dio.post(
         'https://backend-coding-yousseftarek80s-projects.vercel.app/auth/register',
         data: {
@@ -52,8 +53,7 @@ class SignupCubit extends Cubit<RegisterState> {
       if (response.statusCode == 200) {
         final SignupResponseModel signupResponse = SignupResponseModel.fromJson(response.data);
 
-        print("====================verification code=====================");
-        print(signupResponse.user.verificationCode);
+
         emit(RegisterSuccess(signupResponse));
       } else {
         emit(RegisterFailure('Registration failed with status code ${response.statusCode}'));
