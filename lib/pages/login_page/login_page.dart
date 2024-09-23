@@ -34,12 +34,7 @@ class LoginPage extends StatelessWidget {
                   child: BlocConsumer<LoginCubit, LoginState>(
                     listener: (context, state) {
                       if (state is LoginSuccess) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.response.message),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
+
                         Navigator.pushReplacementNamed(context, "/home");
                       } else if (state is LoginFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(

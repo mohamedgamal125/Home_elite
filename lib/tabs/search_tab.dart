@@ -55,7 +55,7 @@ class _SearchTabState extends State<SearchTab> {
     if ( query.isNotEmpty) {
       setState(() {
         filteredAds = cachedAds!.where((ad) {
-           return ad.name.toLowerCase().contains(query) ||
+           return
               ad.propertyType.propertyType.toLowerCase().contains(query) ||ad.address.toLowerCase().contains(query);
         }).toList();
       });
@@ -217,6 +217,7 @@ class _SearchTabState extends State<SearchTab> {
                         return Column(
                           children: filteredAds!.map((ad) {
                             return PropertyCard(
+                              onFavoriteUpdate: (){},
                               onTap: () {
                                 Navigator.push(
                                     context,

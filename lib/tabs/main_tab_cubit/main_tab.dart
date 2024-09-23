@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,16 +19,18 @@ class MainTab extends StatefulWidget {
 class _MainTabState extends State<MainTab> {
   bool isSwitched = false;
   late Future<List<AdModel>> bestAdsFuture;
-  int selectedIndex  = 0;// 0 for buy and 1 for rent
+  int selectedIndex = 0; // 0 for buy and 1 for rent
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
+  String? selectedPropertyType; // Added selected property type
 
-  TextEditingController searchController=TextEditingController();
-  String  searchQuery='';
   @override
   void initState() {
     bestAdsFuture = fetchBestAds();
     super.initState();
     context.read<MaintabCubit>().getPropertyTypes();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,12 +59,11 @@ class _MainTabState extends State<MainTab> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Switch
-
                         Container(
                           width: 120,
                           child: ToggleSwitch(
                             minWidth: 90.0,
-                            initialLabelIndex: selectedIndex ,
+                            initialLabelIndex: selectedIndex,
                             cornerRadius: 20.0,
                             activeFgColor: Colors.black,
                             inactiveBgColor: Color(0xffB9AD97),
@@ -77,9 +77,8 @@ class _MainTabState extends State<MainTab> {
                             ],
                             onToggle: (index) {
                               print('switched to: $index');
-
                               setState(() {
-                                selectedIndex=index!;
+                                selectedIndex = index!;
                               });
                             },
                           ),
@@ -168,17 +167,19 @@ class _MainTabState extends State<MainTab> {
                                       bottom: 8.0, right: 12),
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // Handle button click
+                                      // Set the selected property type
+                                      setState(() {
+                                        selectedPropertyType = propertyType.propertyType.toLowerCase();
+                                      });
                                     },
                                     child: Row(
                                       children: [
                                         Image(
-                                          image: propertyType.propertyType ==
-                                                  'appartment'
+                                          image: propertyType.propertyType == 'appartment'
                                               ? AssetImage(
-                                                  "assets/icons/Apartment_icon.png")
+                                              "assets/icons/Apartment_icon.png")
                                               : AssetImage(
-                                                  "assets/icons/Villa_icon.png"),
+                                              "assets/icons/Villa_icon.png"),
                                           width: 30,
                                           height: 30,
                                         ),
@@ -220,18 +221,15 @@ class _MainTabState extends State<MainTab> {
                         ),
                       ],
                     ),
-
                     SizedBox(height: 20),
-
                     FutureBuilder<List<AdModel>>(
                       future: bestAdsFuture,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(
                               child: CircularProgressIndicator(
-                            color: Colors.brown,
-                          ));
+                                color: Colors.brown,
+                              ));
                         } else if (snapshot.hasError) {
                           return Center(
                               child: CircularProgressIndicator(
@@ -251,22 +249,21 @@ class _MainTabState extends State<MainTab> {
                             // Filter by search query
                             final matchesSearchQuery = searchQuery.isEmpty ||
                                 ad.name.toLowerCase().contains(searchQuery) ||
-                                ad.area.toLowerCase().contains(searchQuery) ||
-                                ad.propertyType
-                                    .propertyType
-                                    .toLowerCase()
-                                    .contains(searchQuery);
+                                ad.area.toLowerCase().contains(searchQuery);
 
-                            return matchesAdType && matchesSearchQuery;
+                            // Filter by selected property type
+                            final matchesPropertyType = selectedPropertyType == null ||
+                                ad.propertyType.propertyType.toLowerCase() == selectedPropertyType;
+
+                            return matchesAdType && matchesSearchQuery && matchesPropertyType;
                           }).toList();
 
                           return Column(
                             children: filteredAds.map((ad) {
                               return PropertyCard(
-                               adModel: ad,
+                                onFavoriteUpdate: (){},
+                                adModel: ad,
                                 onTap: () {
-                                 print("=======================Ads type======");
-                                 print(ad.adType);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -282,7 +279,6 @@ class _MainTabState extends State<MainTab> {
                   ],
                 ),
               ),
-              // PropertyCard widgets in a Column
             ],
           ),
         ),
@@ -295,32 +291,40 @@ class _MainTabState extends State<MainTab> {
     final cachedData = prefs.getString('bestAds');
     final lastFetchTime = prefs.getInt('lastFetchTime') ?? 0;
     final currentTime = DateTime.now().millisecondsSinceEpoch;
-    final cacheDuration = 60 * 1000; // 1 hour cache duration
+    final cacheDuration = 60 * 3 * 1000; // 1 hour cache duration (milliseconds)
 
+    // Check cache validity
     if (cachedData != null && (currentTime - lastFetchTime) < cacheDuration) {
-      final List<dynamic> data = jsonDecode(cachedData);
-      return data.map((json) => AdModel.fromJson(json)).toList();
+      final List<dynamic> cachedJson = jsonDecode(cachedData);
+      return cachedJson.map((json) => AdModel.fromJson(json)).toList();
     }
 
-    // Otherwise, fetch from the API
+    // Fetch from API if cache is invalid or expired
     final token = prefs.getString('token');
+    if (token == null) {
+      throw Exception('No authorization token found.');
+    }
+
     try {
       final response = await Dio().get(
         'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/bestADS',
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonResponse = response.data;
+        final ads = jsonResponse.map((json) => AdModel.fromJson(json)).toList();
 
-      final List<dynamic> data = response.data;
-      await prefs.setString('bestAds', jsonEncode(data));
-      await prefs.setInt('lastFetchTime', currentTime);
+        // Cache the fetched data
+        await prefs.setString('bestAds', jsonEncode(jsonResponse));
+        await prefs.setInt('lastFetchTime', currentTime);
 
-
-      return data.map((json) => AdModel.fromJson(json)).toList();
+        return ads;
+      } else {
+        throw Exception('Failed to fetch best ads.');
+      }
     } catch (e) {
-      throw Exception('Failed to load best ads');
+      throw Exception('Error fetching best ads: $e');
     }
   }
 }

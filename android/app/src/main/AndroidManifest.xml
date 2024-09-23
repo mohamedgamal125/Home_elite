@@ -1,10 +1,43 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.yourappname">
+
+    <!-- Provide required visibility configuration for API level 30 and above -->
+    <queries>
+        <!-- SMS query for SMS handling -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="sms" />
+        </intent>
+
+        <!-- Tel query for phone call support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+
+        <!-- Mailto query for email client -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+
+        <!-- For browser launches -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <!-- Permissions for API level 30 and above -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        android:label="home_elite"
+        android:label="your_app_name"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+        <!-- Flutter Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -14,33 +47,26 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
 
-
+            <!-- Intent filter for deep linking (if applicable) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Change this to match your callback URL scheme -->
+                <data android:scheme="yourapp"/>
                 <data android:scheme="http" android:host="localhost" />
             </intent-filter>
-            <!-- Specifies an Android theme to apply to this Activity as soon as
-                 the Android process has started. This theme is visible to the user
-                 while the Flutter UI initializes. After that, this theme continues
-                 to determine the Window background behind the Flutter UI. -->
-            <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+
+            <!-- Main launcher -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+
+        <!-- Metadata for Flutter Embedding API -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
     </application>
 </manifest>

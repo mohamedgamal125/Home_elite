@@ -35,3 +35,16 @@ class AddRentAdFailure extends AddRentAdsState{
   AddRentAdFailure({required this.error});
 }
 class AddRentAdLoading extends AddRentAdsState{}
+
+
+
+class UpdateRentAdSuccess extends AddRentAdsState{
+  final String message;
+  UpdateRentAdSuccess({required this.message});
+}
+
+class UpdateRentAdFailure extends AddRentAdsState{
+  final String error;
+  UpdateRentAdFailure({required this.error});
+}
+class UpdateRentAdLoading extends AddRentAdsState{}

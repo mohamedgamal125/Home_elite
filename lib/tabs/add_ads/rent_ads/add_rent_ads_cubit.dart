@@ -89,8 +89,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
     emit(AddRentPaymentOption(option));
   }
 
-  void selectAvailableOption(String option)
-  {
+  void selectAvailableOption(String option) {
     availableOption = option;
     emit(AvailableOption(option));
   }
@@ -108,8 +107,6 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
   }
 
   Future<void> addRentAds() async {
-
-    print(selectedImages[0]);
     emit(AddRentAdLoading());
     try {
       final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -124,7 +121,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       final formData = FormData.fromMap({
         'name': name.text,
         'salary': price.text,
-        'propertyType': "66da68ebb3dc9ecda5fedfe6",
+        'propertyType': (propertyType=="Villa") ? "66f00017eccfcd04a54e906f" : "66da68ebb3dc9ecda5fedfe6",
         'phone': '0' + phone.text,
         'email': email,
         'Area': area.text,
@@ -142,10 +139,12 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
 
       // Add images to FormData
       if (selectedImages.isNotEmpty) {
-        formData.files.add(MapEntry(
-          'img', // Key for the image file
-          MultipartFile.fromFileSync(selectedImages[0].path, filename: 'image.jpg'),
-        ));
+        for (var image in selectedImages) {
+          formData.files.add(MapEntry(
+            'img', // Key for the image file
+            await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
+          ));
+        }
       }
 
       final response = await dio.post(
@@ -167,5 +166,133 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       emit(AddRentAdFailure(error: e.toString()));
     }
   }
+
+
+  Future<void> loadAd(String adId) async {
+
+    try {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      final token = pref.getString('token');
+      final Dio dio = Dio();
+
+      print(adId);
+
+      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/rent/getRent/$adId';
+      final response = await dio.get(url, options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ));
+
+      final data = response.data['ad'];
+
+      print(response.data);
+      name.text = data['name'];
+      price.text = data['salary'].toString();
+      propertyType = data['propertyType']['_id'];
+      phone.text = data['phone'].substring(1);
+      area.text = data['Area'];
+      bedRooms.text = data['Bedrooms'].toString();
+      bathRooms.text = data['Bathrooms'].toString();
+      adTitle.text = data['title'];
+      description.text = data['Description'];
+      location.text = data['Address'];
+      paymentOption = data['Payment_option'];
+      availableOption = data['available'] ? "Available" : "Not Available";
+      rentalfreq = data['rentDuration'];
+      downPayment.text = data['DownPayment'].toString();
+      insurance.text = data['Insurance'].toString();
+
+      if (data['img'] != null && data['img'].isNotEmpty) {
+        selectedImages = data['img'].map<File>((img) => File(img['data'])).toList();
+      }
+
+
+    } catch (e) {
+      print(e.toString());
+
+    }
+  }
+
+  void clearAllData() {
+    // Clear all TextEditingController fields
+    name.clear();
+    price.clear();
+    area.clear();
+    bedRooms.clear();
+    bathRooms.clear();
+    adTitle.clear();
+    description.clear();
+    location.clear();
+    phone.clear();
+    downPayment.clear();
+    insurance.clear();
+    levels.clear();
+
+    propertyType = null;
+    rentalfreq = null;
+    paymentOption = null;
+    availableOption = null;
+    clearSelectedImages();
+  }
+
+
+  Future<void> updateRentAd(String adId) async {
+    emit(UpdateRentAdLoading());
+    try {
+      print('========image=====${selectedImages}');
+
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      String? email = await pref.getString('email');
+      final token = pref.getString('token');
+      print("==========email $email");
+
+      final Dio dio = Dio();
+      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/rent/update/$adId'; // Update API URL
+
+      final formData = FormData.fromMap({
+        'name': name.text,
+        'salary': price.text,
+        'propertyType':(propertyType=="Villa") ? "66f00017eccfcd04a54e906f" : "66da68ebb3dc9ecda5fedfe6",
+        'phone': '0' + phone.text,
+        'email': email,
+        'Area': area.text,
+        'Bedrooms': bedRooms.text,
+        'Bathrooms': bathRooms.text,
+        'title': adTitle.text,
+        'Description': description.text,
+        'Address': location.text,
+        'Payment_option': paymentOption,
+        'available': availableOption,
+        'rentDuration': rentalfreq,
+        'DownPayment': int.parse(downPayment.text),
+        'Insurance': int.parse(insurance.text),
+      });
+
+      if (selectedImages.isNotEmpty) {
+        formData.files.add(MapEntry(
+          'img',
+          MultipartFile.fromFileSync(selectedImages[0].path, filename: 'image.jpg'),
+        ));
+      }
+
+      final response = await dio.put(
+        url,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      final data = response.data;
+
+      print("=======response $response");
+      if (data['message'] != null) {
+        emit(UpdateRentAdSuccess(message: data['message']));
+      }
+    } catch (e) {
+      print(e.toString());
+      emit(UpdateRentAdFailure(error: e.toString()));
+    }
+  }
+
 
 }

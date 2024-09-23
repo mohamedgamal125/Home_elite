@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?) validator;
   final double? width;
   final double? height;
+  final String? rgx;
 
   const CustomTextField({
     Key? key,
@@ -15,8 +16,9 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     required this.onChanged,
     required this.validator,
-    this.width, // Custom width
-    this.height, // Custom height
+    this.width,
+    this.height,
+    this.rgx,
   }) : super(key: key);
 
   @override
@@ -38,30 +40,45 @@ class CustomTextField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 0, right: 25),
             child: SizedBox(
-              width: 331, // Default to full width if not provided
-              height: 42, // Height is now customizable
-              child: TextFormField(
-                obscureText: obscureText,
-                cursorColor: Colors.brown,
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-                textAlignVertical: TextAlignVertical.center,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 12),
-                  fillColor: Colors.white,
-                  filled: true,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.brown),
-                    borderRadius: BorderRadius.circular(12),
+              width: width ?? 331, // Use provided width or default
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height ?? 42, // Set constant height for the field
+                    child: TextFormField(
+                      obscureText: obscureText,
+                      cursorColor: Colors.brown,
+                      style: TextStyle(fontSize: 14),
+                      textAlignVertical: TextAlignVertical.center,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                        fillColor: Colors.white,
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.brown),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.brown, width: 2.0),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2.0),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onChanged: onChanged,
+                      validator: validator,
+                    ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.brown, width: 2.0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onChanged: onChanged,
-                validator: validator,
+                  // Add space for error text to prevent layout shift
+                  const SizedBox(height: 16), // Adjust this value based on error text height
+                  // The error message will show up here without affecting field size
+                ],
               ),
             ),
           ),

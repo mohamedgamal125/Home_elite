@@ -17,24 +17,50 @@ class PropertyCard2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final imageUrl = userAd.img?.isNotEmpty == true ? userAd.img!.first.data : 'assets/images/property_image.png';
+    return Card (
+
       margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image(
-            image: AssetImage(
-              "assets/images/property_image.png",
-            ),
+          Image.network(
+            imageUrl!,
             fit: BoxFit.cover,
             width: double.infinity,
+            height: 150, // Adjust height as needed
+            errorBuilder: (context, error, stackTrace) {
+              // Placeholder image in case of an error
+              return Image.asset(
+                'assets/images/property_image.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 150, // Adjust height as needed
+              );
+            },
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              userAd.propertyType.propertyType,
-              style: const TextStyle(color: Colors.grey),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Text(
+                  userAd.propertyType!.propertyType!,
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    Icon(Icons.remove_red_eye_outlined,color: CupertinoColors.inactiveGray,),
+                    SizedBox(width: 3,),
+                    Text("${userAd.views}",style: TextStyle(fontWeight: FontWeight.w100,color: Colors.grey),)
+                  ],
+                ),
+              )
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -46,7 +72,7 @@ class PropertyCard2 extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              userAd.name,
+              userAd.name!,
               style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ),

@@ -17,6 +17,7 @@ class MyAdsPageError extends MyAdsPageState{
 
   MyAdsPageError(this.error);
 }
+class MyAdsPageEmpty extends MyAdsPageState {}
 
 
 class DeleteMyAdsPageLoading extends MyAdsPageState{}

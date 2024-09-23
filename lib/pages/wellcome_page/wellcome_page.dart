@@ -79,13 +79,13 @@ class WellComePage extends StatelessWidget {
                           print(state.token);
 
                           Navigator.pushReplacementNamed(context, "/home");
-                        } else if (state is GoogleSignUpFailure) {
+                        } else if (state is GoogleSignUpError) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 backgroundColor: Colors.red,
-                                content: Text(state.errorMessage)),
+                                content: Text(state.error)),
                           );
-                          print(state.errorMessage);
+                          print(state.error);
                         }
                       },
                       builder: (context, state) {
@@ -125,7 +125,7 @@ class WellComePage extends StatelessWidget {
                                 ],
                               ),
                               onPressed: () {
-                                cubit.signInWithGoogle();
+                                cubit.signUpWithGoogle();
 
                               },
                             ),

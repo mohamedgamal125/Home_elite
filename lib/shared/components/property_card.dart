@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/models/propertyType_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class PropertyCard extends StatefulWidget {
 
@@ -10,10 +12,12 @@ class PropertyCard extends StatefulWidget {
 
 
   final VoidCallback onTap;
+  final VoidCallback onFavoriteUpdate;
 
   PropertyCard({
     required this.adModel,
-    required this.onTap
+    required this.onTap,
+    required this.onFavoriteUpdate
   });
 
   @override
@@ -31,11 +35,12 @@ class _PropertyCardState extends State<PropertyCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image(
-              image: AssetImage(
-                "assets/images/property_image.png",
-              ),
+              image: widget.adModel.img.isNotEmpty
+                  ? NetworkImage(widget.adModel.img[0].data)
+                  : AssetImage("assets/images/property_image.png") as ImageProvider,
               fit: BoxFit.cover,
               width: double.infinity,
+              height: 200, // You can adjust this height to suit your design
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -72,7 +77,7 @@ class _PropertyCardState extends State<PropertyCard> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 "${widget.adModel.salary} EGP",
-                style: GoogleFonts.arima(fontSize: 26),
+                style: GoogleFonts.arima(fontSize: 28,fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
@@ -144,7 +149,10 @@ class _PropertyCardState extends State<PropertyCard> {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        print("=========Email======${widget.adModel.email}");
+                        openEmail(widget.adModel.email);
+                      },
                       child: Container(
                         height: 32,
                         decoration: BoxDecoration(
@@ -170,7 +178,9 @@ class _PropertyCardState extends State<PropertyCard> {
                   const SizedBox(width: 5),
                   Expanded(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        openPhoneCaller(widget.adModel.phone);
+                      },
                       child: Container(
                         height: 32,
                         decoration: BoxDecoration(
@@ -196,7 +206,15 @@ class _PropertyCardState extends State<PropertyCard> {
                   const SizedBox(width: 5),
                   Expanded(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+
+                        String phone=widget.adModel.phone;
+                        print("=========Phone to chat======$phone");
+                        if(phone.isNotEmpty)
+                          {
+                            openWhatsApp(phone);
+                          }
+                      },
                       child: Container(
                         height: 32,
                         decoration: BoxDecoration(
@@ -227,6 +245,9 @@ class _PropertyCardState extends State<PropertyCard> {
       final prefs = await SharedPreferences.getInstance();
       final Token = prefs.get("token");
 
+      setState(() {
+        widget.adModel.isFavorite=false;
+      });
       print("Token   $Token");
       print(widget.adModel.id);
       final response = await Dio().post(
@@ -244,6 +265,8 @@ class _PropertyCardState extends State<PropertyCard> {
         });
         print("================add to favorite response ========================");
         print(response);
+
+        widget.onFavoriteUpdate();
       }
     } catch (e) {
       print(e.toString());
@@ -254,6 +277,9 @@ class _PropertyCardState extends State<PropertyCard> {
       final prefs = await SharedPreferences.getInstance();
       final Token = prefs.get("token");
 
+      setState(() {
+        widget.adModel.isFavorite=true;
+      });
       print("Token   $Token");
       print(widget.adModel.id);
       final response = await Dio().post(
@@ -276,4 +302,36 @@ class _PropertyCardState extends State<PropertyCard> {
       print(e.toString());
     }
   }
-}
+
+
+  void openWhatsApp(String phone)async{
+
+    String url = 'https://wa.me/${phone}';
+    print(url);
+    if (await canLaunch(url)) {
+    await launch(url);
+    } else {
+    throw 'Could not launch $url';
+    }
+  }
+  void openPhoneCaller(String phoneNumber)async{
+    final url = 'tel:$phoneNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void openEmail(String email) async{
+
+    final url= "mailto:$email";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  }
+

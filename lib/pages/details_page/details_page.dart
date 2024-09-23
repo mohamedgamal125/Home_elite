@@ -1,11 +1,13 @@
-
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/models/propertyType_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsPage extends StatefulWidget {
   final AdModel property;
-
 
   DetailsPage({required this.property});
 
@@ -14,10 +16,33 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  @override
-
   bool isExpanded = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateViews();
+  }
 
+  Future<void>updateViews() async{
+
+
+    try{
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      final token = await pref.get("token");
+
+      print("============ad id ${widget.property.id}");
+       await Dio().post(
+        "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/ViewAds/${widget.property.id}",
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
+    }catch(e)
+    {
+      print(e.toString());
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +51,22 @@ class _DetailsPageState extends State<DetailsPage> {
           // Column for displaying the images
           Column(
             children: [
-              Image.asset('assets/images/property_image.png', fit: BoxFit.cover, height: 200.0),
-              Image.asset('assets/images/property_image.png', fit: BoxFit.cover, height: 200.0),
-              Image.asset('assets/images/property_image.png', fit: BoxFit.cover, height: 200.0),
+              // Use ListView.builder to dynamically create the image widgets
+              Expanded(
+                child: ListView.builder(
+                  itemCount: widget.property.img.length,
+                  itemBuilder: (context, index) {
+                    return Image(
+                      image: widget.property.img.isNotEmpty
+                          ? NetworkImage(widget.property.img[index].data)
+                          : AssetImage("assets/images/property_image.png") as ImageProvider,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 200, // Adjust this height as needed
+                    );
+                  },
+                ),
+              ),
             ],
           ),
           // Bottom Sheet
@@ -74,95 +112,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               '${widget.property.address}',
                               style: TextStyle(fontSize: 16, color: Colors.grey),
                             ),
-                  
-                            // Action buttons: Email, Call, WhatsApp
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                  
-                                      },
-                                      child: Container(
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(color: Colors.black, width: 2),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.email, color: Colors.brown),
-                  
-                                              Text(
-                                                "Email",
-                                                style: GoogleFonts.alegreyaSansSc(
-                                                    color: Colors.brown),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                  
-                                      },
-                                      child: Container(
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(color: Colors.black, width: 2),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.call, color: Colors.brown),
-                  
-                                              Text(
-                                                "Call",
-                                                style: GoogleFonts.alegreyaSansSc(
-                                                    color: Colors.brown),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                  
-                                      },
-                                      child: Container(
-                                        height: 32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: const Color(0xff01C617), width: 2),
-                                        ),
-                                        child: const Center(
-                                          child: Image(
-                                            image: AssetImage("assets/icons/whats_icon.png"),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                  
-                            // Additional data shown when expanded
+
                             if (isExpanded) ...[
                               Divider(),
                               Text(
@@ -173,7 +123,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 children: [
                                   SizedBox(height: 8),
                                   Text(
-                                      '${widget.property.description}',
+                                    '${widget.property.description}',
                                     style: TextStyle(fontSize: 16),
                                   ),
                                   SizedBox(height: 8),
@@ -196,9 +146,92 @@ class _DetailsPageState extends State<DetailsPage> {
                                       Text('${widget.property.area} m²', style: TextStyle(fontSize: 16)),
                                     ],
                                   ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              // Handle Email action
+                                              openEmail(widget.property.email);
+                                            },
+                                            child: Container(
+                                              height: 32,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.black, width: 2),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(Icons.email, color: Colors.brown),
+                                                    Text(
+                                                      "Email",
+                                                      style: GoogleFonts.alegreyaSansSc(color: Colors.brown),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              // Handle Call action
+                                              openPhoneCaller(widget.property.phone);
+                                            },
+                                            child: Container(
+                                              height: 32,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: Colors.black, width: 2),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(Icons.call, color: Colors.brown),
+                                                    Text(
+                                                      "Call",
+                                                      style: GoogleFonts.alegreyaSansSc(color: Colors.brown),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              // Handle WhatsApp action
+                                              openWhatsApp(widget.property.phone);
+                                            },
+                                            child: Container(
+                                              height: 32,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(color: const Color(0xff01C617), width: 2),
+                                              ),
+                                              child: const Center(
+                                                child: Image(
+                                                  image: AssetImage("assets/icons/whats_icon.png"),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
-                  
                             ],
                           ],
                         ),
@@ -213,5 +246,34 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
     );
   }
-}
 
+  void openWhatsApp(String phone)async{
+
+    String url = 'https://wa.me/${phone}';
+    print(url);
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  void openPhoneCaller(String phoneNumber)async{
+    final url = 'tel:$phoneNumber';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void openEmail(String email) async{
+
+    final url= "mailto:$email";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+}

@@ -30,12 +30,7 @@ class ResetPassword extends StatelessWidget {
                 BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
                   listener: (context, state) {
                     if (state is ResetPasswordSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.message,maxLines: 1,style: TextStyle(fontSize: 12),),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
+                     //todo alert dialog and pop the context
                     } else if (state is ResetPasswordError) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

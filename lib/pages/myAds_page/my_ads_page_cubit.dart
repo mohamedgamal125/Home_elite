@@ -17,19 +17,32 @@ class MyAdsPageCubit extends Cubit<MyAdsPageState> {
       final token = await pref.get("token");
 
       final response = await Dio().get(
-          "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/UserAds",
-          options: Options(headers: {
-            'Authorization': 'Bearer $token',
-          }));
+        "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/UserAds",
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+        }),
+      );
 
       if (response.statusCode == 200) {
         UserAdsResponse userAds = UserAdsResponse.fromJson(response.data);
-        emit(MyAdsPageSuccess(userAdsResponse: userAds));
+
+        // Check if the list of ads is empty
+        if (userAds.userAds.isEmpty) {
+          emit(MyAdsPageEmpty());
+        } else {
+          emit(MyAdsPageSuccess(userAdsResponse: userAds));
+        }
+      } else {
+        emit(MyAdsPageError('Failed to fetch user ads: ${response.statusMessage}'));
       }
     } catch (e) {
       emit(MyAdsPageError(e.toString()));
     }
   }
+
+
+  // todo add logic of delete and edit functions]
+
   Future<void> deleteAds(UserAd ad) async {
 
     try{

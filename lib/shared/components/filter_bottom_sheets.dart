@@ -40,9 +40,12 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                         height: 30,
                         child: TextField(
                           cursorHeight: 20,
+
+                          style: TextStyle(fontSize: 12),
                           controller: startPriceController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(bottom: 8,left: 4),
                             labelText: "from",
                             labelStyle: TextStyle(color: Colors.grey,fontSize: 12),
                             border: OutlineInputBorder(
@@ -63,6 +66,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                           controller: endPriceController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(bottom: 8,left: 4),
                             labelText: 'Any',
                             labelStyle: TextStyle(color: Colors.grey,fontSize: 12),
 
@@ -151,6 +155,7 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                     controller: numberOfBeds,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 8,left: 4),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.brown)),
                       border: OutlineInputBorder(
@@ -235,6 +240,7 @@ void showBathsBottomSheet(BuildContext context, Function(String) onApply) {
                     controller: numberOfBath,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 8,left: 4),
                       focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.brown)),
                       border: OutlineInputBorder(

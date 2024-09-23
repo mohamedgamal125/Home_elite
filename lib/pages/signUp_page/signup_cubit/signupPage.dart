@@ -104,11 +104,9 @@ class SignupPage extends StatelessWidget {
                             onChanged: (value) {
                               cubit.emailController.text = value;
                             },
+
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Email is required';
-                              }
-                              return null;
+                              return RegExp( r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!) ? null : 'Enter Valid value';
                             },
                           ),
                           CustomTextField(
@@ -124,43 +122,47 @@ class SignupPage extends StatelessWidget {
                               return null;
                             },
                           ),
-                         
+
 
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Adderss"),
+                                Text("Adderss",style: GoogleFonts.alegreyaSansSc(fontWeight: FontWeight.bold,fontSize: 16)),
                                 Padding(
                                   padding: EdgeInsets.only(right: 25.0),
-                                  child: DropdownButtonFormField<String>(
-                                    onChanged: (value) {
+                                  child: Container(
+                                    width: 331,
+                                    height: 42,
+                                    child: DropdownButtonFormField<String>(
+                                      onChanged: (value) {
 
-                                      cubit.Address=value;
-                                    },
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(left: 12),
-                                        fillColor: Colors.white,
-                                        filled: true,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.brown),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.brown, width: 2.0),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                      items: cubit.egyptianCities.map<DropdownMenuItem<String>>((String city) {
-                                        return DropdownMenuItem<String>(
-                                          value: city,
-                                          child: Text(city),
-                                        );
-                                      }).toList(),
-                                     onSaved: (value){
                                         cubit.Address=value;
-                                     },
+                                      },
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(left: 12),
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.brown),
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.brown, width: 2.0),
+                                            borderRadius: BorderRadius.circular(12),
+                                          ),
+                                        ),
+                                        items: cubit.egyptianCities.map<DropdownMenuItem<String>>((String city) {
+                                          return DropdownMenuItem<String>(
+                                            value: city,
+                                            child: Text(city),
+                                          );
+                                        }).toList(),
+                                       onSaved: (value){
+                                          cubit.Address=value;
+                                       },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -170,23 +172,31 @@ class SignupPage extends StatelessWidget {
                           Padding(
                             padding:
                             const EdgeInsets.only(top: 25.0, right: 25),
-                            child: IntlPhoneField(
-                              controller: cubit.phoneController,
-                              decoration: InputDecoration(
-                                focusColor: Colors.brown,
-                                labelText: 'Phone Number',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: Colors.brown,
+                            child: Container(
+                              width: 331,
+                              height: 70,
+                              child: IntlPhoneField(
+                                controller: cubit.phoneController,
+                                decoration: InputDecoration(
+
+
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+                                  focusColor: Colors.brown,
+                                  labelText: 'Phone Number',
+                                  labelStyle: GoogleFonts.alegreyaSansSc(fontSize: 16,fontWeight: FontWeight.bold),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent
+                                    ),
                                   ),
                                 ),
-                              ),
-                              initialCountryCode: 'EG',
-                              onChanged: (phone) {
-                                print(phone.completeNumber);
-                              },
+                                initialCountryCode: 'EG',
+                                onChanged: (phone) {
+                                  print(phone.completeNumber);
+                                },
 
+                              ),
                             ),
                           ),
                           state is RegisterLoading

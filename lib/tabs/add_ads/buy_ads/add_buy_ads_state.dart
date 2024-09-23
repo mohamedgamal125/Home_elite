@@ -40,3 +40,19 @@ class AddBuyAdFailure extends AddBuyAdsState {
   AddBuyAdFailure({required this.error});
 }
 class AddBuyLoading extends AddBuyAdsState{}
+
+
+class AddBuyPropertyTypeChanged extends AddBuyAdsState{}
+
+class UpdateBuyAdSuccess extends AddBuyAdsState {
+  final String message;
+
+  UpdateBuyAdSuccess({required this.message});
+}
+
+class UpdateBuyAdFailure extends AddBuyAdsState {
+  final String error;
+
+  UpdateBuyAdFailure({required this.error});
+}
+class UpdateBuyLoading extends AddBuyAdsState{}

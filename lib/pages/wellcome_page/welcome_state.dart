@@ -1,11 +1,4 @@
-
-
-import 'package:equatable/equatable.dart';
-
-abstract class GoogleSignUpState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class GoogleSignUpState {}
 
 class GoogleSignUpInitial extends GoogleSignUpState {}
 
@@ -13,19 +6,13 @@ class GoogleSignUpLoading extends GoogleSignUpState {}
 
 class GoogleSignUpSuccess extends GoogleSignUpState {
   final String token;
-  final String userId;
+  final Map<String, dynamic> user;
 
-  GoogleSignUpSuccess({required this.token, required this.userId});
-
-  @override
-  List<Object?> get props => [token, userId];
+  GoogleSignUpSuccess(this.token, this.user);
 }
 
-class GoogleSignUpFailure extends GoogleSignUpState {
-  final String errorMessage;
+class GoogleSignUpError extends GoogleSignUpState {
+  final String error;
 
-  GoogleSignUpFailure({required this.errorMessage});
-
-  @override
-  List<Object?> get props => [errorMessage];
+  GoogleSignUpError(this.error);
 }

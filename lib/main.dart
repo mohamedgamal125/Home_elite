@@ -11,17 +11,25 @@ import 'package:home_elite/pages/signUp_page/signup_page2.dart';
 import 'package:home_elite/pages/signUp_page/signup_verification.dart';
 import 'package:home_elite/pages/wellcome_page/wellcome_page.dart';
 import 'package:home_elite/splash_screen/splash.dart';
-import 'package:home_elite/tabs/add_ads/add_ads2.dart';
-
 import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads.dart';
+import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads.dart';
 import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'auth_service.dart';
+
 void main() {
   Bloc.observer = MyBlocObserver();
-  runApp(BlocProvider(
-    create: (context) => AddRentAdsCubit(),
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) => AddRentAdsCubit(),
+      ),
+      BlocProvider(
+        create: (context) => AddBuyAdsCubit(),
+      ),
+    ],
     child: MyApp(),
   ));
 }
@@ -33,10 +41,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
+    _authService.handleCallbackUri(context);
+
   }
 
 

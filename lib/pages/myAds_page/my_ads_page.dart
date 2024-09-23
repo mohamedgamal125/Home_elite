@@ -3,14 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/pages/myAds_page/my_ads_page_cubit.dart';
 import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads.dart';
+import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads.dart';
 
 import '../../models/propertyType_model.dart';
 import '../../models/userAd.dart';
 import '../../shared/components/property_card2.dart';
 import '../../tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 
-class MyAdsPage extends StatelessWidget {
+class MyAdsPage extends StatefulWidget {
   const MyAdsPage({super.key});
+
+  @override
+  State<MyAdsPage> createState() => _MyAdsPageState();
+}
+
+class _MyAdsPageState extends State<MyAdsPage> {
+
+  @override
+  void initState() {
+    
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +53,9 @@ class MyAdsPage extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Color(0xff263A27))),
                       ),
-                    )
+                    ),
+                    
+
                   ],
                 ),
               ),
@@ -47,7 +63,10 @@ class MyAdsPage extends StatelessWidget {
                 child: BlocBuilder<MyAdsPageCubit, MyAdsPageState>(
                   builder: (context, state) {
                     if (state is MyAdsPageLoading) {
-                      return const Center(child: CircularProgressIndicator(color: Colors.brown,));
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.brown,
+                      ));
                     } else if (state is MyAdsPageSuccess) {
                       final ads = state.userAdsResponse.userAds;
                       return ListView.builder(
@@ -65,23 +84,39 @@ class MyAdsPage extends StatelessWidget {
                               },
                               onEdit: () {
                                 print(
-                                    "==================${ads[index].adType}======================");
-                                AdModel adModel =
-                                    mapUserAdToAdModel(ads[index]);
+                                    "==================${ads[index].id}======================");
 
+                                if(ads[index].adType=="buy")
+                                  {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddBuyAds(
+                                              adId: ads[index].id,
+                                            )));
+                                  }
 
-                                print(adModel.title);
-                                print(adModel.email);
+                                else
+                                  {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddRentAds(
+                                              adId: ads[index].id,
+                                            )));
+                                  }
                               },
                             ),
                           );
                         },
                       );
                     } else if (state is MyAdsPageError) {
-
-                      return Center(child: CircularProgressIndicator(color: Colors.brown,));
+                      print(state.error);
+                      return Center(child: Text("Error: ${state.error}"));
+                    } else if (state is MyAdsPageEmpty) {
+                      return const Center(child: Text("No Ads Found"));
                     }
-                    return const Center(child: Text("No Ads Found"));
+                    return Container();
                   },
                 ),
               ),
@@ -89,34 +124,6 @@ class MyAdsPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  AdModel mapUserAdToAdModel(UserAd userAd) {
-    return AdModel(
-      id: userAd.id,
-      name: userAd.name,
-      salary: userAd.salary,
-      available: userAd.available,
-      user: userAd.user,
-      propertyType: PropertytypeModel(
-        id: userAd.propertyType.id,
-        propertyType: userAd.propertyType.propertyType,
-      ),
-      phone: userAd.phone,
-      email: userAd.email,
-      area: userAd.area,
-      bedrooms: userAd.bedrooms,
-      bathrooms: userAd.bathrooms,
-      title: userAd.title,
-      description: userAd.description,
-      address: userAd.address,
-      paymentOption: userAd.paymentOption,
-      views: userAd.views,
-      adType: userAd.adType,
-      createdAt: userAd.createdAt,
-      updatedAt: userAd.createdAt,
-      isFavorite: false,
     );
   }
 }
