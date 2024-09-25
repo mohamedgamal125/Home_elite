@@ -1,20 +1,43 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/pages/login_page/login_cubit.dart';
 import 'package:home_elite/pages/login_page/login_state.dart';
+import 'package:uni_links/uni_links.dart';
 
 import '../../shared/components/custom_input_fields.dart';
 import '../reset_password/reset_password.dart';
 
-class LoginPage extends StatelessWidget {
-  var _formKey = GlobalKey<FormState>();
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  var _formKey = GlobalKey<FormState>();
+  StreamSubscription? _sub;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _sub = uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        print("Received deep link on TestPage: $uri");
+        // Handle the deep link
+        if (uri.host == 'test') {
+          // Perform any action if required when the deep link is received on this page
+        }
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
+
 
     return BlocProvider(
       create: (context) => LoginCubit(Dio()),

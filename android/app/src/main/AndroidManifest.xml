@@ -1,34 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.yourappname">
 
-    <!-- Provide required visibility configuration for API level 30 and above -->
     <queries>
-        <!-- SMS query for SMS handling -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="sms" />
         </intent>
-
-        <!-- Tel query for phone call support -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="tel" />
         </intent>
-
-        <!-- Mailto query for email client -->
         <intent>
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="mailto" />
         </intent>
-
-        <!-- For browser launches -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
         </intent>
     </queries>
 
-    <!-- Permissions for API level 30 and above -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -37,7 +28,6 @@
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
 
-        <!-- Flutter Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -47,13 +37,12 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
 
-            <!-- Intent filter for deep linking (if applicable) -->
+            <!-- Intent filter for deep linking -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="yourapp"/>
-                <data android:scheme="http" android:host="localhost" />
+                <data android:scheme="yourapp" android:host="callback" />
             </intent-filter>
 
             <!-- Main launcher -->
@@ -63,7 +52,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Metadata for Flutter Embedding API -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

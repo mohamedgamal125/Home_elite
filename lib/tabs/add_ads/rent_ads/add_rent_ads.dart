@@ -6,9 +6,7 @@ import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads_cubit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class AddRentAds extends StatefulWidget {
-
   final String? adId;
-
 
   AddRentAds({this.adId});
 
@@ -17,28 +15,26 @@ class AddRentAds extends StatefulWidget {
 }
 
 class _AddRentAdsState extends State<AddRentAds> {
-  late var cubit=AddRentAdsCubit.get(context);
-  bool isEdite=false;
+  late var cubit = AddRentAdsCubit.get(context);
+  bool isEdite = false;
+
   void dispose() {
     cubit.clearAllData();
   }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    cubit=AddRentAdsCubit.get(context);
+    cubit = AddRentAdsCubit.get(context);
   }
+
   @override
   Widget build(BuildContext context) {
-    if(widget.adId != null)
-    {
-      isEdite=true;
+    if (widget.adId != null) {
+      isEdite = true;
       cubit.loadAd(widget.adId!);
       print("==========${cubit.adTitle.text}=======");
-    }
-    else
-    {
-
+    } else {
       cubit.clearAllData();
     }
     return Scaffold(
@@ -56,7 +52,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                       },
                       icon: Icon(Icons.arrow_back_ios_new)),
                   Text(
-                    isEdite?"Update Ad":"Ad For Rent ",
+                    isEdite ? "Update Ad" : "Ad For Rent ",
                     style: GoogleFonts.roboto(fontSize: 18),
                   )
                 ],
@@ -68,18 +64,20 @@ class _AddRentAdsState extends State<AddRentAds> {
               ),
               BlocBuilder<AddRentAdsCubit, AddRentAdsState>(
                 builder: (context, state) {
+
+
                   return Container(
                     padding: EdgeInsets.symmetric(vertical: 25),
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                    height: 200,
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                    height: 250,
                     width: 370,
                     decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                        borderRadius: BorderRadius.circular(14)),
-                    child: cubit.selectedImages.isEmpty
+                      border: cubit.selectedImages.isEmpty
+                          ? Border.all(color: Colors.grey)
+                          : null,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: cubit.selectedImages.isEmpty && cubit.imageUrls.isEmpty
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -94,24 +92,24 @@ class _AddRentAdsState extends State<AddRentAds> {
                               ),
                               Text(
                                 "Add Images",
-                                style:
-                                    GoogleFonts.alegreyaSansSc(fontSize: 20),
+                                style: GoogleFonts.alegreyaSansSc(fontSize: 20),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 50, right: 35),
+                                padding:
+                                    const EdgeInsets.only(left: 50, right: 35),
                                 child: Text(
                                   "5mb maximum file size accepted in the following format: .jpg, .jpeg, .png",
                                   style: TextStyle(
                                       fontSize: 10, color: Colors.grey),
                                 ),
-                              )
+                              ),
                             ],
                           )
                         : Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: GridView.builder(
-                              itemCount: cubit.selectedImages.length,
+                              itemCount: cubit.imageUrls.length + cubit.selectedImages.length + 1,
+                              // Allow add button if less than 10 images
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount:
@@ -120,10 +118,90 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 crossAxisSpacing: 4.0,
                               ),
                               itemBuilder: (context, index) {
-                                return Image.file(
-                                  cubit.selectedImages[index],
-                                  fit: BoxFit.cover,
-                                );
+                                print("========images from update======");
+                                print(cubit.imageUrls);
+                                if (index < cubit.imageUrls.length) {
+
+                                  return Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: Image.network(
+                                          cubit.imageUrls[index],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                      ),
+
+                                      Positioned(
+                                        top: 4,
+                                        right: 4,
+                                        child: InkWell(
+                                          onTap: () {
+                                            // Delete image from imageUrls
+                                            cubit.removeImageUrl(index);
+                                          },
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.red,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                                else if (index <
+                                    cubit.imageUrls.length +
+                                        cubit.selectedImages.length) {
+                                  // Show the selected images
+                                  return Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: Image.file(
+                                          cubit.selectedImages[index],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 4,
+                                        right: 4,
+                                        child: InkWell(
+                                          onTap: () {
+                                            // Delete image from selectedImages
+                                            cubit.removeSelectedImage(index - cubit.imageUrls.length);
+                                          },
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.red,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
+
+                                    ],
+                                  );
+                                } else {
+                                  return InkWell(
+                                    onTap: () {
+                                      cubit.pickImages();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: Icon(
+                                        Icons.add_circle_outline_sharp,
+                                        size: 45,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),
@@ -132,7 +210,6 @@ class _AddRentAdsState extends State<AddRentAds> {
               ),
               BlocBuilder<AddRentAdsCubit, AddRentAdsState>(
                 builder: (context, state) {
-
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 12),
@@ -193,7 +270,6 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 onChanged: (value) {
                                   cubit.propertyType = value;
                                 },
-
                                 decoration: InputDecoration(
                                   hintText: "Choose",
                                   hintStyle: GoogleFonts.alegreyaSansSc(
@@ -203,8 +279,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                   fillColor: Colors.white,
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey),
+                                    borderSide: BorderSide(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -227,6 +302,11 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 onSaved: (value) {
                                   cubit.propertyType = value;
                                 },
+                                value: cubit.propertyType == "villa"
+                                    ? cubit.propertyTypes[1]
+                                    : cubit.propertyType == "appartment"
+                                        ? cubit.propertyTypes[0]
+                                        : null,
                               ),
                             ),
                           ],
@@ -568,10 +648,10 @@ class _AddRentAdsState extends State<AddRentAds> {
                                           child: Text(
                                             "Cash",
                                             style: GoogleFonts.alegreyaSansSc(
-                                              color: cubit.paymentOption ==
-                                                      'cash'
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                              color:
+                                                  cubit.paymentOption == 'cash'
+                                                      ? Colors.white
+                                                      : Colors.black,
                                               fontSize: 11,
                                               fontWeight: FontWeight.w100,
                                             ),
@@ -584,8 +664,8 @@ class _AddRentAdsState extends State<AddRentAds> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        cubit.selectPaymentOption(
-                                            'installment');
+                                        cubit
+                                            .selectPaymentOption('installment');
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
@@ -681,8 +761,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                   fillColor: Colors.white,
                                   filled: true,
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey),
+                                    borderSide: BorderSide(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -705,6 +784,13 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 onSaved: (value) {
                                   cubit.rentalfreq = value;
                                 },
+                                value: cubit.rentalfreq == 'day'
+                                    ? cubit.rentalFrequency[0]
+                                    : cubit.rentalfreq == 'month'
+                                        ? cubit.rentalFrequency[1]
+                                        : cubit.rentalfreq == 'year'
+                                            ? cubit.rentalFrequency[2]
+                                            : null,
                               ),
                             ),
                           ],
@@ -771,7 +857,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                     hintText: "0000000",
                                     enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Colors.grey),
+                                          BorderSide(color: Colors.grey),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedBorder: OutlineInputBorder(
@@ -810,7 +896,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                               ? Colors.brown
                                               : Colors.transparent,
                                           borderRadius:
-                                          BorderRadius.circular(12),
+                                              BorderRadius.circular(12),
                                           border: Border.all(
                                               color: Colors.grey, width: 1.5),
                                         ),
@@ -819,7 +905,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                             "true",
                                             style: GoogleFonts.alegreyaSansSc(
                                               color: cubit.availableOption ==
-                                                  'true'
+                                                      'true'
                                                   ? Colors.white
                                                   : Colors.black,
                                               fontSize: 11,
@@ -834,19 +920,18 @@ class _AddRentAdsState extends State<AddRentAds> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        cubit.selectAvailableOption(
-                                            'false');
+                                        cubit.selectAvailableOption('false');
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 12.0),
                                         decoration: BoxDecoration(
-                                          color: cubit.availableOption ==
-                                              'false'
-                                              ? Colors.brown
-                                              : Colors.transparent,
+                                          color:
+                                              cubit.availableOption == 'false'
+                                                  ? Colors.brown
+                                                  : Colors.transparent,
                                           borderRadius:
-                                          BorderRadius.circular(12),
+                                              BorderRadius.circular(12),
                                           border: Border.all(
                                               color: Colors.grey, width: 1.5),
                                         ),
@@ -855,7 +940,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                             "false",
                                             style: GoogleFonts.alegreyaSansSc(
                                               color: cubit.availableOption ==
-                                                  'false'
+                                                      'false'
                                                   ? Colors.white
                                                   : Colors.black,
                                               fontSize: 11,
@@ -871,7 +956,6 @@ class _AddRentAdsState extends State<AddRentAds> {
                             ],
                           ),
                         ),
-
                         BlocConsumer<AddRentAdsCubit, AddRentAdsState>(
                           listener: (context, state) {
                             if (state is AddRentAdSuccess) {
@@ -880,7 +964,6 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 dialogType: DialogType.success,
                                 animType: AnimType.rightSlide,
                                 title: 'Ads Added Successfully',
-
                                 btnOkOnPress: () {
                                   cubit.clearAllData();
                                 },
@@ -892,21 +975,17 @@ class _AddRentAdsState extends State<AddRentAds> {
                                   backgroundColor: Colors.red,
                                 ),
                               );
-                            }
-                            else if(state is UpdateRentAdSuccess)
-                              {
-                                AwesomeDialog(
-                                  context: context,
-                                  dialogType: DialogType.success,
-                                  animType: AnimType.rightSlide,
-                                  title: 'Ads Updated Successfully',
-
-                                  btnOkOnPress: () {
-                                    cubit.clearAllData();
-                                  },
-                                )..show();
-                              }
-                            else if (state is UpdateRentAdFailure) {
+                            } else if (state is UpdateRentAdSuccess) {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.success,
+                                animType: AnimType.rightSlide,
+                                title: 'Ads Updated Successfully',
+                                btnOkOnPress: () {
+                                  cubit.clearAllData();
+                                },
+                              )..show();
+                            } else if (state is UpdateRentAdFailure) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text("Can not update Ads! "),
@@ -916,69 +995,62 @@ class _AddRentAdsState extends State<AddRentAds> {
                             }
                           },
                           builder: (context, state) {
-                            return state is AddRentAdLoading || state is UpdateRentAdLoading
+                            return state is AddRentAdLoading ||
+                                    state is UpdateRentAdLoading
                                 ? Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.brown,
-                              ),
-                            )
-                                : InkWell(
-                              onTap: () {
-                                if (cubit.areFieldsValid()) {
-
-                                  if(isEdite)
-                                    {
-
-                                      cubit.updateRentAd(widget.adId!);
-                                    }
-                                  else
-                                    {
-                                      cubit.PrintData();
-                                      cubit.addRentAds();
-                                    }
-
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          "Please Fill all data "),
-                                      backgroundColor: Colors.red,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.brown,
                                     ),
-                                  );
-                                }
-                              },
-                              child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 15),
-                                width: 350,
-                                height: 44,
-                                decoration: BoxDecoration(
-                                  color: Color(0xff9D7D43),
-                                  // Background color
-                                  borderRadius:
-                                  BorderRadius.circular(12),
-                                  border: Border.all(
-                                      color: Color(
-                                          0xff9D7D43)), // Border color
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                     isEdite?"Update": "Post",
-                                      style:
-                                      GoogleFonts.alegreyaSansSc(
-                                        textStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      if (cubit.areFieldsValid()) {
+                                        if (isEdite) {
+                                          cubit.updateRentAd(widget.adId!);
+                                        } else {
+                                          cubit.PrintData();
+                                          cubit.addRentAds();
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                                Text("Please Fill all data "),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15),
+                                      width: 350,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff9D7D43),
+                                        // Background color
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                            color: Color(
+                                                0xff9D7D43)), // Border color
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            isEdite ? "Update" : "Post",
+                                            style: GoogleFonts.alegreyaSansSc(
+                                              textStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            );
+                                  );
                           },
                         )
                       ],

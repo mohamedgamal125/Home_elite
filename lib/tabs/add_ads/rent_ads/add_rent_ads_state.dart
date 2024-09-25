@@ -30,6 +30,8 @@ class AddRentAdSuccess extends AddRentAdsState{
   AddRentAdSuccess({required this.message});
 }
 
+class UpdateImageState extends AddRentAdsState{}
+
 class AddRentAdFailure extends AddRentAdsState{
   final String error;
   AddRentAdFailure({required this.error});

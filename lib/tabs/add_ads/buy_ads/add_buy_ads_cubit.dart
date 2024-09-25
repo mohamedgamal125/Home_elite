@@ -48,7 +48,15 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     "villa": "66f00017eccfcd04a54e906f",
   };
 
+  void removeImageUrl(int index) {
+    imageUrls.removeAt(index);
+    emit(UpdateImageState()); // Update state after removing image
+  }
 
+  void removeSelectedImage(int index) {
+    selectedImages.removeAt(index);
+    emit(UpdateImageState()); // Update state after removing image
+  }
   void PrintData() {
     print("===========================================");
     print("name:${name.text}");
@@ -73,7 +81,8 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
 
     if (pickedFiles != null) {
-      selectedImages = pickedFiles.map((file) => File(file.path)).toList();
+
+      selectedImages.addAll(pickedFiles.map((file) => File(file.path)).toList());
       emit(AddBuyImageSelected());
     }
   }
@@ -183,9 +192,10 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
       final SharedPreferences pref = await SharedPreferences.getInstance();
       final token = pref.getString('token');
 
+      print("token ======= $token");
       final Dio dio = Dio();
       final url =
-          'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/getRent/$adId'; // Replace with your actual API URL
+          'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/getRent/$adId';
       final response = await dio.get(
         url,
         options: Options(
@@ -194,16 +204,18 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
       );
 
       final adData =
-          response.data['ad']; // Access the 'ad' object from the response
+          response.data['ad'];
 
       print("==================================");
       print(adData);
 
       name.text = adData['name'];
       price.text = adData['salary'].toString();
-      propertyType = adData['propertyType']['_id'];
+      propertyType = adData['propertyType']['PropertyType'];
       phone.text = adData['phone'];
+      phone.text = phone.text.substring(1);
       area.text = adData['Area'];
+      adTitle.text=adData['title'];
       bedRooms.text = adData['Bedrooms'].toString();
       bathRooms.text = adData['Bathrooms'].toString();
       description.text = adData['Description'];
@@ -235,7 +247,9 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
   Future<void> updateAd(String adId) async {
     emit(UpdateBuyLoading());
     try {
-      print('========image=====${selectedImages}');
+      print('========selected images=====${selectedImages}');
+      print('========image URLs=====${imageUrls}');
+
       final SharedPreferences pref = await SharedPreferences.getInstance();
       String? email = await pref.getString('email');
       final token = pref.getString('token');
@@ -245,10 +259,11 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
       final url =
           'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/updateSpecificAds/$adId'; // Update API URL
 
+      // Create FormData object
       final formData = FormData.fromMap({
         'name': "${name.text}",
         'salary': "${price.text}",
-        'propertyType': (propertyType=="Villa") ? "66f00017eccfcd04a54e906f" : "66da68ebb3dc9ecda5fedfe6",
+        'propertyType': (propertyType == "Villa") ? "66f00017eccfcd04a54e906f" : "66da68ebb3dc9ecda5fedfe6",
         'phone': "${'0' + phone.text}",
         'email': email,
         'Area': "${area.text}",
@@ -262,19 +277,28 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
         'FinalTotal': int.parse(finalTotal.text),
       });
 
-      if (selectedImages.isNotEmpty) {
+      // Add selected images to formData
+      for (int i = 0; i < selectedImages.length; i++) {
         formData.files.add(MapEntry(
-          'img',
-          MultipartFile.fromFileSync(selectedImages[0].path,
-              filename: 'image.jpg'),
+          'img', // The field name for the images in your backend API
+          await MultipartFile.fromFile(
+            selectedImages[i].path,
+            filename: 'image_$i.jpg', // Name each file uniquely
+          ),
         ));
       }
+      for (int i = 0; i < imageUrls.length; i++) {
+        formData.fields.add(MapEntry('img[$i]', imageUrls[i]));
+      }
 
-      final response = await dio.post(url,
-          data: formData,
-          options: Options(
-            headers: {'Authorization': 'Bearer $token'},
-          ));
+      // Send the request with the formData
+      final response = await dio.post(
+        url,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
 
       final data = response.data;
 
@@ -287,6 +311,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
       emit(UpdateBuyAdFailure(error: e.toString()));
     }
   }
+
 
   void clearAllData() {
     // Clear all TextEditingController fields

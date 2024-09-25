@@ -68,13 +68,7 @@ class WellComePage extends StatelessWidget {
                     BlocConsumer<GoogleSignUpCubit, GoogleSignUpState>(
                       listener: (context, state) {
                         if (state is GoogleSignUpSuccess) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('Sign-Up Successful!')
 
-                            ),
-                          );
                           print("========================Sign Up with google done ======================");
                           print(state.token);
 

@@ -5,16 +5,23 @@ class AuthService {
   void handleCallbackUri(BuildContext context) {
     uriLinkStream.listen((Uri? uri) async {
       if (uri != null) {
-        if (uri.queryParameters.containsKey('token')) {
-          final String? token = uri.queryParameters['token'];
-          if (token != null) {
+        final bool isFirstTime = uri.queryParameters['firstTime'] == 'true';
+        final String? token = uri.queryParameters['token'];
 
-            print('Token received: $token');
-            // Save the token and navigate to home page
-          }
-        } else if (uri.queryParameters.containsKey('login') && uri.queryParameters['login'] == 'true') {
-          // Redirect to the login page if it's the user's first time signing up
-          Navigator.of(context).pushReplacementNamed('/login'); // Adjust to your routing setup
+        if (token != null) {
+          // Handle successful login for returning users
+          print('Token received: $token');
+          // Save the token and navigate to the home page
+          // Navigate to the home page
+        }
+
+        //yourapp://auth?firstTime=true
+        // If it's the first time, redirect to the login page
+        if (isFirstTime) {
+          Navigator.of(context).pushReplacementNamed('/login');
+        } else {
+          // Navigate to home page for returning users
+          Navigator.of(context).pushReplacementNamed('/home'); // Adjust to your routing setup
         }
       }
     });

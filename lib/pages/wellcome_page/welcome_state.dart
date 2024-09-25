@@ -6,9 +6,9 @@ class GoogleSignUpLoading extends GoogleSignUpState {}
 
 class GoogleSignUpSuccess extends GoogleSignUpState {
   final String token;
-  final Map<String, dynamic> user;
+  final String message;
 
-  GoogleSignUpSuccess(this.token, this.user);
+  GoogleSignUpSuccess(this.token, this.message);
 }
 
 class GoogleSignUpError extends GoogleSignUpState {

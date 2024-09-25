@@ -9,6 +9,7 @@ import 'package:home_elite/tabs/main_tab_cubit/maintab_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+
 import '../../models/propertyType_model.dart';
 
 class MainTab extends StatefulWidget {
@@ -293,13 +294,12 @@ class _MainTabState extends State<MainTab> {
     final currentTime = DateTime.now().millisecondsSinceEpoch;
     final cacheDuration = 60 * 3 * 1000; // 1 hour cache duration (milliseconds)
 
-    // Check cache validity
+
     if (cachedData != null && (currentTime - lastFetchTime) < cacheDuration) {
       final List<dynamic> cachedJson = jsonDecode(cachedData);
       return cachedJson.map((json) => AdModel.fromJson(json)).toList();
     }
 
-    // Fetch from API if cache is invalid or expired
     final token = prefs.getString('token');
     if (token == null) {
       throw Exception('No authorization token found.');

@@ -43,6 +43,7 @@ class AddBuyLoading extends AddBuyAdsState{}
 
 
 class AddBuyPropertyTypeChanged extends AddBuyAdsState{}
+class UpdateImageState extends AddBuyAdsState{}
 
 class UpdateBuyAdSuccess extends AddBuyAdsState {
   final String message;

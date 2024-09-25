@@ -32,10 +32,13 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
 
   String ?paymentOption;
   String ?availableOption;
-
+  List<String> imageUrls = [];
   List<File> selectedImages = [];
   static AddRentAdsCubit get(context) => BlocProvider.of(context);
-
+  void updateImageUrls(List<String> urls) {
+    imageUrls = urls;
+    emit(AddRentImageSelected());
+  }
   final List<String> propertyTypes = [
     'Apartments',
     'Villa',
@@ -46,6 +49,20 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
     'month',
     'year',
   ];
+
+
+  void removeImageUrl(int index)
+  {
+    imageUrls.removeAt(index);
+    emit(UpdateImageState());
+  }
+
+
+  void removeSelectedImage(int index)
+  {
+    selectedImages.removeAt(index);
+    emit(UpdateImageState());
+  }
 
   void PrintData()
   {
@@ -75,11 +92,14 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
 
     if (pickedFiles != null) {
-      selectedImages = pickedFiles.map((file) => File(file.path)).toList();
+
+      selectedImages.addAll(pickedFiles.map((file) => File(file.path)).toList());
       emit(AddRentImageSelected());
     }
   }
+
   void clearSelectedImages() {
+    imageUrls.clear();
     selectedImages.clear();
     emit(AddRentImageClear());
   }
@@ -98,7 +118,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
         area.text.isNotEmpty &&
         bedRooms.text.isNotEmpty &&
         bathRooms.text.isNotEmpty &&
-        levels.text.isNotEmpty &&
+
         adTitle.text.isNotEmpty &&
         description.text.isNotEmpty &&
         location.text.isNotEmpty &&
@@ -138,13 +158,14 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       });
 
       // Add images to FormData
-      if (selectedImages.isNotEmpty) {
-        for (var image in selectedImages) {
-          formData.files.add(MapEntry(
-            'img', // Key for the image file
-            await MultipartFile.fromFile(image.path, filename: image.path.split('/').last),
-          ));
-        }
+      for (int i = 0; i < selectedImages.length; i++) {
+        formData.files.add(MapEntry(
+          'img', // The field name for the images in your backend API
+          await MultipartFile.fromFile(
+            selectedImages[i].path,
+            filename: 'image_$i.jpg', // Name each file uniquely
+          ),
+        ));
       }
 
       final response = await dio.post(
@@ -187,7 +208,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       print(response.data);
       name.text = data['name'];
       price.text = data['salary'].toString();
-      propertyType = data['propertyType']['_id'];
+      propertyType = data['propertyType']['PropertyType'];
       phone.text = data['phone'].substring(1);
       area.text = data['Area'];
       bedRooms.text = data['Bedrooms'].toString();
@@ -196,15 +217,27 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       description.text = data['Description'];
       location.text = data['Address'];
       paymentOption = data['Payment_option'];
-      availableOption = data['available'] ? "Available" : "Not Available";
+      availableOption = data['available'].toString();
       rentalfreq = data['rentDuration'];
       downPayment.text = data['DownPayment'].toString();
       insurance.text = data['Insurance'].toString();
 
-      if (data['img'] != null && data['img'].isNotEmpty) {
-        selectedImages = data['img'].map<File>((img) => File(img['data'])).toList();
-      }
 
+      print("freq============$rentalfreq");
+      if (data['img'] != null) {
+        if (data['img'] is List) {
+          imageUrls =
+          List<String>.from(data['img'].map((img) => img['data']));
+          print("=============images after load from rent page ====");
+          print(imageUrls);
+          emit(AddRentImageSelected());
+        } else {
+          print("Error: 'img' is not a list");
+          clearSelectedImages();
+        }
+      } else {
+        clearSelectedImages();
+      }
 
     } catch (e) {
       print(e.toString());
@@ -246,7 +279,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       print("==========email $email");
 
       final Dio dio = Dio();
-      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/rent/update/$adId'; // Update API URL
+      final url = 'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/rent/updateSpecificAds/$adId'; // Update API URL
 
       final formData = FormData.fromMap({
         'name': name.text,
@@ -274,7 +307,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
         ));
       }
 
-      final response = await dio.put(
+      final response = await dio.post(
         url,
         data: formData,
         options: Options(

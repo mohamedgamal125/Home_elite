@@ -16,6 +16,7 @@ import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads.dart';
 import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uni_links/uni_links.dart';
 
 import 'auth_service.dart';
 
@@ -43,14 +44,31 @@ class _MyAppState extends State<MyApp> {
 
   final AuthService _authService = AuthService();
 
+
   @override
   void initState() {
     super.initState();
     _authService.handleCallbackUri(context);
 
+    _handleDeepLink();
   }
 
-
+  void _handleDeepLink() async {
+    try {
+      // Check if the app was opened via a deep link
+      final initialUri = await getInitialUri();
+      if (initialUri != null && initialUri.scheme == 'yourapp') {
+        // Navigate to the page if the deep link matches
+        if (initialUri.host == 'test') {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ));
+        }
+      }
+    } catch (e) {
+      print("Failed to get initial deep link: $e");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
