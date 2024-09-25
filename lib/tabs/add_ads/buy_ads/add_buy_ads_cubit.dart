@@ -136,7 +136,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
       final url =
           'https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/buy/AddAds';
 
-      // Create FormData object
+      print("email from Add Buy Ads =================$email");
       final formData = FormData.fromMap({
         'name': name.text,
         'salary': price.text,

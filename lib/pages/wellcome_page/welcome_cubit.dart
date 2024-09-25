@@ -34,18 +34,22 @@ class GoogleSignUpCubit extends Cubit<GoogleSignUpState> {
     uriLinkStream.listen((Uri? uri)async {
       if (uri != null && uri.scheme == 'yourapp' && uri.host == 'callback') {
         final token = uri.queryParameters['token'];
-        final email = uri.queryParameters['email'];
-        print("==========email $email");
+
+
+        print("==============All QueryParameters===========");
+        print(uri.queryParameters);
+        print(uri.queryParametersAll);
+
         if(token != null )
           {
             print("=============================Token $token");
             final SharedPreferences pre=await SharedPreferences.getInstance();
             pre.setString("token", token);
-            pre.setString('email', email!);
+
           }
 
         if (token != null) {
-          // Handle the token (e.g., save it, log in the user, etc.)
+
           emit(GoogleSignUpSuccess(token, "User data if needed"));
         } else {
           emit(GoogleSignUpError("No token found in deep link."));

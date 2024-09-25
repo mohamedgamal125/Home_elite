@@ -30,8 +30,31 @@ class _MainTabState extends State<MainTab> {
     bestAdsFuture = fetchBestAds();
     super.initState();
     context.read<MaintabCubit>().getPropertyTypes();
+    fetchAndStoreEmail();
   }
 
+  Future<void> fetchAndStoreEmail() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      Response response = await Dio().get(
+        'https://backend-coding-yousseftarek80s-projects.vercel.app/auth/user',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token', // Add the Bearer token
+          },
+        ),
+      );
+
+      String email = response.data['email'];
+      print("User Email: $email");
+      await prefs.setString('email', email);
+      print('Email stored in SharedPreferences: $email');
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
