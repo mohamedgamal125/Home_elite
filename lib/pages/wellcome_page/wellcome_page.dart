@@ -109,7 +109,7 @@ class WellComePage extends StatelessWidget {
                                     width: 20,
                                   ),
                                   Text(
-                                    "Sign Up With Gmail",
+                                    "Continue With Gmail",
                                     style: GoogleFonts.alegreyaSansSc(
                                         textStyle: TextStyle(
                                             fontSize: 16,

@@ -180,7 +180,7 @@ class SignupPage extends StatelessWidget {
                                 decoration: InputDecoration(
 
 
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+                                  contentPadding: EdgeInsets.only(left: 8,right: 8,bottom: 80),
                                   focusColor: Colors.brown,
                                   labelText: 'Phone Number',
                                   labelStyle: GoogleFonts.alegreyaSansSc(fontSize: 16,fontWeight: FontWeight.bold),

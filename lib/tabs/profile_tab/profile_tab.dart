@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/tabs/profile_tab/edit_page/edit_profile.dart';
 import 'package:home_elite/tabs/profile_tab/profile_tab_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,7 +72,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                       size: 20,
                                     ),
                                     onPressed: () {
-                                      // Handle edit button press
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfile()));
                                     },
                                   ),
                                 ),
@@ -192,23 +193,26 @@ class _ProfileTabState extends State<ProfileTab> {
                               endIndent: 25,
                               indent: 25,
                             ),
-                            Row(
-                              children: [
-                                Image.asset("assets/icons/rateus_icon.png"),
-                                SizedBox(
-                                  width: 18,
-                                ),
-                                Text(
-                                  "Rate us",
-                                  style: GoogleFonts.alegreyaSans(),
-                                ),
-                                Spacer(),
-                                Image.asset(
-                                  "assets/icons/editIcon.png",
-                                  width: 30,
-                                  height: 30,
-                                ),
-                              ],
+                            InkWell(
+
+                              child: Row(
+                                children: [
+                                  Image.asset("assets/icons/rateus_icon.png"),
+                                  SizedBox(
+                                    width: 18,
+                                  ),
+                                  Text(
+                                    "Rate us",
+                                    style: GoogleFonts.alegreyaSans(),
+                                  ),
+                                  Spacer(),
+                                  Image.asset(
+                                    "assets/icons/editIcon.png",
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,

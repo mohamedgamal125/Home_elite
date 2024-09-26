@@ -639,30 +639,28 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               ],
                             ),
                           ),
+
+                          // Phone Text Filed
                           Padding(
                             padding: EdgeInsets.only(top: 16.0),
                             child: Container(
                               child: IntlPhoneField(
                                 controller: cubit.phone,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(left: 12),
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  hintText: "12051556357",
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide:
-                                    BorderSide(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 8, right: 8, bottom: 80),
+                                  focusColor: Colors.brown,
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 2.0),
+                                      borderRadius: BorderRadius.circular(16)),
+                                  labelText: 'Phone Number',
+                                  labelStyle: GoogleFonts.alegreyaSansSc(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                  border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
+                                    borderSide:
+                                    BorderSide(color: Colors.transparent),
                                   ),
                                 ),
                                 initialCountryCode: 'EG',
@@ -670,6 +668,8 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                   print(phone.completeNumber);
                                 },
                               ),
+                              width: 330,
+                                height: 70,
                             ),
                           ),
                           Divider(
