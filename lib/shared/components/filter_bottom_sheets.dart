@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Theming/myTheme_data.dart';
+
 void showPriceBottomSheet(BuildContext context, Function(String, String) onApply) {
   final TextEditingController startPriceController = TextEditingController();
   final TextEditingController endPriceController = TextEditingController();
@@ -83,7 +85,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff9D7D43),
+                      backgroundColor: MyColor.myDark,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       shape: RoundedRectangleBorder(
@@ -157,12 +159,12 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 8,left: 4),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown)),
+                          borderSide: BorderSide(color:  MyColor.myDark)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown)),
+                          borderSide: BorderSide(color:  MyColor.myDark)),
                     ),
                   ),
                 ),
@@ -171,11 +173,11 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff9D7D43),
+                      backgroundColor:  MyColor.myDark,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Color(0xff9D7D43)),
+                        side: BorderSide(color:  MyColor.myDark),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
@@ -242,12 +244,12 @@ void showBathsBottomSheet(BuildContext context, Function(String) onApply) {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 8,left: 4),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown)),
+                          borderSide: BorderSide(color:  MyColor.myDark)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown)),
+                          borderSide: BorderSide(color:  MyColor.myDark)),
                     ),
                   ),
                 ),
@@ -256,11 +258,11 @@ void showBathsBottomSheet(BuildContext context, Function(String) onApply) {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff9D7D43),
+                      backgroundColor:  MyColor.myDark,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Color(0xff9D7D43)),
+                        side: BorderSide(color:  MyColor.myDark),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
@@ -320,7 +322,7 @@ void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isBuySelected ? Colors.brown : Colors.grey[300], // Background color
+                            backgroundColor: isBuySelected ?  MyColor.myDark : Colors.grey[300], // Background color
                             foregroundColor: isBuySelected ? Colors.white : Colors.black, // Text color
                           ),
                           child: Text("Buy"),
@@ -334,7 +336,7 @@ void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: !isBuySelected ? Colors.brown : Colors.grey[300], // Background color
+                            backgroundColor: !isBuySelected ?  MyColor.myDark: Colors.grey[300], // Background color
                             foregroundColor: !isBuySelected ? Colors.white : Colors.black, // Text color
                           ),
                           child: Text("Rent"),
@@ -347,10 +349,10 @@ void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff9D7D43),
+                          backgroundColor: MyColor.myDark,
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Color(0xff9D7D43)),
+                            side: BorderSide(color:  MyColor.myDark),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),

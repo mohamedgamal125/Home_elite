@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/tabs/profile_tab/edit_page/edit_profile.dart';
 import 'package:home_elite/tabs/profile_tab/profile_tab_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,19 +15,33 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  String _currentLanguage = 'English';
   @override
   void initState() {
 
     super.initState();
 
-    context.read<ProfileTabCubit>().fetchUserData();  }
+    context.read<ProfileTabCubit>().fetchUserData();
+    _getSelectedLanguage();
+  }
+  void _getSelectedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? selectedLanguage = prefs.getString('selectedLanguage');
+
+    // Apply the selected language or set default language
+    if (selectedLanguage != null) {
+      setState(() {
+        _currentLanguage = selectedLanguage; // Use this in your UI
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Image(image: AssetImage("assets/images/TinyHouse.png")),
+            Image(image: AssetImage("assets/images1/Tiny house_new.png")),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Padding(
@@ -38,7 +54,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
                         if(state is ProfileTabLoading)
                           {
-                            return Center(child: CircularProgressIndicator(color: Colors.brown,),);
+                            return Center(child: CircularProgressIndicator(color: MyColor.myDark),);
                           }
                         else if(state is ProfileTabSuccess)
                           {
@@ -68,7 +84,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   trailing: IconButton(
                                     icon: Icon(
                                       Icons.edit,
-                                      color: Colors.brown,
+                                      color:MyColor.myDark,
                                       size: 20,
                                     ),
                                     onPressed: () {
@@ -80,7 +96,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             );
                           }
 
-                        return Center(child: CircularProgressIndicator(color: Colors.brown,),);
+                        return Center(child: CircularProgressIndicator(color:MyColor.myDark,),);
                       },
                     ),
 
@@ -95,32 +111,37 @@ class _ProfileTabState extends State<ProfileTab> {
                         padding: EdgeInsets.all(8.0),
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                Image.asset("assets/icons/language_icon.png"),
-                                SizedBox(
-                                  width: 18,
-                                ),
-                                Text(
-                                  "Language",
-                                  style: GoogleFonts.alegreyaSans(),
-                                ),
-                                Spacer(),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "English",
-                                      style: GoogleFonts.alegreyaSans(
-                                          fontSize: 12, color: Colors.grey),
-                                    ),
-                                    Image.asset(
-                                      "assets/icons/editIcon.png",
-                                      width: 30,
-                                      height: 30,
-                                    )
-                                  ],
-                                ),
-                              ],
+                            GestureDetector(
+                              onTap: (){
+                                showLanguageSelectionSheet(context);
+                              },
+                              child: Row(
+                                children: [
+                                  Image.asset("assets/icons/language_icon.png"),
+                                  SizedBox(
+                                    width: 18,
+                                  ),
+                                  Text(
+                                    "lang".tr(),
+                                    style: GoogleFonts.alegreyaSans(),
+                                  ),
+                                  Spacer(),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "$_currentLanguage",
+                                        style: GoogleFonts.alegreyaSans(
+                                            fontSize: 12, color: Colors.grey),
+                                      ),
+                                      Image.asset(
+                                        "assets/icons/editIcon.png",
+                                        width: 30,
+                                        height: 30,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
@@ -135,7 +156,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   width: 18,
                                 ),
                                 Text(
-                                  "Country",
+                                  "country".tr(),
                                   style: GoogleFonts.alegreyaSans(),
                                 ),
                                 Spacer(),
@@ -176,7 +197,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   width: 18,
                                 ),
                                 Text(
-                                  "About us",
+                                  "aboutUs".tr(),
                                   style: GoogleFonts.alegreyaSans(),
                                 ),
                                 Spacer(),
@@ -202,7 +223,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                     width: 18,
                                   ),
                                   Text(
-                                    "Rate us",
+                                    "rateUs".tr(),
                                     style: GoogleFonts.alegreyaSans(),
                                   ),
                                   Spacer(),
@@ -227,7 +248,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   width: 18,
                                 ),
                                 Text(
-                                  "Contact us",
+                                  "contactUs".tr(),
                                   style: GoogleFonts.alegreyaSans(),
                                 ),
                                 Spacer(),
@@ -251,7 +272,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   width: 18,
                                 ),
                                 Text(
-                                  "Privacy Policy",
+                                  "privacyPolicy".tr(),
                                   style: GoogleFonts.alegreyaSans(),
                                 ),
                                 Spacer(),
@@ -288,7 +309,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                     width: 18,
                                   ),
                                   Text(
-                                    "My Ads",
+                                    "myAds".tr(),
                                     style: GoogleFonts.alegreyaSans(),
                                   ),
                                   Spacer(),
@@ -318,18 +339,18 @@ class _ProfileTabState extends State<ProfileTab> {
                       height: 55,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff9D7D43),
+                          backgroundColor: MyColor.myDark,
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
                           shape: RoundedRectangleBorder(
                             side: BorderSide(
-                                color: Color(0xff9D7D43)),
+                                color: MyColor.myDark),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                         child: Center(
                           child: Text(
-                            "Logout",
+                            "logout".tr(),
                             style: GoogleFonts.alegreyaSansSc(
                                 textStyle: TextStyle(
                                     color: Colors.white,
@@ -358,4 +379,57 @@ class _ProfileTabState extends State<ProfileTab> {
       ),
     );
   }
+
+  void showLanguageSelectionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text('english'.tr()),
+                onTap: () {
+                  _changeLanguage(context, 'English');
+                },
+              ),
+              ListTile(
+                title: Text('arabic'.tr()),
+                onTap: () {
+                  _changeLanguage(context, 'Arabic');
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  void _changeLanguage(BuildContext context, String language) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Locale locale;
+
+    if (language == 'English') {
+      locale = Locale('en');
+    } else {
+      locale = Locale('ar');
+    }
+
+    await prefs.setString('selectedLanguage', language);
+
+    // Change the app's language
+    await context.setLocale(locale);
+
+    setState(() {
+      _currentLanguage = language; // Update displayed language
+    });
+
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$language selected')),
+    );
+  }
+
 }

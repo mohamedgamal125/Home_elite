@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/models/propertyType_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -76,7 +78,7 @@ class _PropertyCardState extends State<PropertyCard> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "${widget.adModel.salary} EGP",
+                "${widget.adModel.salary} ${'Egp'.tr()}",
                 style: GoogleFonts.arima(fontSize: 28,fontWeight: FontWeight.bold),
               ),
             ),
@@ -163,11 +165,11 @@ class _PropertyCardState extends State<PropertyCard> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              const Icon(Icons.email, color: Colors.brown),
+                               Icon(Icons.email, color: MyColor.myDark),
                               Text(
-                                "Email",
+                                "email".tr(),
                                 style: GoogleFonts.alegreyaSansSc(
-                                    color: Colors.brown),
+                                    color: MyColor.myDark),
                               )
                             ],
                           ),
@@ -191,11 +193,11 @@ class _PropertyCardState extends State<PropertyCard> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              const Icon(Icons.call, color: Colors.brown),
+                               Icon(Icons.call, color: MyColor.myDark),
                               Text(
-                                "Call",
+                                "call".tr(),
                                 style: GoogleFonts.alegreyaSansSc(
-                                    color: Colors.brown),
+                                    color: MyColor.myDark),
                               )
                             ],
                           ),

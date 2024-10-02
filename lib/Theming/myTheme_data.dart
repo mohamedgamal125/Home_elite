@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MythemeData{
+class MyColor{
 
-  static ThemeData lightMode= ThemeData(
-
-
-    bottomNavigationBarTheme:BottomNavigationBarThemeData(
-        type: BottomNavigationBarType.fixed,
-      showSelectedLabels: false,
-    )
-  );
+  static final Color myBrown= Colors.brown;
+  static final Color myDark = Color(0xff05293C);
+  static final Color myTitleColor = Color(0xff263A27);
 }

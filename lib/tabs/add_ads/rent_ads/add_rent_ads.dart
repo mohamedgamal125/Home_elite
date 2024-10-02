@@ -1,9 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads_cubit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../../../Theming/myTheme_data.dart';
 
 class AddRentAds extends StatefulWidget {
   final String? adId;
@@ -52,7 +55,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                       },
                       icon: Icon(Icons.arrow_back_ios_new)),
                   Text(
-                    isEdite ? "Update Ad" : "Ad For Rent ",
+                    isEdite ? "update".tr() : "adForRent".tr(),
                     style: GoogleFonts.roboto(fontSize: 18),
                   )
                 ],
@@ -91,14 +94,14 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 },
                               ),
                               Text(
-                                "Add Images",
+                                "addImage".tr(),
                                 style: GoogleFonts.alegreyaSansSc(fontSize: 20),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 50, right: 35),
                                 child: Text(
-                                  "5mb maximum file size accepted in the following format: .jpg, .jpeg, .png",
+                                  "imageDes".tr(),
                                   style: TextStyle(
                                       fontSize: 10, color: Colors.grey),
                                 ),
@@ -222,14 +225,14 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Name * ",
+                                "name".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
                                 height: 32,
                                 child: TextFormField(
                                   controller: cubit.name,
-                                  cursorColor: Colors.brown,
+                                  cursorColor: MyColor.myDark,
                                   onChanged: (value) {
                                     cubit.name.text = value;
                                   },
@@ -261,7 +264,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Type *",
+                              "type".tr(),
                               style: GoogleFonts.alegreyaSansSc(),
                             ),
                             Container(
@@ -271,7 +274,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                   cubit.propertyType = value;
                                 },
                                 decoration: InputDecoration(
-                                  hintText: "Choose",
+                                  hintText: "choose".tr(),
                                   hintStyle: GoogleFonts.alegreyaSansSc(
                                     fontSize: 16,
                                   ),
@@ -317,7 +320,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Area (M\u00B2) * ",
+                                "area".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -357,7 +360,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "BedRooms * ",
+                                "bedRooms".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -397,7 +400,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "BathRooms * ",
+                                "bathRooms".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -437,7 +440,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Levels * ",
+                                "level".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -477,7 +480,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Ad Title * ",
+                                "adTitle".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -513,7 +516,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Description * ",
+                                "desc".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -549,14 +552,14 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Location * ",
+                                "location".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
                                 height: 32,
                                 child: TextFormField(
                                   controller: cubit.location,
-                                  cursorColor: Colors.brown,
+                                  cursorColor: MyColor.myDark,
                                   onChanged: (value) {
                                     cubit.location.text = value;
                                   },
@@ -589,10 +592,10 @@ class _AddRentAdsState extends State<AddRentAds> {
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
                                     left: 8, right: 8, bottom: 80),
-                                focusColor: Colors.brown,
+                                focusColor: MyColor.myDark,
                                 focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(16)),
-                                labelText: 'Phone Number',
+                                labelText: 'phone'.tr(),
                                 labelStyle: GoogleFonts.alegreyaSansSc(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -622,7 +625,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Payment Option * ",
+                                "paymentOption".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -638,7 +641,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                             horizontal: 12.0),
                                         decoration: BoxDecoration(
                                           color: cubit.paymentOption == 'cash'
-                                              ? Colors.brown
+                                              ? MyColor.myDark
                                               : Colors.transparent,
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -647,7 +650,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "Cash",
+                                            "cash".tr(),
                                             style: GoogleFonts.alegreyaSansSc(
                                               color:
                                                   cubit.paymentOption == 'cash'
@@ -674,7 +677,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                         decoration: BoxDecoration(
                                           color: cubit.paymentOption ==
                                                   'installment'
-                                              ? Colors.brown
+                                              ? MyColor.myDark
                                               : Colors.transparent,
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -683,7 +686,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "Installment",
+                                            "installment".tr(),
                                             style: GoogleFonts.alegreyaSansSc(
                                               color: cubit.paymentOption ==
                                                       'installment'
@@ -708,14 +711,14 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Price * ",
+                                "price".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
                                 height: 32,
                                 child: TextFormField(
                                   controller: cubit.price,
-                                  cursorColor: Colors.brown,
+                                  cursorColor: MyColor.myDark,
                                   onChanged: (value) {
                                     cubit.price.text = value;
                                   },
@@ -744,7 +747,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Rental Frequency ",
+                              "rental".tr(),
                               style: GoogleFonts.alegreyaSansSc(),
                             ),
                             Container(
@@ -754,7 +757,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                   cubit.rentalfreq = value;
                                 },
                                 decoration: InputDecoration(
-                                  hintText: "Choose",
+                                  hintText: "choose".tr(),
                                   hintStyle: GoogleFonts.alegreyaSansSc(
                                     fontSize: 16,
                                   ),
@@ -802,14 +805,14 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Down Payment * ",
+                                "down Payment".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
                                 height: 32,
                                 child: TextFormField(
                                   controller: cubit.downPayment,
-                                  cursorColor: Colors.brown,
+                                  cursorColor: MyColor.myDark,
                                   onChanged: (value) {
                                     cubit.downPayment.text = value;
                                   },
@@ -840,14 +843,14 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Insurance * ",
+                                "insurance".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
                                 height: 32,
                                 child: TextFormField(
                                   controller: cubit.insurance,
-                                  cursorColor: Colors.brown,
+                                  cursorColor: MyColor.myDark,
                                   onChanged: (value) {
                                     cubit.insurance.text = value;
                                   },
@@ -878,7 +881,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Available Option * ",
+                                "AvailableOption".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -894,7 +897,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                             horizontal: 12.0),
                                         decoration: BoxDecoration(
                                           color: cubit.availableOption == 'true'
-                                              ? Colors.brown
+                                              ? MyColor.myDark
                                               : Colors.transparent,
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -903,7 +906,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "true",
+                                            "true".tr(),
                                             style: GoogleFonts.alegreyaSansSc(
                                               color: cubit.availableOption ==
                                                       'true'
@@ -929,7 +932,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                         decoration: BoxDecoration(
                                           color:
                                               cubit.availableOption == 'false'
-                                                  ? Colors.brown
+                                                  ? MyColor.myDark
                                                   : Colors.transparent,
                                           borderRadius:
                                               BorderRadius.circular(12),
@@ -938,7 +941,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "false",
+                                            "false".tr(),
                                             style: GoogleFonts.alegreyaSansSc(
                                               color: cubit.availableOption ==
                                                       'false'
@@ -964,7 +967,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 context: context,
                                 dialogType: DialogType.success,
                                 animType: AnimType.rightSlide,
-                                title: 'Ads Added Successfully',
+                                title: 'successAdd'.tr(),
                                 btnOkOnPress: () {
                                   cubit.clearAllData();
                                 },
@@ -972,7 +975,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             } else if (state is AddRentAdFailure) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("Can not add Ads! "),
+                                  content: Text("cannot add".tr()),
                                   backgroundColor: Colors.red,
                                 ),
                               );
@@ -981,7 +984,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                 context: context,
                                 dialogType: DialogType.success,
                                 animType: AnimType.rightSlide,
-                                title: 'Ads Updated Successfully',
+                                title: 'successUpdate'.tr(),
                                 btnOkOnPress: () {
                                   cubit.clearAllData();
                                 },
@@ -989,7 +992,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                             } else if (state is UpdateRentAdFailure) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text("Can not update Ads! "),
+                                  content: Text("cannot update".tr()),
                                   backgroundColor: Colors.red,
                                 ),
                               );
@@ -1000,7 +1003,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                     state is UpdateRentAdLoading
                                 ? Center(
                                     child: CircularProgressIndicator(
-                                      color: Colors.brown,
+                                      color: MyColor.myDark,
                                     ),
                                   )
                                 : InkWell(
@@ -1017,7 +1020,7 @@ class _AddRentAdsState extends State<AddRentAds> {
                                             .showSnackBar(
                                           SnackBar(
                                             content:
-                                                Text("Please Fill all data "),
+                                                Text("fillData".tr()),
                                             backgroundColor: Colors.red,
                                           ),
                                         );
@@ -1029,19 +1032,18 @@ class _AddRentAdsState extends State<AddRentAds> {
                                       width: 350,
                                       height: 44,
                                       decoration: BoxDecoration(
-                                        color: Color(0xff9D7D43),
+                                        color:  MyColor.myDark,
                                         // Background color
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                            color: Color(
-                                                0xff9D7D43)), // Border color
+                                            color: MyColor.myDark), // Border color
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            isEdite ? "Update" : "Post",
+                                            isEdite ? "update".tr() : "post".tr(),
                                             style: GoogleFonts.alegreyaSansSc(
                                               textStyle: TextStyle(
                                                   color: Colors.white,

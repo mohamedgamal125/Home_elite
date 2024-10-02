@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Theming/myTheme_data.dart';
+
 class CustomButton extends StatelessWidget {
 
   final double width;
@@ -23,7 +25,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xff9D7D43),
+          backgroundColor: MyColor.myDark,
           padding: EdgeInsets.symmetric(
               horizontal: 20, vertical: 15),
           shape: RoundedRectangleBorder(

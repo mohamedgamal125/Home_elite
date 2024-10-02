@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -28,12 +29,15 @@ class CustomTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: GoogleFonts.alegreyaSansSc(
-              textStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+          Padding(
+            padding: const EdgeInsets.only(right: 28),
+            child: Text(
+              label,
+              style: GoogleFonts.alegreyaSansSc(
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
@@ -47,7 +51,7 @@ class CustomTextField extends StatelessWidget {
                     height: height ?? 42, // Set constant height for the field
                     child: TextFormField(
                       obscureText: obscureText,
-                      cursorColor: Colors.brown,
+                      cursorColor:MyColor.myDark,
                       style: TextStyle(fontSize: 14),
                       textAlignVertical: TextAlignVertical.center,
                       decoration: InputDecoration(
@@ -55,11 +59,11 @@ class CustomTextField extends StatelessWidget {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown),
+                          borderSide: BorderSide(color: MyColor.myDark),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.brown, width: 2.0),
+                          borderSide: BorderSide(color: MyColor.myDark, width: 2.0),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         errorBorder: OutlineInputBorder(

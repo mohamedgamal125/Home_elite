@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/pages/login_page/login_cubit.dart';
 import 'package:home_elite/pages/login_page/login_state.dart';
 import 'package:uni_links/uni_links.dart';
@@ -47,13 +49,13 @@ class _LoginPageState extends State<LoginPage> {
             child: Stack(
               children: [
                 Image.asset(
-                  "assets/images/image.jpg",
+                  "assets/images1/background_new.jpg",
                   fit: BoxFit.fill,
                   height: deviceHeight,
                   width: deviceWidth,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 50, left: 36),
+                  padding: EdgeInsets.only(top: 50, left: 36,right: 6),
                   child: BlocConsumer<LoginCubit, LoginState>(
                     listener: (context, state) {
                       if (state is LoginSuccess) {
@@ -61,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.pushReplacementNamed(context, "/home");
                       } else if (state is LoginFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Error While Login"),backgroundColor: Colors.red,),
+                          SnackBar(content: Text("errorWhileLogin".tr()),backgroundColor: Colors.red,),
                         );
 
                         print(state.error);
@@ -78,12 +80,12 @@ class _LoginPageState extends State<LoginPage> {
                                 height: 40,
                                 width: 6,
                                 decoration:
-                                BoxDecoration(color: Color(0xff9D7D43)),
+                                BoxDecoration(color: MyColor.myTitleColor),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 14.0),
                                 child: Text(
-                                  "Login",
+                                  "login".tr(),
                                   style: GoogleFonts.alegreyaSansSc(
                                       textStyle: TextStyle(
                                           fontSize: 30,
@@ -96,30 +98,30 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, right: 40, top: 40),
-                            child: Image.asset("assets/images/logo.png"),
+                            child: Image.asset("assets/images1/newLogo.png"),
                           ),
                           CustomTextField(
-                            label: "Email Address",
+                            label: "emailAddress".tr(),
                             obscureText: false,
                             onChanged: (value) {
                               cubit.emailController.text = value;
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Please enter your email";
+                                return "invalidData".tr();
                               }
                               return null;
                             },
                           ),
                           CustomTextField(
-                            label: "Password",
+                            label: "password".tr(),
                             obscureText: true,
                             onChanged: (value) {
                               cubit.passwordController.text = value;
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return "Please enter your password";
+                                return "invalidData".tr();
                               }
                               return null;
                             },
@@ -129,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(top: 12,right: 20),
                             child: Center(
                                 child: CircularProgressIndicator(
-                                    color: Colors.brown)),
+                                    color: MyColor.myDark)),
                           )
                               : Container(
                             margin: EdgeInsets.only(top: 35, right: 20),
@@ -137,18 +139,18 @@ class _LoginPageState extends State<LoginPage> {
                             height: 55,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff9D7D43),
+                                backgroundColor:MyColor.myDark,
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 15),
                                 shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                      color: Color(0xff9D7D43)),
+                                      color: MyColor.myDark),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
                               child: Center(
                                 child: Text(
-                                  "Login",
+                                  "login".tr(),
                                   style: GoogleFonts.alegreyaSansSc(
                                       textStyle: TextStyle(
                                           color: Colors.white,
@@ -171,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Row(
                                   children: [
                                     Text(
-                                      "If you can't login go to ",
+                                      "canNotLogin".tr(),
                                       style: TextStyle(
                                           color: Colors.grey, fontSize: 12),
                                     ),
@@ -180,16 +182,16 @@ class _LoginPageState extends State<LoginPage> {
                                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ResetPassword()));
                                         },
                                         child: Text(
-                                          "Reset Password",
+                                          "resetPassword".tr(),
                                           style: TextStyle(
-                                              color: Colors.brown, fontSize: 13),
+                                              color: MyColor.myDark, fontSize: 13),
                                         ))
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text(
-                                      "Or ",
+                                      "or".tr(),
                                       style: TextStyle(
                                           color: Colors.grey, fontSize: 12),
                                     ),
@@ -199,9 +201,9 @@ class _LoginPageState extends State<LoginPage> {
                                               context, "/welcomePage");
                                         },
                                         child: Text(
-                                          "Create New Account",
+                                          "createAccount".tr(),
                                           style: TextStyle(
-                                              color: Colors.brown, fontSize: 13),
+                                              color:MyColor.myDark, fontSize: 13),
                                         ))
                                   ],
                                 ),

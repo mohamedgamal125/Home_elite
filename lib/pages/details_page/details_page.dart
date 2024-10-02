@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/models/propertyType_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../Theming/myTheme_data.dart';
 
 class DetailsPage extends StatefulWidget {
   final AdModel property;
@@ -104,7 +107,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${widget.property.salary} EGP',
+                              '${widget.property.salary} ${'Egp'.tr()}',
                               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 8),
@@ -116,7 +119,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             if (isExpanded) ...[
                               Divider(),
                               Text(
-                                'Property Details',
+                                'propertyDetails'.tr(),
                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               Column(
@@ -131,11 +134,11 @@ class _DetailsPageState extends State<DetailsPage> {
                                     children: [
                                       Icon(Icons.king_bed, size: 20),
                                       SizedBox(width: 4),
-                                      Text('${widget.property.bedrooms} Bedrooms', style: TextStyle(fontSize: 16)),
+                                      Text('${widget.property.bedrooms} ${'bedRooms'.tr()}', style: TextStyle(fontSize: 16)),
                                       SizedBox(width: 16),
                                       Icon(Icons.bathtub, size: 20),
                                       SizedBox(width: 4),
-                                      Text('${widget.property.bathrooms} Bathrooms', style: TextStyle(fontSize: 16)),
+                                      Text('${widget.property.bathrooms} ${'bathRooms'.tr()}', style: TextStyle(fontSize: 16)),
                                     ],
                                   ),
                                   SizedBox(height: 8),
@@ -167,10 +170,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                                 child: Row(
                                                   children: [
-                                                    const Icon(Icons.email, color: Colors.brown),
+                                                     Icon(Icons.email, color:  MyColor.myDark),
                                                     Text(
-                                                      "Email",
-                                                      style: GoogleFonts.alegreyaSansSc(color: Colors.brown),
+                                                      "email".tr(),
+                                                      style: GoogleFonts.alegreyaSansSc(color:Colors.black),
                                                     )
                                                   ],
                                                 ),
@@ -195,10 +198,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                                 child: Row(
                                                   children: [
-                                                    const Icon(Icons.call, color: Colors.brown),
+                                                     Icon(Icons.call, color:  MyColor.myDark),
                                                     Text(
-                                                      "Call",
-                                                      style: GoogleFonts.alegreyaSansSc(color: Colors.brown),
+                                                      "call".tr(),
+                                                      style: GoogleFonts.alegreyaSansSc(color: Colors.black),
                                                     )
                                                   ],
                                                 ),

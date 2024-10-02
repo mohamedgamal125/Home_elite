@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/models/signup_model.dart';
 import 'package:home_elite/models/user.dart';
 import 'package:home_elite/shared/components/property_card.dart';
@@ -90,7 +92,7 @@ class _SearchTabState extends State<SearchTab> {
                     child: TextField(
                       controller: searchController, // Set the controller
                       decoration: InputDecoration(
-                        hintText: 'City, area or building',
+                        hintText: 'searchbar'.tr(),
                         border: InputBorder.none,
                         hintStyle: TextStyle(
                           fontSize: 14,
@@ -108,8 +110,8 @@ class _SearchTabState extends State<SearchTab> {
                       child: Row(
                         children: [
                           FilterButton(
-                            label: "Price",
-                            color: isPriceFiltered ? Colors.brown : Colors.white,
+                            label: "price".tr(),
+                            color: isPriceFiltered ? MyColor.myDark : Colors.white,
                             color2: isPriceFiltered ? Colors.white : Colors.black,
                             onPressed: () => showPriceBottomSheet(context, (start, end) {
                               setState(() {
@@ -122,8 +124,8 @@ class _SearchTabState extends State<SearchTab> {
                             }),
                           ),
                           FilterButton(
-                            label: "Beds",
-                            color: isBedsFiltered ? Colors.brown : Colors.white,
+                            label: "beds".tr(),
+                            color: isBedsFiltered ? MyColor.myDark : Colors.white,
                             color2: isBedsFiltered ? Colors.white : Colors.black,
                             onPressed: () => showBedsBottomSheet(context, (numBeds) {
                               setState(() {
@@ -134,8 +136,8 @@ class _SearchTabState extends State<SearchTab> {
                             }),
                           ),
                           FilterButton(
-                            label: "Baths",
-                            color: isBathsFiltered ? Colors.brown : Colors.white,
+                            label: "bath".tr(),
+                            color: isBathsFiltered ? MyColor.myDark : Colors.white,
                             color2: isBathsFiltered ? Colors.white : Colors.black,
                             onPressed: () => showBathsBottomSheet(context, (numBath) {
                               setState(() {
@@ -146,8 +148,8 @@ class _SearchTabState extends State<SearchTab> {
                             }),
                           ),
                           FilterButton(
-                            label: "Buy & Rent",
-                            color: isBuyRentFiltered ? Colors.brown : Colors.white,
+                            label: "buyAndRent".tr(),
+                            color: isBuyRentFiltered ? MyColor.myDark: Colors.white,
                             color2: isBuyRentFiltered ? Colors.white : Colors.black,
                             onPressed: () => showBuyRentBottomSheet(context, (choice) {
                               setState(() {
@@ -160,7 +162,7 @@ class _SearchTabState extends State<SearchTab> {
                             }),
                           ),
                           FilterButton(
-                            label: "Reset",
+                            label: "reset".tr(),
                             onPressed: () {
                               setState(() {
                                 isFiltered = false;
@@ -180,7 +182,7 @@ class _SearchTabState extends State<SearchTab> {
                                 searchController.clear();
                               });
                             },
-                            color: Colors.brown,
+                            color: MyColor.myDark,
                             color2: Colors.white
                           ),
                         ],
@@ -200,14 +202,14 @@ class _SearchTabState extends State<SearchTab> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(
-                            color: Colors.brown,
+                            color:MyColor.myDark,
                           ),
                         );
                       } else if (snapshot.hasError) {
 
-                        return Center(child: CircularProgressIndicator(color: Colors.brown,));
+                        return Center(child: CircularProgressIndicator(color: MyColor.myDark,));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Center(child: Text('No Ads available'));
+                        return Center(child: Text('noData'.tr()));
                       } else {
                         cachedAds = snapshot.data; // Cache the fetched ads
                          // Use filtered ads if available

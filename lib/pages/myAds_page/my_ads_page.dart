@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/pages/myAds_page/my_ads_page_cubit.dart';
 import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads.dart';
 import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads.dart';
@@ -41,17 +43,17 @@ class _MyAdsPageState extends State<MyAdsPage> {
                     Container(
                       height: 40,
                       width: 6,
-                      decoration: BoxDecoration(color: Color(0xff9D7D43)),
+                      decoration: BoxDecoration(color: MyColor.myTitleColor),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 14.0),
+                      padding: const EdgeInsets.only(left: 14.0,right: 8),
                       child: Text(
-                        "My Ads",
+                        "myAds".tr(),
                         style: GoogleFonts.alegreyaSansSc(
                             textStyle: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff263A27))),
+                                color: MyColor.myTitleColor)),
                       ),
                     ),
                     
@@ -63,9 +65,9 @@ class _MyAdsPageState extends State<MyAdsPage> {
                 child: BlocBuilder<MyAdsPageCubit, MyAdsPageState>(
                   builder: (context, state) {
                     if (state is MyAdsPageLoading) {
-                      return const Center(
+                      return  Center(
                           child: CircularProgressIndicator(
-                        color: Colors.brown,
+                        color: MyColor.myDark,
                       ));
                     } else if (state is MyAdsPageSuccess) {
                       final ads = state.userAdsResponse.userAds;
@@ -112,9 +114,9 @@ class _MyAdsPageState extends State<MyAdsPage> {
                       );
                     } else if (state is MyAdsPageError) {
                       print(state.error);
-                      return Center(child: Text("Error: ${state.error}"));
+                      return Center(child: Text(""));
                     } else if (state is MyAdsPageEmpty) {
-                      return const Center(child: Text("No Ads Found"));
+                      return  Center(child: Text("noData".tr()));
                     }
                     return Container();
                   },

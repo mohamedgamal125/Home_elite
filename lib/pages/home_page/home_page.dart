@@ -6,6 +6,8 @@ import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 import 'package:home_elite/tabs/main_tab_cubit/maintab_cubit.dart';
 import 'package:home_elite/tabs/profile_tab/profile_tab_cubit.dart';
 
+import '../../Theming/myTheme_data.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -32,10 +34,10 @@ class HomePage extends StatelessWidget {
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.shifting,
               unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.brown,
+              selectedItemColor: MyColor.myDark,
               currentIndex: cubit.current_indx,
               selectedIconTheme: IconThemeData(
-                color: Colors.brown,
+                color: MyColor.myDark,
               ),
               items: cubit.bottomItems,
               onTap: (index) {

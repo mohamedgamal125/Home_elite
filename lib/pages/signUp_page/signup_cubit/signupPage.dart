@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/pages/signUp_page/signup_cubit/signup_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/pages/signUp_page/signup_cubit/signup_state.dart';
@@ -43,7 +45,7 @@ class SignupPage extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     backgroundColor: Colors.red,
-                    content: Text("Something Wrong Happen")),
+                    content: Text("errorWhileLogin".tr())),
               );
 
             }
@@ -54,13 +56,13 @@ class SignupPage extends StatelessWidget {
               child: Stack(
                 children: [
                   Image.asset(
-                    "assets/images/image.jpg",
+                    "assets/images1/background_new.jpg",
                     fit: BoxFit.fill,
                     height: deviceHeight,
                     width: deviceWidth,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 36, top: 80),
+                    padding: EdgeInsets.only(left: 36, top: 80,right: 12),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -71,12 +73,12 @@ class SignupPage extends StatelessWidget {
                                 height: 40,
                                 width: 6,
                                 decoration:
-                                BoxDecoration(color: Color(0xff9D7D43)),
+                                BoxDecoration(color: MyColor.myTitleColor),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 14.0),
+                                padding: const EdgeInsets.only(left: 14.0,right: 6),
                                 child: Text(
-                                  "Sign up",
+                                  "signup".tr(),
                                   style: GoogleFonts.alegreyaSansSc(
                                     textStyle: TextStyle(
                                         fontSize: 30,
@@ -88,19 +90,19 @@ class SignupPage extends StatelessWidget {
                             ],
                           ),
                           CustomTextField(
-                            label: "Username",
+                            label: "userName".tr(),
                             onChanged: (value) {
                               cubit.userNameController.text = value;
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Username is required';
+                                return 'invalidData'.tr();
                               }
                               return null;
                             },
                           ),
                           CustomTextField(
-                            label: "Email",
+                            label: "emailAddress".tr(),
                             onChanged: (value) {
                               cubit.emailController.text = value;
                             },
@@ -110,14 +112,14 @@ class SignupPage extends StatelessWidget {
                             },
                           ),
                           CustomTextField(
-                            label: "Password",
+                            label: "password".tr(),
                             obscureText: true,
                             onChanged: (value) {
                               cubit.passwordController.text = value;
                             },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Password is required';
+                                return 'invalidData'.tr();
                               }
                               return null;
                             },
@@ -129,7 +131,10 @@ class SignupPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Adderss",style: GoogleFonts.alegreyaSansSc(fontWeight: FontWeight.bold,fontSize: 16)),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 28.0),
+                                  child: Text("address".tr(),style: GoogleFonts.alegreyaSansSc(fontWeight: FontWeight.bold,fontSize: 16)),
+                                ),
                                 Padding(
                                   padding: EdgeInsets.only(right: 25.0),
                                   child: Container(
@@ -145,11 +150,11 @@ class SignupPage extends StatelessWidget {
                                           fillColor: Colors.white,
                                           filled: true,
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.brown),
+                                            borderSide: BorderSide(color: MyColor.myDark),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.brown, width: 2.0),
+                                            borderSide: BorderSide(color: MyColor.myDark, width: 2.0),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                         ),
@@ -181,8 +186,8 @@ class SignupPage extends StatelessWidget {
 
 
                                   contentPadding: EdgeInsets.only(left: 8,right: 8,bottom: 80),
-                                  focusColor: Colors.brown,
-                                  labelText: 'Phone Number',
+                                  focusColor: MyColor.myDark,
+                                  labelText: 'phone'.tr(),
                                   labelStyle: GoogleFonts.alegreyaSansSc(fontSize: 16,fontWeight: FontWeight.bold),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
@@ -201,7 +206,7 @@ class SignupPage extends StatelessWidget {
                           ),
                           state is RegisterLoading
                               ?
-                          CircularProgressIndicator(color: Colors.brown,)
+                          CircularProgressIndicator(color:MyColor.myDark,)
                               : InkWell(
                             onTap: () {
                               if (_formKey.currentState?.validate() ?? false) {
@@ -214,25 +219,22 @@ class SignupPage extends StatelessWidget {
                               width: 331,
                               height: 44,
                               decoration: BoxDecoration(
-                                color: Color(0xff9D7D43), // Background color
+                                color: MyColor.myDark, // Background color
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                    color: Color(0xff9D7D43)), // Border color
+                                    color: MyColor.myDark), // Border color
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Next",
+                                    "next".tr(),
                                     style: GoogleFonts.alegreyaSansSc(
                                       textStyle: TextStyle(
                                           color: Colors.white, fontSize: 18),
                                     ),
                                   ),
-                                  SizedBox(width: 8),
-                                  // Add some spacing between the text and the image
-                                  Image.asset("assets/images/arrow.png",
-                                      width: 22, height: 22),
+
                                 ],
                               ),
                             ),

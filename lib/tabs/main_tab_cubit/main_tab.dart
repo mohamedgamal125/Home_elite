@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 
+import '../../Theming/myTheme_data.dart';
 import '../../models/propertyType_model.dart';
 
 class MainTab extends StatefulWidget {
@@ -57,8 +59,7 @@ class _MainTabState extends State<MainTab> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
+    return SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +71,7 @@ class _MainTabState extends State<MainTab> {
                     height: 200,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assets/images/house_background.png"),
+                        image: AssetImage("assets/images1/beach house.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -90,10 +91,10 @@ class _MainTabState extends State<MainTab> {
                             initialLabelIndex: selectedIndex,
                             cornerRadius: 20.0,
                             activeFgColor: Colors.black,
-                            inactiveBgColor: Color(0xffB9AD97),
-                            inactiveFgColor: Colors.black.withOpacity(0.4),
+                            inactiveBgColor: MyColor.myDark,
+                            inactiveFgColor: Colors.white,
                             totalSwitches: 2,
-                            labels: ['Buy', 'Rent'],
+                            labels: ['buy'.tr(), 'rent'.tr()],
                             fontSize: 12,
                             activeBgColors: [
                               [Colors.white],
@@ -114,19 +115,19 @@ class _MainTabState extends State<MainTab> {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.8),
-                              border: Border.all(color: Colors.brown),
+                              border: Border.all(color: MyColor.myDark),
                               borderRadius: BorderRadius.circular(18),
                             ),
                             child: TextField(
                               controller: searchController,
-                              cursorColor: Colors.brown,
+                              cursorColor:MyColor.myDark,
                               onChanged: (value) {
                                 setState(() {
                                   searchQuery = value.toLowerCase();
                                 });
                               },
                               decoration: InputDecoration(
-                                hintText: 'City',
+                                hintText: 'city'.tr(),
                                 hintStyle: GoogleFonts.akayaTelivigala(
                                     color: Colors.grey),
                                 border: InputBorder.none,
@@ -149,17 +150,17 @@ class _MainTabState extends State<MainTab> {
                         Container(
                           height: 40,
                           width: 4,
-                          decoration: BoxDecoration(color: Color(0xff9D7D43)),
+                          decoration: BoxDecoration(color: MyColor.myTitleColor),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 14.0),
+                          padding: const EdgeInsets.only(left: 14.0,right: 8),
                           child: Text(
-                            "Property Types",
+                            "propertyType".tr(),
                             style: GoogleFonts.alegreyaSansSc(
                               textStyle: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.black),
+                                  color: MyColor.myTitleColor),
                             ),
                           ),
                         ),
@@ -177,50 +178,56 @@ class _MainTabState extends State<MainTab> {
                         if (state is MaintabLoading) {
                           return Center(
                             child: CircularProgressIndicator(
-                              color: Colors.brown,
+                              color: MyColor.myDark,
                             ),
                           );
                         } else if (state is MaintabSuccess) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 12),
-                            child: Row(
-                              children: state.response.map((propertyType) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      bottom: 8.0, right: 12),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // Set the selected property type
-                                      setState(() {
-                                        selectedPropertyType = propertyType.propertyType.toLowerCase();
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Image(
-                                          image: propertyType.propertyType == 'appartment'
-                                              ? AssetImage(
-                                              "assets/icons/Apartment_icon.png")
-                                              : AssetImage(
-                                              "assets/icons/Villa_icon.png"),
-                                          width: 30,
-                                          height: 30,
-                                        ),
-                                        Text(propertyType.propertyType,
-                                            style: GoogleFonts.abyssinicaSil(
-                                                fontSize: 12,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w100)),
-                                      ],
+                          return Container(
+                            color: Colors.transparent,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 12),
+                              child: Row(
+                                children: state.response.map((propertyType) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 8.0, right: 12),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        // Set the selected property type
+                                        setState(() {
+                                          selectedPropertyType = propertyType.propertyType.toLowerCase();
+                                        });
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Image(
+                                            image: propertyType.propertyType == 'appartment'
+                                                ? AssetImage(
+                                                "assets/images1/icons/Apartment_icon1.png")
+                                                : AssetImage(
+                                                "assets/images1/icons/Villa_icon1.png"),
+                                            width: 30,
+                                            height: 30,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child: Text(propertyType.propertyType,
+                                                style: GoogleFonts.abyssinicaSil(
+                                                    fontSize: 12,
+                                                    color: MyColor.myTitleColor,
+                                                    fontWeight: FontWeight.w100)),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           );
                         } else {
-                          return Center(child: Text("No data available"));
+                          return Center(child: Text("noData".tr()));
                         }
                       },
                     ),
@@ -229,17 +236,17 @@ class _MainTabState extends State<MainTab> {
                         Container(
                           height: 40,
                           width: 4,
-                          decoration: BoxDecoration(color: Color(0xff9D7D43)),
+                          decoration: BoxDecoration(color:MyColor.myTitleColor),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 14.0),
+                          padding: const EdgeInsets.only(left: 14.0,right: 8),
                           child: Text(
-                            "Best views property",
+                            "bestProperty".tr(),
                             style: GoogleFonts.alegreyaSansSc(
                               textStyle: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.black),
+                                  color: MyColor.myTitleColor),
                             ),
                           ),
                         ),
@@ -252,16 +259,16 @@ class _MainTabState extends State<MainTab> {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(
                               child: CircularProgressIndicator(
-                                color: Colors.brown,
+                                color: MyColor.myDark,
                               ));
                         } else if (snapshot.hasError) {
                           return Center(
                               child: CircularProgressIndicator(
-                                color: Colors.brown,
+                                color: MyColor.myDark,
                               ));
                         } else if (!snapshot.hasData ||
                             snapshot.data!.isEmpty) {
-                          return Center(child: Text('No best ads available'));
+                          return Center(child: Text('noBestAds'.tr()));
                         } else {
                           final ads = snapshot.data!;
                           final filteredAds = ads.where((ad) {
@@ -306,8 +313,7 @@ class _MainTabState extends State<MainTab> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   Future<List<AdModel>> fetchBestAds() async {

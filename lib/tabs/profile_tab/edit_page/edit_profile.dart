@@ -1,9 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/tabs/profile_tab/edit_page/edit_profile_cubit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../../../Theming/myTheme_data.dart';
 
 class EditProfile extends StatelessWidget {
   const EditProfile({super.key});
@@ -22,17 +25,17 @@ class EditProfile extends StatelessWidget {
                   Container(
                     height: 40,
                     width: 6,
-                    decoration: BoxDecoration(color: Color(0xff9D7D43)),
+                    decoration: BoxDecoration(color: MyColor.myTitleColor),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 14.0),
                     child: Text(
-                      "Edit Profile",
+                      "editProfile".tr(),
                       style: GoogleFonts.alegreyaSansSc(
                           textStyle: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff263A27))),
+                              color: MyColor.myTitleColor)),
                     ),
                   ),
                 ],
@@ -55,14 +58,14 @@ class EditProfile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Name  ",
+                              "name".tr(),
                               style: GoogleFonts.alegreyaSansSc(),
                             ),
                             Container(
                               height: 32,
                               child: TextFormField(
                                 controller: cubit.name,
-                                cursorColor: Colors.brown,
+                                cursorColor: MyColor.myDark,
                                 onChanged: (value) {
                                   cubit.name.text = value;
                                 },
@@ -97,15 +100,15 @@ class EditProfile extends StatelessWidget {
                           width: double.infinity,
                           height: 70,
                           child: IntlPhoneField(
-                            cursorColor: Colors.brown,
+                            cursorColor:MyColor.myDark,
                             controller: cubit.phone,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   left: 8, right: 8, bottom: 80),
-                              focusColor: Colors.brown,
+                              focusColor: MyColor.myDark,
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16)),
-                              labelText: 'Phone Number',
+                              labelText: 'phone'.tr(),
                               labelStyle: GoogleFonts.alegreyaSansSc(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -135,7 +138,7 @@ class EditProfile extends StatelessWidget {
                                   context: context,
                                   dialogType: DialogType.success,
                                   animType: AnimType.rightSlide,
-                                  title: 'you information Updated Successfully',
+                                  title: 'updateInfoSuccess'.tr(),
 
                                   btnOkOnPress: () {
                                     cubit.clearData();
@@ -146,15 +149,15 @@ class EditProfile extends StatelessWidget {
                               }
                         },
                         builder: (context, state) {
-                          return state is EditeProfileLoading?Center(child: CircularProgressIndicator(color: Colors.brown,),):Container(
+                          return state is EditeProfileLoading?Center(child: CircularProgressIndicator(color: MyColor.myDark,),):Container(
                             margin: EdgeInsets.only(top: 35, right: 20),
                             width: 331,
                             height: 44,
                             decoration: BoxDecoration(
-                              color: Color(0xff9D7D43), // Background color
+                              color: MyColor.myDark, // Background color
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: Color(0xff9D7D43)), // Border color
+                                  color: MyColor.myDark), // Border color
                             ),
                             child: InkWell(
                               onTap: () {
@@ -164,7 +167,7 @@ class EditProfile extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Save",
+                                    "save".tr(),
                                     style: GoogleFonts.alegreyaSansSc(
                                       textStyle: TextStyle(
                                           color: Colors.white, fontSize: 18),

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/models/propertyType_model.dart';
+import '../../Theming/myTheme_data.dart';
 import '../../models/userAd.dart';
 
 class PropertyCard2 extends StatelessWidget {
@@ -65,7 +67,7 @@ class PropertyCard2 extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              "${userAd.salary} EGP",
+              "${userAd.salary} ${'Egp'.tr()}",
               style: GoogleFonts.arima(fontSize: 26),
             ),
           ),
@@ -145,7 +147,7 @@ class PropertyCard2 extends StatelessWidget {
 
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Delete",style: GoogleFonts.alegreyaSansSc(color: Colors.red,fontSize: 14,fontWeight: FontWeight.bold),),
+                        Text("delete".tr(),style: GoogleFonts.alegreyaSansSc(color: Colors.red,fontSize: 14,fontWeight: FontWeight.bold),),
                         SizedBox(width: 6,),
                         Icon(CupertinoIcons.delete,size: 18,color: Colors.red,),
 
@@ -161,7 +163,7 @@ class PropertyCard2 extends StatelessWidget {
                     width:155 ,
                     height: 35,
                     decoration:BoxDecoration(
-                        border: Border.all(color: Colors.brown,width: 1.5),
+                        border: Border.all(color:  MyColor.myDark,width: 1.5),
                         borderRadius: BorderRadius.circular(16)
                     ) ,
 
@@ -169,9 +171,9 @@ class PropertyCard2 extends StatelessWidget {
 
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Edit",style: GoogleFonts.alegreyaSansSc(color: Colors.brown,fontSize: 14,fontWeight: FontWeight.bold),),
+                        Text("edit".tr(),style: GoogleFonts.alegreyaSansSc(color: MyColor.myDark,fontSize: 14,fontWeight: FontWeight.bold),),
                         SizedBox(width: 6,),
-                        Icon(Icons.edit_outlined,size: 18,color: Colors.brown,),
+                        Icon(Icons.edit_outlined,size: 18,color: MyColor.myDark,),
 
                       ],
                     ),

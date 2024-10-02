@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/shared/components/property_card.dart';
 import 'package:home_elite/tabs/favorite_tab/favorite_tab_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,17 +45,17 @@ class _FavoriteTabState extends State<FavoriteTab> {
                 Container(
                   height: 40,
                   width: 6,
-                  decoration: BoxDecoration(color: Color(0xff9D7D43)),
+                  decoration: BoxDecoration(color: MyColor.myTitleColor),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 14.0),
+                  padding: const EdgeInsets.only(left: 14.0,right: 8),
                   child: Text(
-                    "Saved properties",
+                    "savedProperty".tr(),
                     style: GoogleFonts.alegreyaSansSc(
                       textStyle: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff263A27),
+                        color: MyColor.myTitleColor,
                       ),
                     ),
                   ),
@@ -67,15 +69,15 @@ class _FavoriteTabState extends State<FavoriteTab> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
-                    color: Colors.brown,
+                    color: MyColor.myDark,
                   ),
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                  child: CircularProgressIndicator(color: Colors.brown),
+                  child: CircularProgressIndicator(color: MyColor.myDark),
                 );
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Center(child: Text('No favorite ads available'));
+                return Center(child: Text('noFavorite'.tr()));
               } else {
                 final ads = snapshot.data!;
                 return Expanded(

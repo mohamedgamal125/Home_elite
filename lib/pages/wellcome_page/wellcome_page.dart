@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/Theming/myTheme_data.dart';
 import 'package:home_elite/pages/signUp_page/signup_cubit/signupPage.dart';
 import 'package:home_elite/pages/wellcome_page/welcome_cubit.dart';
 import 'package:home_elite/pages/wellcome_page/welcome_state.dart';
@@ -22,7 +24,7 @@ class WellComePage extends StatelessWidget {
           child: Stack(
             children: [
               Image.asset(
-                "assets/images/image.jpg",
+                "assets/images1/background_new.jpg",
                 fit: BoxFit.fill,
                 height: deviceHeight,
                 width: deviceWidth,
@@ -33,7 +35,7 @@ class WellComePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset("assets/images/logo.png",
+                    Image.asset("assets/images1/newLogo.png",
                         width: 230, height: 230),
 
                     Row(
@@ -42,12 +44,12 @@ class WellComePage extends StatelessWidget {
                         Container(
                           height: 81,
                           width: 5,
-                          decoration: BoxDecoration(color: Color(0xff9D7D43)),
+                          decoration: BoxDecoration(color:MyColor.myTitleColor),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 14.0),
+                          padding: const EdgeInsets.only(left: 14.0,right: 8),
                           child:  Text(
-                            "Get your Home in \n  just few clicks.",
+                            "welcome".tr(),
                             style: GoogleFonts.alegreyaSansSc(
                               textStyle: TextStyle(fontSize: 20),
                             ),
@@ -77,7 +79,7 @@ class WellComePage extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                                 backgroundColor: Colors.red,
-                                content: Text(state.error)),
+                                content: Text("errorWhileLogin".tr())),
                           );
                           print(state.error);
                         }
@@ -97,7 +99,7 @@ class WellComePage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 15),
                                 shape: RoundedRectangleBorder(
-                                  side: BorderSide(color: Color(0xff9D7D43)),
+                                  side: BorderSide(color: MyColor.myDark),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
@@ -109,7 +111,7 @@ class WellComePage extends StatelessWidget {
                                     width: 20,
                                   ),
                                   Text(
-                                    "Continue With Gmail",
+                                    "signupG".tr(),
                                     style: GoogleFonts.alegreyaSansSc(
                                         textStyle: TextStyle(
                                             fontSize: 16,
@@ -134,11 +136,11 @@ class WellComePage extends StatelessWidget {
                         height: 59,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff9D7D43),
+                            backgroundColor: MyColor.myDark,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 15),
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Color(0xff9D7D43)),
+                              side: BorderSide(color: MyColor.myDark),
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
@@ -146,7 +148,7 @@ class WellComePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                "assets/images/image3.png",
+                                "assets/images1/email_logo.png",
                                 width: 40,
                                 height: 45,
                               ),
@@ -154,7 +156,7 @@ class WellComePage extends StatelessWidget {
                                 width: 13,
                               ),
                               Text(
-                                "Sign Up With Email",
+                                "signupE".tr(),
                                 style: GoogleFonts.alegreyaSansSc(
                                     textStyle: TextStyle(
                                         fontSize: 16,
@@ -176,7 +178,7 @@ class WellComePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Already have account? ",
+                            "haveAccount".tr(),
                             style: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.bold,
@@ -189,9 +191,9 @@ class WellComePage extends StatelessWidget {
                                   context, '/login');
                             },
                             child: Text(
-                              "Login",
+                              "login".tr(),
                               style: TextStyle(
-                                  color: Color(0xff9D7D43), fontSize: 13),
+                                  color: MyColor.myDark, fontSize: 13),
                             ),
                           )
                         ],

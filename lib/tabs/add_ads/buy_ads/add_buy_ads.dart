@@ -1,9 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+
+import '../../../Theming/myTheme_data.dart';
 
 class AddBuyAds extends StatefulWidget {
   final String? adId;
@@ -66,7 +69,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                       },
                       icon: Icon(Icons.arrow_back_ios_new)),
                   Text(
-                    isEdite?"Update Ads ":"Ad For Sale ",
+                    isEdite?"update".tr() : "adForSale".tr(),
                     style: GoogleFonts.roboto(fontSize: 18),
                   )
                 ],
@@ -105,13 +108,13 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                   },
                 ),
                 Text(
-                  "Add Images",
+                  "addImage".tr(),
                   style: GoogleFonts.alegreyaSansSc(fontSize: 20),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 50, right: 35),
                   child: Text(
-                    "5mb maximum file size accepted in the following format: .jpg, .jpeg, .png",
+                    "imageDes".tr(),
                     style: TextStyle(fontSize: 10, color: Colors.grey),
                   ),
                 ),
@@ -235,7 +238,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Name * ",
+                                  "name".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -277,7 +280,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Type *",
+                                "type".tr(),
                                 style: GoogleFonts.alegreyaSansSc(),
                               ),
                               Container(
@@ -289,7 +292,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                     cubit.propertyType = value;
                                   },
                                   decoration: InputDecoration(
-                                    hintText: "Choose",
+                                    hintText: "choose".tr(),
                                     hintStyle: GoogleFonts.alegreyaSansSc(
                                       fontSize: 16,
                                     ),
@@ -334,7 +337,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Area (M\u00B2) * ",
+                                  "area".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -379,7 +382,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "BedRooms * ",
+                                  "bedRooms".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 SizedBox(
@@ -433,7 +436,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "BathRooms * ",
+                                  "bathRooms".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -478,7 +481,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Levels * ",
+                                  "level".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -523,7 +526,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Ad Title * ",
+                                  "adTitle".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -564,7 +567,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Description * ",
+                                  "desc".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -605,7 +608,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Location * ",
+                                  "location".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -652,7 +655,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                   focusColor: Colors.brown,
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(16)),
-                                  labelText: 'Phone Number',
+                                  labelText: 'phone'.tr(),
                                   labelStyle: GoogleFonts.alegreyaSansSc(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -683,7 +686,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Payment Option * ",
+                                  "paymentOption".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -700,7 +703,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           decoration: BoxDecoration(
                                             color:
                                             cubit.paymentOption == 'cash'
-                                                ? Colors.brown
+                                                ? MyColor.myDark
                                                 : Colors.transparent,
                                             borderRadius:
                                             BorderRadius.circular(12),
@@ -710,7 +713,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              "Cash",
+                                              "cash".tr(),
                                               style:
                                               GoogleFonts.alegreyaSansSc(
                                                 color: cubit.paymentOption ==
@@ -738,7 +741,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           decoration: BoxDecoration(
                                             color: cubit.paymentOption ==
                                                 'installment'
-                                                ? Colors.brown
+                                                ? MyColor.myDark
                                                 : Colors.transparent,
                                             borderRadius:
                                             BorderRadius.circular(12),
@@ -748,7 +751,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              "Installment",
+                                              "installment".tr(),
                                               style:
                                               GoogleFonts.alegreyaSansSc(
                                                 color: cubit.paymentOption ==
@@ -776,14 +779,14 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Price * ",
+                                  "price".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
                                   height: 32,
                                   child: TextFormField(
                                     controller: cubit.price,
-                                    cursorColor: Colors.brown,
+                                    cursorColor: MyColor.myDark,
                                     onChanged: (value) {
                                       cubit.price.text = value;
                                     },
@@ -818,14 +821,14 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Final Total * ",
+                                  "finalTotal".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
                                   height: 32,
                                   child: TextFormField(
                                     controller: cubit.finalTotal,
-                                    cursorColor: Colors.brown,
+                                    cursorColor: MyColor.myDark,
                                     onChanged: (value) {
                                       cubit.finalTotal.text = value;
                                     },
@@ -861,7 +864,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Available Option * ",
+                                  "AvailableOption".tr(),
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
@@ -878,7 +881,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           decoration: BoxDecoration(
                                             color:
                                             cubit.availableOption == 'true'
-                                                ? Colors.brown
+                                                ? MyColor.myDark
                                                 : Colors.transparent,
                                             borderRadius:
                                             BorderRadius.circular(12),
@@ -888,7 +891,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              "true",
+                                              "true".tr(),
                                               style:
                                               GoogleFonts.alegreyaSansSc(
                                                 color: cubit.availableOption ==
@@ -916,7 +919,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           decoration: BoxDecoration(
                                             color: cubit.availableOption ==
                                                 'false'
-                                                ? Colors.brown
+                                                ? MyColor.myDark
                                                 : Colors.transparent,
                                             borderRadius:
                                             BorderRadius.circular(12),
@@ -926,7 +929,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              "false",
+                                              "false".tr(),
                                               style:
                                               GoogleFonts.alegreyaSansSc(
                                                 color: cubit.availableOption ==
@@ -954,7 +957,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                   context: context,
                                   dialogType: DialogType.success,
                                   animType: AnimType.rightSlide,
-                                  title: 'Ads Added Successfully',
+                                  title: 'successAdd'.tr(),
 
                                   btnOkOnPress: () {
                                     cubit.clearAllData();
@@ -963,7 +966,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               } else if (state is AddBuyAdFailure) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text("Can not add Ads! "),
+                                    content: Text("cannot add".tr()),
                                     backgroundColor: Colors.red,
                                   ),
                                 );
@@ -972,7 +975,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                 {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text("Can not Update Ads! "),
+                                      content: Text("cannot update".tr()),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -983,7 +986,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                     context: context,
                                     dialogType: DialogType.success,
                                     animType: AnimType.rightSlide,
-                                    title: 'Ads Updated Successfully',
+                                    title: 'successUpdate'.tr(),
 
                                     btnOkOnPress: () {
                                       cubit.clearAllData();
@@ -995,7 +998,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                               return state is AddBuyAdsLoading||  state is UpdateBuyLoading
                                   ? Center(
                                 child: CircularProgressIndicator(
-                                  color: Colors.brown,
+                                  color: MyColor.myDark,
                                 ),
                               )
                                   : InkWell(
@@ -1018,7 +1021,7 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                         .showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                            "Please Fill all data "),
+                                            "fillData".tr()),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
@@ -1030,20 +1033,19 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                   width: 350,
                                   height: 44,
                                   decoration: BoxDecoration(
-                                    color: Color(0xff9D7D43),
+                                    color:MyColor.myDark,
                                     // Background color
                                     borderRadius:
                                     BorderRadius.circular(12),
                                     border: Border.all(
-                                        color: Color(
-                                            0xff9D7D43)), // Border color
+                                        color:MyColor.myDark), // Border color
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
                                     MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                       isEdite? "Update":"Post",
+                                       isEdite? "update".tr():"post".tr(),
                                         style:
                                         GoogleFonts.alegreyaSansSc(
                                           textStyle: TextStyle(
