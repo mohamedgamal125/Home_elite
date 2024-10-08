@@ -27,8 +27,11 @@
   "propertyType":"نوع الوحده",
   "buy": "شراء",
   "rent": "تأجير",
-  "villa":"قيلا",
+  "villa":"فيلا",
   "appartment": "وحده",
+  "library": "مكتبة",
+  "office": "مكتب",
+
   "bestProperty": "افضل التقيمات",
   "city": "المدينه",
   "email": "الايميل",
@@ -106,5 +109,30 @@
 
   "errorWhileLogin": "حدث خطأ.",
   "invalidData": "يرجى إدخال بيانات صحيحة",
-  "verificationCom": "تم التحقق بنجاح"
+  "verificationCom": "تم التحقق بنجاح",
+
+
+  "cairo": "القاهرة",
+  "alexandria": "الإسكندرية",
+  "giza": "الجيزة",
+  "sharm_el_sheikh": "شرم الشيخ",
+  "luxor": "الأقصر",
+  "aswan": "أسوان",
+  "port_said": "بورسعيد",
+  "suez": "السويس",
+  "ismailia": "الإسماعيلية",
+  "tanta": "طنطا",
+  "mansoura": "المنصورة",
+  "zagazig": "الزقازيق",
+  "minya": "المنيا",
+  "assiut": "أسيوط",
+
+
+
+  "price_rage": "نطاق السعر",
+  "from": "من",
+  "to": "إلى",
+  "apply": "تطبيق",
+  "bedrooms": "غرف النوم",
+  "bathrooms": "الحمامات"
 }

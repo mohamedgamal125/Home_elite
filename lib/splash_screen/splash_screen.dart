@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:home_elite/pages/language_screen/language_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/home_page/home_page.dart';
@@ -19,15 +20,28 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Ticker
     final SharedPreferences pref = await SharedPreferences.getInstance();
     final String? token= pref.getString('token');
 
+    final bool? isLangSelected= pref.getBool("isLanguageSelected");
     print("==========Token=========");
     print(token);
+
     setState(() {
       if(token !=null && token.isNotEmpty)
       {
         startPage=HomePage();
+
       }
+      else if(isLangSelected==false || isLangSelected==null)
+        {
+          startPage=LanguageScreen();
+          print("===================I am in Language Screen==================");
+        }
       else
-        startPage=LoginPage();
+        {
+
+          startPage=LoginPage();
+          print("===================I am in Login $isLangSelected==================");
+        }
+
     });
   }
   @override

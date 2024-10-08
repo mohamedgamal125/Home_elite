@@ -1,5 +1,5 @@
 {
-  "welcome": "Get your Home in just few clicks.",
+  "welcome": "Get your Home in\njust few clicks.",
   "signupG": "Sign up with gmail",
   "signupE": "Sign up with email",
 
@@ -26,8 +26,12 @@
   "propertyType":"Property Type",
   "buy": "buy",
   "rent": "Rent",
+
   "villa":"Villa",
   "appartment": "Appartment",
+  "library": "Library",
+  "office": "Office",
+
   "bestProperty": "Best Views Property",
   "city": "city",
   "email": "Email",
@@ -102,7 +106,34 @@
 
   "errorWhileLogin": "An error occurred.",
   "invalidData": "Please Enter valid data",
-  "verificationCom": "Verification Complete"
+  "verificationCom": "Verification Complete",
+
+  "cairo": "Cairo",
+  "alexandria": "Alexandria",
+  "giza": "Giza",
+  "sharm_el_sheikh": "Sharm El Sheikh",
+  "luxor": "Luxor",
+  "aswan": "Aswan",
+  "port_said": "Port Said",
+  "suez": "Suez",
+  "ismailia": "Ismailia",
+  "tanta": "Tanta",
+  "mansoura": "Mansoura",
+  "zagazig": "Zagazig",
+  "minya": "Minya",
+  "assiut": "Assiut",
+
+
+
+  "price_rage": "Price Range",
+  "from": "From",
+  "to": "To",
+  "apply":"Apply",
+  "bedrooms": "Bedrooms",
+  "bathrooms": "Bathrooms"
+
+
+
 
 
 

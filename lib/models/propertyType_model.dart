@@ -31,6 +31,10 @@ class PropertytypeModel {
     required this.propertyType,
   });
 
+  @override
+  String toString() {
+    return propertyType;  // You can return the property type directly here
+  }
   factory PropertytypeModel.fromJson(Map<String, dynamic> json) {
     return PropertytypeModel(
       id: json['_id'],

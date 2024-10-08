@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/propertyType_model.dart';
 import '../../../models/userAd.dart';
 
 part 'add_buy_ads_state.dart';
@@ -31,24 +32,68 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
   var finalTotal = TextEditingController();
   String? paymentOption;
   String? availableOption;
-
+  List<PropertyType> propertyTypeStrings=[];
   List<File> selectedImages = [];
-
+  List<String> propertyStrings=[];
   static AddBuyAdsCubit get(context) => BlocProvider.of(context);
 
   List<String> imageUrls = [];
 
-  // todo this list from get properties api
+
   final List<String> propertyTypes = [
     'appartment'.tr(),
     'villa'.tr(),
   ];
 
-  final Map<String, String> type = {
-    "Apartments": "66da68ebb3dc9ecda5fedfe6",
-    "villa": "66f00017eccfcd04a54e906f",
-  };
 
+  String getTranslatedPropertyType(String propertyType) {
+    switch (propertyType) {
+      case 'appartment':
+        return 'appartment'.tr();
+      case 'villa':
+        return 'villa'.tr();
+      case 'Library':
+        return 'library'.tr();
+      case 'Office':
+        return 'office'.tr();
+      default:
+        return propertyType; // Return the original if no translation is found
+    }
+  }
+  List<PropertytypeModel> properties=[];
+  Future<void> getPropertyTypes() async {
+
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final Token = prefs.get("token");
+      print("======================Token${Token}=");
+      final response = await Dio().get(
+          "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/properties",
+          options: Options(headers: {'Authorization': 'Bearer $Token'}));
+
+      print(response.data);
+      //
+      properties = (response.data as List)
+          .map((propertyJson) => PropertytypeModel.fromJson(propertyJson))
+          .toList();
+
+      // Create a list of property types
+      propertyStrings = properties.map((property) => property.propertyType).toList();
+
+      // print('=======================================');
+      // print(propertyStrings);
+      //
+      // PrintData();
+      //
+      // print('=======================================');
+      // print(propertyStrings);
+      // PrintData();
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
   void removeImageUrl(int index) {
     imageUrls.removeAt(index);
     emit(UpdateImageState()); // Update state after removing image
@@ -62,6 +107,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
     print("===========================================");
     print("name:${name.text}");
     print("Property type:$propertyType");
+    print(propertyTypeStrings);
     print("Area: ${area.text}");
     print("bedRooms: ${bedRooms.text}");
     print("bathRooms: ${bathRooms.text}");
@@ -124,6 +170,21 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
   }
 
   Future<void> addAd() async {
+    
+    String? id;
+    for(PropertytypeModel p in properties)
+      {
+        if(p.propertyType==propertyType)
+          {
+            print("==============IDS +++${p.id}");
+            id= p.id;
+          }
+      }
+
+
+    print("================================================================================================================");
+    print("================================================================================================================");
+    print("=============================================Property ID is ${id}===================================================================");
     emit(AddBuyAdsLoading());
     try {
       print('========Images Selected=====${selectedImages.length}');
@@ -141,7 +202,7 @@ class AddBuyAdsCubit extends Cubit<AddBuyAdsState> {
       final formData = FormData.fromMap({
         'name': name.text,
         'salary': price.text,
-        'propertyType':(propertyType=="Villa") ? "66f00017eccfcd04a54e906f" : "66da68ebb3dc9ecda5fedfe6",
+        'propertyType':id,
         // Update this based on your logic
         'phone': '0' + phone.text,
         'email': email,

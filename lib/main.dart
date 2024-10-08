@@ -28,6 +28,7 @@ void main() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? selectedLanguage = prefs.getString('selectedLanguage');
 
+
   Locale initialLocale;
   if (selectedLanguage == 'Arabic') {
     initialLocale = Locale('ar');

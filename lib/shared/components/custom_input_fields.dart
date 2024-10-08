@@ -44,11 +44,11 @@ class CustomTextField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 0, right: 25),
             child: SizedBox(
-              width: width ?? 331, // Use provided width or default
+              width: width ?? 331,
               child: Column(
                 children: [
                   SizedBox(
-                    height: height ?? 42, // Set constant height for the field
+                    height: height ?? 50, // Set constant height for the field
                     child: TextFormField(
                       obscureText: obscureText,
                       cursorColor:MyColor.myDark,

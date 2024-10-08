@@ -30,11 +30,7 @@ class SignupPage extends StatelessWidget {
         body: BlocConsumer<SignupCubit, RegisterState>(
           listener: (context, state) {
             if (state is RegisterSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    backgroundColor: Colors.green,
-                    content: Text(state.response.message)),
-              );
+
               // Handle navigation or other actions if needed
               Navigator.pushReplacementNamed(context, "/signupVerification",arguments: {
 
@@ -73,7 +69,7 @@ class SignupPage extends StatelessWidget {
                                 height: 40,
                                 width: 6,
                                 decoration:
-                                BoxDecoration(color: MyColor.myTitleColor),
+                                BoxDecoration(color: MyColor.myDark),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 14.0,right: 6),
@@ -83,7 +79,7 @@ class SignupPage extends StatelessWidget {
                                     textStyle: TextStyle(
                                         fontSize: 30,
                                         fontWeight: FontWeight.w400,
-                                        color: Color(0xff263A27)),
+                                        color: MyColor.myDark),
                                   ),
                                 ),
                               ),

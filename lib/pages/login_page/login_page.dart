@@ -54,8 +54,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: deviceHeight,
                   width: deviceWidth,
                 ),
+
                 Padding(
-                  padding: EdgeInsets.only(top: 50, left: 36,right: 6),
+                  padding: EdgeInsets.only(top: 20, left: 36,right: 6),
                   child: BlocConsumer<LoginCubit, LoginState>(
                     listener: (context, state) {
                       if (state is LoginSuccess) {
@@ -80,25 +81,47 @@ class _LoginPageState extends State<LoginPage> {
                                 height: 40,
                                 width: 6,
                                 decoration:
-                                BoxDecoration(color: MyColor.myTitleColor),
+                                BoxDecoration(color: MyColor.myDark),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 14.0),
+                                padding:  EdgeInsets.only(left: 14.0),
                                 child: Text(
                                   "login".tr(),
                                   style: GoogleFonts.alegreyaSansSc(
                                       textStyle: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.w400,
-                                          color: Color(0xff263A27))),
+                                          color:  MyColor.myDark)),
                                 ),
                               )
                             ],
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                left: 15, right: 40, top: 40),
+                                left: 15, right: 40, top: 40,bottom: 20),
                             child: Image.asset("assets/images1/newLogo.png"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 28.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: Text("Developed By ",style: TextStyle(fontSize: 12,color: MyColor.myDark),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom:12,),
+                                  child: Image.asset("assets/images1/company (1).png",width: 100,height: 25,),
+
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: Text(" &Hassen",style: TextStyle(fontSize: 12,color: MyColor.myDark),),
+                                )
+                              ],
+                            ),
                           ),
                           CustomTextField(
                             label: "emailAddress".tr(),

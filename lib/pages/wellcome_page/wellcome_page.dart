@@ -13,7 +13,7 @@ import '../../services/navigation_service.dart';
 class WellComePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -30,42 +30,62 @@ class WellComePage extends StatelessWidget {
                 width: deviceWidth,
               ),
               Padding(
-                padding: EdgeInsets.only(),
+                padding:  EdgeInsets.only(top: 50),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset("assets/images1/newLogo.png",
-                        width: 230, height: 230),
+                        width: 230, height: 150),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0,top: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Text("Developed By ",style: TextStyle(fontSize: 12,color: MyColor.myDark),),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:12,),
+                            child: Image.asset("assets/images1/company (1).png",width: 100,height: 25,),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 81,
-                          width: 5,
-                          decoration: BoxDecoration(color:MyColor.myTitleColor),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 14.0,right: 8),
-                          child:  Text(
-                            "welcome".tr(),
-                            style: GoogleFonts.alegreyaSansSc(
-                              textStyle: TextStyle(fontSize: 20),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Text(" &Hassen",style: TextStyle(fontSize: 12,color: MyColor.myDark),),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only( top: 18.0,bottom: 18),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 8),
+                            height: 81,
+                            width: 5,
+                            decoration: BoxDecoration(color:MyColor.myDark),
+                          ),
+                          Padding(
+                            padding:  EdgeInsets.only(left: 18.0,right: 8),
+                            child:  Expanded(
+                              child: Text(
+                                "welcome".tr(),
+                                style: GoogleFonts.alegreyaSansSc(
+                                  textStyle: TextStyle(fontSize: 20),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(bottom: 12),
-                    //   child: Text(
-                    //     "Get your Home in \n  just few clicks.",
-                    //     style: GoogleFonts.alegreyaSansSc(
-                    //       textStyle: TextStyle(fontSize: 20),
-                    //     ),
-                    //   ),
-                    // ),
+
 
                     BlocConsumer<GoogleSignUpCubit, GoogleSignUpState>(
                       listener: (context, state) {
@@ -190,10 +210,13 @@ class WellComePage extends StatelessWidget {
                               Navigator.pushReplacementNamed(
                                   context, '/login');
                             },
-                            child: Text(
-                              "login".tr(),
-                              style: TextStyle(
-                                  color: MyColor.myDark, fontSize: 13),
+                            child: Padding(
+                              padding:  EdgeInsets.only(left: 6.0),
+                              child: Text(
+                                "login".tr(),
+                                style: TextStyle(
+                                    color: MyColor.myDark, fontSize: 13),
+                              ),
                             ),
                           )
                         ],

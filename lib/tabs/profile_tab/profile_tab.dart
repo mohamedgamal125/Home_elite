@@ -421,6 +421,7 @@ class _ProfileTabState extends State<ProfileTab> {
 
     // Change the app's language
     await context.setLocale(locale);
+    await prefs.setBool('isLanguageSelected', true);
 
     setState(() {
       _currentLanguage = language; // Update displayed language

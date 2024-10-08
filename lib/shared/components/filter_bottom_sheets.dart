@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -28,7 +29,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                     Image.asset("assets/icons/label_icon.png"),
                     SizedBox(width: 8),
                     Text(
-                      'Price Range',
+                      'price_rage'.tr(),
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -48,7 +49,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(bottom: 8,left: 4),
-                            labelText: "from",
+                            labelText: "from".tr(),
                             labelStyle: TextStyle(color: Colors.grey,fontSize: 12),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12)),
@@ -57,7 +58,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                       ),
                     ),
                     SizedBox(width: 16),
-                    Text('To',
+                    Text('to'.tr(),
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
                     SizedBox(width: 16),
                     Expanded(
@@ -69,7 +70,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(bottom: 8,left: 4),
-                            labelText: 'Any',
+                            labelText: '',
                             labelStyle: TextStyle(color: Colors.grey,fontSize: 12),
 
                             border: OutlineInputBorder(
@@ -82,7 +83,7 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                 ),
                 SizedBox(height: 16),
                 Container(
-                  height: 50,
+                  height: 53,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: MyColor.myDark,
@@ -95,10 +96,10 @@ void showPriceBottomSheet(BuildContext context, Function(String, String) onApply
                     ),
                     child: Center(
                       child: Text(
-                        "Apply",
+                        "apply".tr(),
                         style: GoogleFonts.alegreyaSansSc(
                             textStyle:
-                                TextStyle(color: Colors.white, fontSize: 16)),
+                                TextStyle(color: Colors.white, fontSize: 14)),
                       ),
                     ),
                     onPressed: () {
@@ -142,7 +143,7 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                     Image.asset("assets/icons/bed_icon2.png"),
                     SizedBox(width: 8),
                     Text(
-                      'Bedrooms',
+                      'bedrooms'.tr(),
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -170,7 +171,7 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                 ),
                 SizedBox(height: 16),
                 Container(
-                  height: 50,
+                  height: 53,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor:  MyColor.myDark,
@@ -183,7 +184,7 @@ void showBedsBottomSheet(BuildContext context, Function(String) onApply) {
                     ),
                     child: Center(
                       child: Text(
-                        "Apply",
+                        "apply".tr(),
                         style: GoogleFonts.alegreyaSansSc(
                           textStyle:
                               TextStyle(color: Colors.white, fontSize: 14),
@@ -227,7 +228,7 @@ void showBathsBottomSheet(BuildContext context, Function(String) onApply) {
                     Image.asset("assets/icons/bath_icon.png"),
                     SizedBox(width: 8),
                     Text(
-                      'Bathrooms',
+                      'bathrooms'.tr(),
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -268,7 +269,7 @@ void showBathsBottomSheet(BuildContext context, Function(String) onApply) {
                     ),
                     child: Center(
                       child: Text(
-                        "Apply",
+                        "apply".tr(),
                         style: GoogleFonts.alegreyaSansSc(
                           textStyle:
                               TextStyle(color: Colors.white, fontSize: 14),
@@ -325,7 +326,7 @@ void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
                             backgroundColor: isBuySelected ?  MyColor.myDark : Colors.grey[300], // Background color
                             foregroundColor: isBuySelected ? Colors.white : Colors.black, // Text color
                           ),
-                          child: Text("Buy"),
+                          child: Text("buy".tr()),
                         ),
                         SizedBox(width: 10), // Space between buttons
                         ElevatedButton(
@@ -339,14 +340,14 @@ void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
                             backgroundColor: !isBuySelected ?  MyColor.myDark: Colors.grey[300], // Background color
                             foregroundColor: !isBuySelected ? Colors.white : Colors.black, // Text color
                           ),
-                          child: Text("Rent"),
+                          child: Text("rent".tr()),
                         ),
                       ],
                     ),
 
                     SizedBox(height: 16),
                     Container(
-                      height: 50,
+                      height: 53,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MyColor.myDark,
@@ -358,7 +359,7 @@ void showBuyRentBottomSheet(BuildContext context,Function(String)onApply) {
                         ),
                         child: Center(
                           child: Text(
-                            "Apply",
+                            "apply".tr(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,

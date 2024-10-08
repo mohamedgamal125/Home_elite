@@ -185,47 +185,52 @@ class _MainTabState extends State<MainTab> {
                           return Container(
                             color: Colors.transparent,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 12),
-                              child: Row(
-                                children: state.response.map((propertyType) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 8.0, right: 12),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        // Set the selected property type
-                                        setState(() {
-                                          selectedPropertyType = propertyType.propertyType.toLowerCase();
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Image(
-                                            image: propertyType.propertyType == 'appartment'
-                                                ? AssetImage(
-                                                "assets/images1/icons/Apartment_icon1.png")
-                                                : AssetImage(
-                                                "assets/images1/icons/Villa_icon1.png"),
-                                            width: 30,
-                                            height: 30,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child: Text(propertyType.propertyType,
+                              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                              child: Container(
+                                height: 50, // Set an appropriate height for the list of buttons
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                                  itemCount: state.response.length,
+                                  itemBuilder: (context, index) {
+                                    final propertyType = state.response[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 8.0, right: 12),
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          // Set the selected property type
+                                          setState(() {
+                                            selectedPropertyType = propertyType.propertyType.toLowerCase();
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Image(
+                                              image: propertyType.propertyType == 'appartment'
+                                                  ? AssetImage("assets/images1/icons/Apartment_icon1.png")
+                                                  : AssetImage("assets/images1/icons/Villa_icon1.png"),
+                                              width: 30,
+                                              height: 30,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: Text(
+                                                getTranslatedPropertyType( propertyType.propertyType),
                                                 style: GoogleFonts.abyssinicaSil(
                                                     fontSize: 12,
                                                     color: MyColor.myTitleColor,
-                                                    fontWeight: FontWeight.w100)),
-                                          ),
-                                        ],
+                                                    fontWeight: FontWeight.w100),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }).toList(),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           );
+
                         } else {
                           return Center(child: Text("noData".tr()));
                         }
@@ -354,6 +359,21 @@ class _MainTabState extends State<MainTab> {
       }
     } catch (e) {
       throw Exception('Error fetching best ads: $e');
+    }
+  }
+
+  String getTranslatedPropertyType(String propertyType) {
+    switch (propertyType) {
+      case 'appartment':
+        return 'appartment'.tr();
+      case 'villa':
+        return 'villa'.tr();
+      case 'Library':
+        return 'library'.tr();
+      case 'Office':
+        return 'office'.tr();
+      default:
+        return propertyType; // Return the original if no translation is found
     }
   }
 }

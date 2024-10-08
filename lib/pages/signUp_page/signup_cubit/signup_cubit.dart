@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_elite/pages/signUp_page/signup_cubit/signup_state.dart';
@@ -18,20 +19,20 @@ class SignupCubit extends Cubit<RegisterState> {
   static SignupCubit get(context) => BlocProvider.of(context);
 
   final List<String> egyptianCities = [
-    'Cairo',
-    'Alexandria',
-    'Giza',
-    'Sharm El Sheikh',
-    'Luxor',
-    'Aswan',
-    'Port Said',
-    'Suez',
-    'Ismailia',
-    'Tanta',
-    'Mansoura',
-    'Zagazig',
-    'Minya',
-    'Assiut',
+    'cairo'.tr(),
+    'alexandria'.tr(),
+    'giza'.tr(),
+    'sharm_el_sheikh'.tr(),
+    'luxor'.tr(),
+    'aswan'.tr(),
+    'port_said'.tr(),
+    'suez'.tr(),
+    'ismailia'.tr(),
+    'tanta'.tr(),
+    'mansoura'.tr(),
+    'zagazig'.tr(),
+    'minya'.tr(),
+    'assiut'.tr(),
   ];
   Future<void> register() async {
     emit(RegisterLoading());

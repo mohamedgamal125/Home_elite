@@ -9,6 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/propertyType_model.dart';
+import '../../../models/userAd.dart';
+
 part 'add_rent_ads_state.dart';
 
 class AddRentAdsCubit extends Cubit<AddRentAdsState> {
@@ -36,6 +39,45 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
   List<String> imageUrls = [];
   List<File> selectedImages = [];
   static AddRentAdsCubit get(context) => BlocProvider.of(context);
+  List<PropertytypeModel> propertyTypeStrings=[];
+  List<String> propertyStrings=[];
+
+  List<PropertytypeModel> properties=[];
+  Future<void> getPropertyTypes() async {
+
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final Token = prefs.get("token");
+      print("======================Token${Token}=");
+      final response = await Dio().get(
+          "https://backend-coding-yousseftarek80s-projects.vercel.app/user/ads/properties",
+          options: Options(headers: {'Authorization': 'Bearer $Token'}));
+
+      print(response.data);
+      //
+      properties = (response.data as List)
+          .map((propertyJson) => PropertytypeModel.fromJson(propertyJson))
+          .toList();
+
+      // Create a list of property types
+      propertyStrings = properties.map((property) => property.propertyType).toList();
+
+      print('=======================================');
+      print(propertyStrings);
+
+      PrintData();
+
+      print('=======================================');
+      print(propertyStrings);
+      PrintData();
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
   void updateImageUrls(List<String> urls) {
     imageUrls = urls;
     emit(AddRentImageSelected());
@@ -51,7 +93,20 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
     'year',
   ];
 
-
+  String getTranslatedPropertyType(String propertyType) {
+    switch (propertyType) {
+      case 'appartment':
+        return 'appartment'.tr();
+      case 'villa':
+        return 'villa'.tr();
+      case 'Library':
+        return 'library'.tr();
+      case 'Office':
+        return 'office'.tr();
+      default:
+        return propertyType; // Return the original if no translation is found
+    }
+  }
   void removeImageUrl(int index)
   {
     imageUrls.removeAt(index);
@@ -70,7 +125,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
 
     print("===========================================");
     print("name:${name.text}");
-    print("Property type:$propertyType");
+    print(propertyStrings);
     print("Area: ${area.text}");
     print("bedRooms: ${bedRooms.text}");
     print("bathRooms: ${bathRooms.text}");
@@ -128,6 +183,15 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
   }
 
   Future<void> addRentAds() async {
+    String? id;
+    for(PropertytypeModel p in properties)
+    {
+      if(p.propertyType==propertyType)
+      {
+        print("==============IDS +++${p.id}");
+        id= p.id;
+      }
+    }
     emit(AddRentAdLoading());
     try {
       final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -142,7 +206,7 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
       final formData = FormData.fromMap({
         'name': name.text,
         'salary': price.text,
-        'propertyType': (propertyType=="Villa") ? "66f00017eccfcd04a54e906f" : "66da68ebb3dc9ecda5fedfe6",
+        'propertyType': id,
         'phone': '0' + phone.text,
         'email': email,
         'Area': area.text,

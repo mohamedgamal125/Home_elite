@@ -17,6 +17,8 @@ class SignupVerification extends StatefulWidget {
 }
 
 class _SignupVerificationState extends State<SignupVerification> {
+
+
   String? verificationCode;
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,9 @@ class _SignupVerificationState extends State<SignupVerification> {
                 ),
                 BlocConsumer<VerificationCubit, VerificationState>(
                   listener: (context, state) {
+                    print(args?['verificationCode']);
+                    print("=======================");
+                    print(verificationCode);
                     if (state is VerificationSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("verificationCom".tr()),backgroundColor: Colors.green,));

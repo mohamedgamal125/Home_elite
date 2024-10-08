@@ -29,6 +29,7 @@ class _AddRentAdsState extends State<AddRentAds> {
   void initState() {
     super.initState();
     cubit = AddRentAdsCubit.get(context);
+    cubit.getPropertyTypes();
   }
 
   @override
@@ -267,53 +268,55 @@ class _AddRentAdsState extends State<AddRentAds> {
                               "type".tr(),
                               style: GoogleFonts.alegreyaSansSc(),
                             ),
+                            SizedBox(height: 8), // Add spacing if needed
                             Container(
                               height: 32,
-                              child: DropdownButtonFormField<String>(
-                                onChanged: (value) {
-                                  cubit.propertyType = value;
-                                },
-                                decoration: InputDecoration(
-                                  hintText: "choose".tr(),
-                                  hintStyle: GoogleFonts.alegreyaSansSc(
-                                    fontSize: 16,
-                                  ),
-                                  contentPadding: EdgeInsets.only(left: 12),
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 2.0),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                items: cubit.propertyTypes
-                                    .map<DropdownMenuItem<String>>(
-                                        (String city) {
-                                  return DropdownMenuItem<String>(
-                                    value: city,
-                                    child: Text(
-                                      city,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  );
-                                }).toList(),
-                                onSaved: (value) {
-                                  cubit.propertyType = value;
-                                },
-                                value: cubit.propertyType == "villa"
-                                    ? cubit.propertyTypes[1]
-                                    : cubit.propertyType == "appartment"
-                                        ? cubit.propertyTypes[0]
-                                        : null,
+                              child: FutureBuilder<void>(
+                                future: cubit.getPropertyTypes(), // Fetching the property types
+                                builder: (context, snapshot) {
+
+                                    return DropdownButtonFormField<String>(
+                                      onChanged: (value) {
+                                        cubit.propertyType = value;
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: "choose".tr(),
+                                        hintStyle: GoogleFonts.alegreyaSansSc(
+                                          fontSize: 16,
+                                        ),
+                                        contentPadding: EdgeInsets.only(left: 12),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey, width: 2.0),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      items: cubit.propertyStrings
+                                          .map<DropdownMenuItem<String>>((String city) {
+                                        return DropdownMenuItem<String>(
+                                          value: city,
+                                          child: Text(
+                                            cubit.getTranslatedPropertyType(city),
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onSaved: (value) {
+                                        cubit.propertyType = value;
+                                      },
+                                    );
+                                  }
+
                               ),
                             ),
                           ],
                         ),
+
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 9.0),
                           child: Column(

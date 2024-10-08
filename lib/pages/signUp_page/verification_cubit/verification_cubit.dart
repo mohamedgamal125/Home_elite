@@ -10,6 +10,7 @@ class VerificationCubit extends Cubit<VerificationState> {
   final Dio _dio = Dio();
 
   Future<void> verifyPhone(String email, String code) async {
+    print("Code ========== $code");
     emit(VerificationLoading());
     try {
       final response = await _dio.post(
