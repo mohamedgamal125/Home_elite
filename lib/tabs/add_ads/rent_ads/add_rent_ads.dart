@@ -7,6 +7,7 @@ import 'package:home_elite/tabs/add_ads/rent_ads/add_rent_ads_cubit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../../Theming/myTheme_data.dart';
+import '../../../pages/map/map.dart';
 
 class AddRentAds extends StatefulWidget {
   final String? adId;
@@ -567,6 +568,11 @@ class _AddRentAdsState extends State<AddRentAds> {
                                     cubit.location.text = value;
                                   },
                                   decoration: InputDecoration(
+                                    prefixIcon: IconButton(onPressed: () async{
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Maps(flag: "rent",)));
+                                      cubit.PrintData();
+                                    },
+                                        icon: Icon(Icons.map_outlined,)),
                                     contentPadding: EdgeInsets.only(left: 12),
                                     fillColor: Colors.white,
                                     filled: true,

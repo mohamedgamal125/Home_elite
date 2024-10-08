@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:home_elite/pages/map/map.dart';
 import 'package:home_elite/tabs/add_ads/buy_ads/add_buy_ads_cubit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -619,14 +620,20 @@ class _AddBuyAdsState extends State<AddBuyAds> {
                                   style: GoogleFonts.alegreyaSansSc(),
                                 ),
                                 Container(
-                                  height: 32,
+                                  height: 35,
                                   child: TextFormField(
+
                                     controller: cubit.location,
                                     cursorColor: Colors.brown,
                                     onChanged: (value) {
                                       cubit.location.text = value;
                                     },
                                     decoration: InputDecoration(
+                                      prefixIcon: IconButton(onPressed: () async{
+                                         Navigator.push(context, MaterialPageRoute(builder: (context)=> Maps(flag: "buy",)));
+                                          cubit.PrintData();
+                                        },
+                                          icon: Icon(Icons.map_outlined,)),
                                       contentPadding:
                                       EdgeInsets.only(left: 12),
                                       fillColor: Colors.white,

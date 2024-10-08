@@ -44,7 +44,7 @@ class LanguageScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(18),
                               // Same border radius as the container
                               child: Image.asset(
-                                "assets/images1/icons/ar_logo.png",
+                                "assets/images1/icons/ar_logo1.png",
                                 fit: BoxFit
                                     .cover, // Ensures the image covers the entire container
                               ),
