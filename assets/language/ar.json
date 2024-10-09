@@ -31,6 +31,9 @@
   "appartment": "وحده",
   "library": "مكتبة",
   "office": "مكتب",
+  "residential": "سكني",
+  "commercial": "تجاري",
+  "Administrative": "اداري",
 
   "bestProperty": "افضل التقيمات",
   "city": "المدينه",

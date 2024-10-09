@@ -103,6 +103,12 @@ class AddRentAdsCubit extends Cubit<AddRentAdsState> {
         return 'library'.tr();
       case 'Office':
         return 'office'.tr();
+      case 'residential':
+        return 'residential'.tr();
+      case 'Commercial':
+        return 'commercial'.tr();
+      case 'Administrative':
+        return 'Administrative'.tr();
       default:
         return propertyType; // Return the original if no translation is found
     }

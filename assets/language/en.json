@@ -31,6 +31,9 @@
   "appartment": "Appartment",
   "library": "Library",
   "office": "Office",
+  "residential": "Residential",
+  "commercial": "Commercial",
+  "Administrative": "Administrative",
 
   "bestProperty": "Best Views Property",
   "city": "city",
