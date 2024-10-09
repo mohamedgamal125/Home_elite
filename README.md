@@ -7,9 +7,13 @@ The Home Elite app, developed using Flutter, is designed to simplify property re
 provides an intuitive and user-friendly interface for exploring various real estate options, including homes, 
 
 apartments, and other properties. Key features include
+
 Property Listings: Users can browse a wide range of properties with detailed information such as property type, price, location, and amenities.
+
 Filtering & Search: The app allows users to filter properties by price, location, number of bedrooms, and more, ensuring they nd the right property quickly.
+
 Favorites: Users can bookmark properties they are interested in for easy access later.
+
 Responsive UI: Designed to offer a smooth and consistent user experience across various screen sizes
 
 ![MergedImages](https://github.com/user-attachments/assets/26e03ba4-cddb-4db3-b019-dc85a715ab42)
